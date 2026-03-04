@@ -1,16 +1,36 @@
-# Compiled class file
+# ===========================
+# Spring Boot + IntelliJ + Gradle
+# JSL26TP Team Project
+# ===========================
+
+# --- Gradle ---
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# --- Eclipse (혹시 모를 팀원용) ---
+.classpath
+.project
+.settings/
+bin/
+
+# --- VS Code ---
+.vscode/
+
+# --- Compiled class file ---
 *.class
 
-# Log file
+# --- Log file ---
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# --- Package Files ---
 *.jar
 *.war
 *.nar
@@ -19,6 +39,17 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# --- OS 자동 생성 파일 ---
+.DS_Store
+Thumbs.db
+desktop.ini
+Icon?
+
+# --- Java crash logs ---
 hs_err_pid*
 replay_pid*
+
+# --- 기타 ---
+*.swp
+*.swo
+*~
