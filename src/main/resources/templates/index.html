@@ -17,7 +17,10 @@
     <!-- ========== 지도 영역 (전체 화면) ========== -->
     <div class="map-area" id="mapArea">
 
-        <!-- 상단 오버레이: 검색바 + 필터 -->
+        <!-- 지도 -->
+        <div id="map" class="map-container"></div>
+
+        <!-- 상단 오버레이: 헤더 + 검색바 + 필터 -->
         <div class="map-overlay-top">
 
             <!-- 헤더: 로고 + 로그인 -->
@@ -67,41 +70,29 @@
             </div>
         </div>
 
-        <!-- 현재 위치 버튼 -->
-        <button class="btn-my-location" onclick="moveToMyLocation()">
-            <i class="fas fa-crosshairs"></i>
-        </button>
-
-        <!-- 지도 -->
-        <div id="map" class="map-container">
-            <!-- 화장실 마커 아이콘들 (데모) -->
-            <div class="demo-marker demo-marker-1"><i class="fas fa-bars"></i></div>
-            <div class="demo-marker demo-marker-2 orange"><i class="fas fa-bars"></i></div>
-            <div class="demo-marker demo-marker-3"><i class="fas fa-bars"></i></div>
-            <p class="map-placeholder">🗺️ ここに実際の地図APIが入ります (Kakao Map)</p>
+        <!-- 우측 컨트롤: 줌 + 현재위치 -->
+        <div class="map-controls-right">
+            <button class="btn-my-location" onclick="moveToMyLocation()">
+                <i class="fas fa-crosshairs"></i>
+            </button>
         </div>
 
-        <!-- 가장 가까운 화장실 버튼 (지도 하단 중앙) -->
+        <!-- 가장 가까운 화장실 버튼 -->
         <div class="nearest-btn-wrap">
             <button class="btn-nearest" onclick="findNearest()">
-                <i class="fas fa-clock"></i> 最も近いトイレ
+                <i class="fas fa-location-arrow"></i> 最も近いトイレ
             </button>
         </div>
 
     </div>
 
-    <!-- ========== 바텀시트 (아래에서 올라오는 패널) ========== -->
+    <!-- ========== 바텀시트 ========== -->
     <div class="bottom-sheet" id="bottomSheet">
-
-        <!-- 드래그 핸들 -->
         <div class="sheet-handle" id="sheetHandle">
             <div class="handle-bar"></div>
         </div>
-
-        <!-- 화장실 리스트 -->
         <div class="toilet-list" id="toiletList">
-
-            <!-- 기본 카드 (데모) -->
+            <!-- 데모 카드 -->
             <div class="toilet-card">
                 <div class="toilet-card-icon">
                     <i class="fas fa-building"></i>
@@ -109,7 +100,7 @@
                 <div class="toilet-card-info">
                     <div class="toilet-card-name">スターバックス 江南駅店</div>
                     <div class="toilet-card-distance">
-                        📍 120m · 徒歩 2分
+                        <i class="fas fa-map-marker-alt"></i> 120m · 徒歩 2分
                     </div>
                     <div class="toilet-card-rating">
                         <i class="fas fa-star"></i>
@@ -129,7 +120,6 @@
                     <i class="fas fa-comment-dots"></i>
                 </button>
             </div>
-
         </div>
     </div>
 
@@ -189,6 +179,9 @@
     <span>ログアウトしました。</span>
 </div>
 
+<script th:inline="javascript">
+    var KAKAO_JS_KEY = /*[[${kakaoJsKey}]]*/ '';
+</script>
 <script th:src="@{/js/app.js}"></script>
 <script th:if="${loginError}">
     document.addEventListener('DOMContentLoaded', () => openLoginModal());
