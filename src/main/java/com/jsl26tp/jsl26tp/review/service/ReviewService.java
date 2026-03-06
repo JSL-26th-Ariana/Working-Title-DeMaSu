@@ -50,7 +50,6 @@ public class ReviewService {
                 }
             }
         }
-
     }
 
     /*
@@ -102,4 +101,28 @@ public class ReviewService {
 
         return review;
     }
+
+    /*
+     * 리뷰 수정
+     */
+
+    public void updateReview(Review review, List<MultipartFile> files) {
+        // 본문 수정
+        reviewMapper.updateReview(review);
+
+        // 새로운 이미지 파일이 넘어 온 경우
+        if (files != null && !files.isEmpty() && !files.get(0).isEmpty()) {
+
+            // 기존 이미지 정보 삭제
+            reviewImageMapper.deleteByReviewId(review.getId());
+
+            // 새로운 이미지 업데이트
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    saveFileToReview(review, file);
+                }
+            }
+        }
+    }
+
 }
