@@ -78,4 +78,13 @@ public class ReviewController {
         return ApiResponse.ok(reviewService.getReviewsByToilet(toiletId));
     }
 
+    /*
+     * 화장실별 평균 청결도 점수
+     * /api/reviews/toilet/{toiletId}/avg-score
+     */
+    @GetMapping("/toilet/{toiletId}/avg")
+    public ApiResponse<Double> getAvgScore(@PathVariable("toiletId") Long toiletId) {
+        return ApiResponse.ok(reviewService.getAverageScore(toiletId));
+    }
+
 }
