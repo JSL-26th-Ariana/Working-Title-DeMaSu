@@ -166,5 +166,14 @@ public class ReviewService {
         return avgScore != null ? avgScore : 0.0;
     }
 
+    /*
+     * 화장실별 총 리뷰 개수
+     */
+
+    public Integer getReviewCount(Long toiletId) {
+        Integer count = reviewMapper.getReviewCount(toiletId);
+        return count != null ? count : 0;
+    }
+
 
 }
