@@ -140,4 +140,20 @@ public class ReviewService {
 
         reviewMapper.deleteReview(id);
     }
+
+    /*
+     * 특정 화장실의 리뷰 목록 조회
+     */
+
+    public List<Review> getReviewsByToilet(Long toiletId) {
+        // 리뷰 본문 + 유저 정보 목록 가져오기
+        List<Review> reviews = reviewMapper.findByToiletId(toiletId);
+
+        // 각 리뷰마다 달린 이미지 미리보기
+        for (Review review : reviews) {
+            List<ReviewImage> images = reviewImageMapper.findByReviewId(review.getId());
+            review.setImages(images);
+        }
+        return reviews;
+    }
 }
