@@ -96,4 +96,13 @@ public class ReviewController {
         return ApiResponse.ok(reviewService.getReviewCount(toiletId));
     }
 
+    /*
+     * 내가 쓴 리뷰 목록 조회
+     * /api/reviews/mypage/{userId}
+     */
+    @GetMapping("/mypage/{userId}")
+    public ApiResponse<List<Review>> getMyReviews(@PathVariable("userId") Long userId) {
+        return ApiResponse.ok(reviewService.getMyReviews(userId));
+    }
+
 }
