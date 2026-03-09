@@ -156,4 +156,24 @@ public class ReviewService {
         }
         return reviews;
     }
+
+    /*
+     * 화장실별 평균 청결도 점수
+     */
+
+    public Double getAverageScore(Long toiletId) {
+        Double avgScore = reviewMapper.getAvgScore(toiletId);
+        return avgScore != null ? avgScore : 0.0;
+    }
+
+    /*
+     * 화장실별 총 리뷰 개수
+     */
+
+    public Integer getReviewCount(Long toiletId) {
+        Integer count = reviewMapper.getReviewCount(toiletId);
+        return count != null ? count : 0;
+    }
+
+
 }
