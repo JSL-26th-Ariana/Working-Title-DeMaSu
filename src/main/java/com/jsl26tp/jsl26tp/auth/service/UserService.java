@@ -85,12 +85,29 @@ public class UserService {
     }
 
     // 회원 정보 수정
-    public void updateUser(User user) {
-        userMapper.updateUser(user);
+    // 해당 회원 정보 (닉네임, 이메일) 수정 시 중복 체크를 거치도록 수정함
+    public void updateUser(User updateData) {
+        // 본인 제외 닉네임 중복 체크
+        User nicknameCheck = userMapper.findByNickname(updateData.getNickname());
+        if (nicknameCheck != null && !nicknameCheck.getId().equals(updateData.getId())) {
+            throw new BusinessException(ErrorCode.DUPLICATE_NICKNAME);
+        }
+        // 본인 제외 이메일 중복 체크
+        User emailCheck = userMapper.findByEmail(updateData.getEmail());
+        if (emailCheck != null && !emailCheck.getId().equals(updateData.getId())) {
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
+        userMapper.updateUser(updateData);
     }
 
     // 비밀번호 변경
-    public void updatePassword(Long id, String newPassword) {
+    // 비밀번호 변경 시 현재 비밀번호를 검증하도록 수정함
+    public void updatePassword(Long id, String currentPassword, String newPassword) {
+        User user = userMapper.findById(id);
+        // 현재 비밀번호 검증
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
+        }
         if (newPassword.length() < 8) {
             throw new BusinessException(ErrorCode.INVALID_PASSWORD);
         }

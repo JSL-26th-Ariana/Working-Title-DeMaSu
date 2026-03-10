@@ -56,11 +56,14 @@ public class UserController {
     }
 
     // 5. 비밀번호 변경 처리 (POST /mypage/password)
-    @PostMapping("/password")
+    @PostMapping("/password") // 비밀번호 변경 시 현재 비밀번호를 검증하도록 수정
     @ResponseBody
-    public ApiResponse<Void> updatePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestParam String newPassword) {
+    public ApiResponse<Void> updatePassword(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam String currentPassword,   // ← 추가
+            @RequestParam String newPassword) {
         User user = userService.findByUsername(userDetails.getUsername());
-        userService.updatePassword(user.getId(), newPassword);
+        userService.updatePassword(user.getId(), currentPassword, newPassword);
         return ApiResponse.ok(null); // API 응답 형식 준수
     }
 
