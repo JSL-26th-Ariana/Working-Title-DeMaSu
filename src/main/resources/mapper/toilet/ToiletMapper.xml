@@ -17,6 +17,7 @@
           AND deleted_at IS NULL
         HAVING distance &lt;= #{radius}
         ORDER BY distance
+        LIMIT 50
     </select>
 
     <!-- 필터 검색 -->
@@ -50,6 +51,7 @@
           </if>
         HAVING distance &lt;= #{radius}
         ORDER BY distance
+        LIMIT 50
     </select>
 
     <!-- 키워드 검색 (이름, 주소) -->
@@ -60,11 +62,24 @@
           AND (name LIKE CONCAT('%', #{keyword}, '%')
                OR address LIKE CONCAT('%', #{keyword}, '%'))
         ORDER BY name
+        LIMIT 50
     </select>
 
-    <!-- 화장실 상세 조회 -->
+    <!-- 기본 조회 (존재 여부 체크용 -->
     <select id="findById" resultType="Toilet">
         SELECT * FROM toilets WHERE id = #{id} AND deleted_at IS NULL
+    </select>
+
+    <!-- 화장실 상세 조회 (평균점수 + 리뷰수 포함) -->
+    <select id="findDetailById" resultType="Toilet">
+        SELECT t.*,
+        COALESCE(AVG(r.score), 0) AS avg_score,
+        COUNT(r.id) AS review_count
+        FROM toilets t
+        LEFT JOIN reviews r ON t.id = r.toilet_id AND r.deleted_at IS NULL
+        WHERE t.id = #{id}
+        AND t.deleted_at IS NULL
+        GROUP BY t.id
     </select>
 
     <!-- 새 화장실 등록 (사용자 제보) -->
@@ -72,29 +87,36 @@
         INSERT INTO toilets (name, address, latitude, longitude, open_hours,
                              is_24hours, is_wheelchair, has_paper, has_soap,
                              has_sanitary, has_diaper, toilet_type, has_emergency,
-                             source, status, by_user_id)
+                             phone, has_cctv, male_toilet_count, male_urinal_count,
+                             female_toilet_count, source, status, by_user_id)
         VALUES (#{name}, #{address}, #{latitude}, #{longitude}, #{openHours},
                 #{is24hours}, #{isWheelchair}, #{hasPaper}, #{hasSoap},
                 #{hasSanitary}, #{hasDiaper}, #{toiletType}, #{hasEmergency},
-                #{source}, #{status}, #{byUserId})
+                #{phone}, #{hasCctv}, #{maleToiletCount}, #{maleUrinalCount},
+                #{femaleToiletCount}, #{source}, #{status}, #{byUserId})
     </insert>
 
     <!-- 화장실 정보 수정 (관리자) -->
     <update id="updateToilet" parameterType="Toilet">
         UPDATE toilets
-        SET name          = #{name},
-            address       = #{address},
-            latitude      = #{latitude},
-            longitude     = #{longitude},
-            open_hours    = #{openHours},
-            is_24hours    = #{is24hours},
-            is_wheelchair = #{isWheelchair},
-            has_paper     = #{hasPaper},
-            has_soap      = #{hasSoap},
-            has_sanitary  = #{hasSanitary},
-            has_diaper    = #{hasDiaper},
-            toilet_type   = #{toiletType},
-            has_emergency = #{hasEmergency}
+        SET name               = #{name},
+            address            = #{address},
+            latitude           = #{latitude},
+            longitude          = #{longitude},
+            open_hours         = #{openHours},
+            is_24hours         = #{is24hours},
+            is_wheelchair      = #{isWheelchair},
+            has_paper          = #{hasPaper},
+            has_soap           = #{hasSoap},
+            has_sanitary       = #{hasSanitary},
+            has_diaper         = #{hasDiaper},
+            toilet_type        = #{toiletType},
+            has_emergency      = #{hasEmergency},
+            phone              = #{phone},
+            has_cctv           = #{hasCctv},
+            male_toilet_count  = #{maleToiletCount},
+            male_urinal_count  = #{maleUrinalCount},
+            female_toilet_count = #{femaleToiletCount}
         WHERE id = #{id}
     </update>
 
