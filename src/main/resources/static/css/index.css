@@ -40,7 +40,7 @@ body {
     width: 36px;
     height: 36px;
     background: #00C896;
-    border-radius: 8px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,8 +49,29 @@ body {
 
 .header-buttons {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
+}
+
+.btn-add-toilet {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1.5px solid #00C896;
+    background: white;
+    color: #00C896;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-add-toilet:hover {
+    background: #E8F9F5;
 }
 
 .login-btn {
@@ -58,9 +79,11 @@ body {
     border: none;
     color: #666;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
     padding: 8px 16px;
     font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: color 0.2s;
 }
 
 .login-btn:hover {
@@ -74,10 +97,16 @@ body {
     padding: 8px 20px;
     border-radius: 20px;
     font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
     font-family: 'M PLUS Rounded 1c', sans-serif;
     text-decoration: none;
     display: inline-block;
+    transition: background 0.2s;
+}
+
+.signup-btn:hover {
+    background: #00B385;
 }
 
 /* Main Container */
@@ -99,9 +128,9 @@ body {
 }
 
 .nearby-section {
-    background: #00C896;
+    background: linear-gradient(135deg, #00C896, #00A87D);
     color: white;
-    padding: 20px;
+    padding: 20px 20px 16px;
 }
 
 .nearby-title {
@@ -513,10 +542,10 @@ body {
 /* Toilet Card */
 .toilet-card {
     display: flex;
-    gap: 12px;
-    padding: 14px;
+    flex-direction: column;
+    padding: 16px;
     border: 1px solid #E8E8E8;
-    border-radius: 10px;
+    border-radius: 12px;
     margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s;
@@ -529,63 +558,100 @@ body {
     transform: translateY(-1px);
 }
 
-.toilet-card-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    background: #E8F9F5;
+.toilet-card-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #00C896;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.toilet-card-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.toilet-card-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1A1A1A;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 4px;
 }
 
+.toilet-card-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
 .toilet-card-distance {
-    font-size: 12px;
+    font-size: 13px;
     color: #00C896;
-    margin-bottom: 6px;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: 8px;
 }
 
 .toilet-card-distance i {
-    margin-right: 2px;
+    margin-right: 3px;
 }
 
-.toilet-card-tags {
+.toilet-card-address {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.toilet-card-meta {
     display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-}
-
-.toilet-card-tags span {
-    padding: 2px 8px;
-    background: #F5F5F5;
-    color: #666;
-    border-radius: 10px;
-    font-size: 11px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
 }
 
 .toilet-card-rating {
     display: flex;
-    align-items: flex-start;
-    gap: 2px;
-    font-size: 12px;
-    color: #FFB800;
+    align-items: center;
+    gap: 3px;
     font-weight: 600;
-    flex-shrink: 0;
+    color: #333;
+}
+
+.toilet-card-rating i {
+    color: #FFB800;
+}
+
+.toilet-card-review-count {
+    color: #999;
+}
+
+.toilet-card-hours {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #00C896;
+    font-weight: 500;
+}
+
+.toilet-card-hours i {
+    font-size: 11px;
+}
+
+.toilet-card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.toilet-card-tags span {
+    padding: 3px 10px;
+    background: #F0F0F0;
+    color: #555;
+    border-radius: 12px;
+    font-size: 11px;
+}
+
+.toilet-card-detail-link {
+    font-size: 12px;
+    color: #E91E90;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-top: 8px;
+    border-top: 1px solid #F0F0F0;
+}
+
+.toilet-card-detail-link i {
+    font-size: 10px;
 }
 
 /* ========== Detail View ========== */

@@ -216,8 +216,4 @@ public class AdminController {
         adminService.answerInquiry(id, answer, adminId);
         return ApiResponse.ok();
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
