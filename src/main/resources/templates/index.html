@@ -30,6 +30,7 @@
         </div>
         <!-- 로그인 상태 -->
         <div sec:authorize="isAuthenticated()" class="user-info-wrap">
+            <img class="user-icon" th:src="${#authentication.principal.iconUrl != null ? #authentication.principal.iconUrl : '/img/default.png'}" alt="profile" onerror="this.src='/img/default.png'">
             <span class="user-nickname" sec:authentication="principal.nickname">User</span>
             <button class="login-btn" onclick="document.getElementById('logoutForm').submit();">ログアウト</button>
             <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;"></form>
