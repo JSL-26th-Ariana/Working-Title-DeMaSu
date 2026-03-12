@@ -12,8 +12,13 @@ public class InquiryService {
 
     private final InquiryMapper inquiryMapper;
 
-    // 내 문의 내역 조회 (Mapper 메서드명이 findByWriterId인 것 확인!)
+    // 내 문의 내역 조회
     public List<Inquiry> findByWriterId(Long userId) {
         return inquiryMapper.findByWriterId(userId);
+    }
+
+    // 문의 등록
+    public void insertInquiry(Inquiry inquiry) {
+        inquiryMapper.insertInquiry(inquiry);
     }
 }
