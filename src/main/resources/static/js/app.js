@@ -104,8 +104,8 @@ function addMarker(toilet) {
         position: new naver.maps.LatLng(toilet.latitude, toilet.longitude),
         map: map,
         icon: {
-            content: '<div style="width:32px;height:32px;background:#FF6B6B;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.3);"><i class="fas fa-restroom" style="color:#fff;font-size:14px;transform:rotate(45deg);"></i></div>',
-            anchor: new naver.maps.Point(16, 32)
+            content: '<div style="width:28px;height:28px;background:#00C896;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.25);"><i class="fas fa-restroom" style="color:#fff;font-size:11px;"></i></div>',
+            anchor: new naver.maps.Point(14, 14)
         }
     });
 
@@ -224,25 +224,42 @@ function renderToiletList(toilets) {
 
     list.innerHTML = toilets.map(function(toilet) {
         var tags = '';
-        if (toilet.is24hours) tags += '<span>24時間</span>';
-        if (toilet.isWheelchair) tags += '<span>車椅子対応</span>';
-        if (toilet.hasDiaper) tags += '<span>おむつ交換台</span>';
-        if (toilet.hasEmergency) tags += '<span>非常ベル</span>';
-        if (toilet.hasCctv) tags += '<span>CCTV</span>';
+        if (toilet.is24hours) tags += '<span>#24時間</span>';
+        if (toilet.isWheelchair) tags += '<span>#車椅子対応</span>';
+        if (toilet.hasDiaper) tags += '<span>#おむつ交換台</span>';
+        if (toilet.hasEmergency) tags += '<span>#非常ベル</span>';
+        if (toilet.hasCctv) tags += '<span>#CCTV</span>';
+
+        // 거리 텍스트
+        var distanceHtml = '';
+        if (toilet.distance) {
+            var distKm = toilet.distance >= 1000 ?
+                (toilet.distance / 1000).toFixed(1) + 'km' :
+                Math.round(toilet.distance) + 'm';
+            distanceHtml = '<i class="fas fa-walking"></i> ' + distKm;
+        }
+
+        // 별점 + 리뷰수
+        var metaHtml = '';
+        if (toilet.avgScore && toilet.avgScore > 0) {
+            metaHtml += '<span class="toilet-card-rating"><i class="fas fa-star"></i> ' + toilet.avgScore.toFixed(1) + '</span>';
+            if (toilet.reviewCount) {
+                metaHtml += '<span class="toilet-card-review-count">(' + toilet.reviewCount + ')</span>';
+            }
+        }
+        if (toilet.is24hours) {
+            metaHtml += '<span class="toilet-card-hours"><i class="far fa-clock"></i> 24時間</span>';
+        }
 
         return '<div class="toilet-card" onclick="focusToilet(' + toilet.id + ',' + toilet.latitude + ',' + toilet.longitude + ')">' +
-            '<div class="toilet-card-icon"><i class="fas fa-restroom"></i></div>' +
-            '<div class="toilet-card-info">' +
+            '<div class="toilet-card-header">' +
                 '<div class="toilet-card-name">' + toilet.name + '</div>' +
-                '<div class="toilet-card-distance">' +
-                    '<i class="fas fa-map-marker-alt"></i> ' +
-                    (toilet.distance ? Math.round(toilet.distance) + 'm · 徒歩' + Math.ceil(toilet.distance / 80) + '分' : toilet.address) +
-                '</div>' +
-                (tags ? '<div class="toilet-card-tags">' + tags + '</div>' : '') +
+                (distanceHtml ? '<div class="toilet-card-distance">' + distanceHtml + '</div>' : '') +
             '</div>' +
-            (toilet.avgScore && toilet.avgScore > 0 ?
-                '<div class="toilet-card-rating"><i class="fas fa-star"></i> ' + toilet.avgScore.toFixed(1) + '</div>'
-                : '') +
+            '<div class="toilet-card-address">' + (toilet.address || '') + '</div>' +
+            (metaHtml ? '<div class="toilet-card-meta">' + metaHtml + '</div>' : '') +
+            (tags ? '<div class="toilet-card-tags">' + tags + '</div>' : '') +
+            '<div class="toilet-card-detail-link"><i class="fas fa-lock"></i> 詳細情報を見るにはログインが必要です →</div>' +
         '</div>';
     }).join('');
 }

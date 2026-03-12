@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< Updated upstream
-<html lang="ja" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マイページ - トイレマップ</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/mypage.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-=======
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
@@ -18,39 +6,23 @@
     <title>トイレマップ - デマス</title>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
->>>>>>> Stashed changes
 </head>
-<body class="mypage">
-
-<!-- 헤더 -->
-<header class="mypage-header">
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">
-            <i class="fa-solid fa-location-dot"></i>
-            <span>トイレマップ</span>
-        </a>
-        <div class="user-info">
-            <div class="user-menu" onclick="toggleUserMenu()">
-                <div class="user-icon">
-                    <img th:if="${user.iconUrl != null}" th:src="${user.iconUrl}" alt="プロフィール">
-                    <i th:if="${user.iconUrl == null}" class="fa-solid fa-user"></i>
-                </div>
-                <span class="user-nickname" th:text="${user.nickname}">ユーザー</span>
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div class="user-dropdown" id="userDropdown">
-                <a th:href="@{/mypage}"><i class="fa-solid fa-user"></i> マイページ</a>
-                <a th:href="@{/mypage/edit}"><i class="fa-solid fa-pen"></i> プロフィール編集</a>
-                <a th:href="@{/mypage/password}"><i class="fa-solid fa-lock"></i> パスワード変更</a>
-                <hr>
-                <a th:href="@{/logout}"><i class="fa-solid fa-right-from-bracket"></i> ログアウト</a>
-            </div>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="logo" onclick="location.href='/'" style="cursor: pointer;">
+        <div class="logo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
         </div>
-<<<<<<< Updated upstream
-=======
-        デマス
+        トイレマップ
     </div>
     <div class="header-buttons">
+        <a href="/toilet/add" class="btn-add-toilet">
+            <i class="fas fa-plus-circle"></i> トイレを追加
+        </a>
         <!-- 비로그인 상태 -->
         <div sec:authorize="!isAuthenticated()">
             <button class="login-btn" onclick="openLoginModal()">ログイン</button>
@@ -62,135 +34,18 @@
             <button class="login-btn" onclick="document.getElementById('logoutForm').submit();">ログアウト</button>
             <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;"></form>
         </div>
->>>>>>> Stashed changes
     </div>
 </header>
 
-<!-- 메인 콘텐츠 -->
-<main class="mypage-main">
-    <div class="mypage-container">
-
-<<<<<<< Updated upstream
-        <!-- 프로필 카드 -->
-        <section class="profile-card">
-            <div class="profile-avatar">
-                <img th:if="${user.iconUrl != null}" th:src="${user.iconUrl}" alt="プロフィール画像">
-                <div th:if="${user.iconUrl == null}" class="avatar-placeholder">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-            </div>
-            <div class="profile-info">
-                <h2 class="profile-nickname" th:text="${user.nickname}">ニックネーム</h2>
-                <p class="profile-email" th:text="${user.email}">email@example.com</p>
-                <p class="profile-join">
-                    <i class="fa-regular fa-calendar"></i>
-                    <span th:text="'登録日: ' + ${#temporals.format(user.createdAt, 'yyyy.MM.dd')}">登録日: 2026.01.01</span>
-                </p>
-            </div>
-            <div class="profile-actions">
-                <a th:href="@{/mypage/edit}" class="btn-edit">
-                    <i class="fa-solid fa-pen"></i> プロフィール編集
-                </a>
-            </div>
-        </section>
-
-        <!-- 메뉴 카드 그리드 -->
-        <section class="menu-grid">
-            <a th:href="@{/mypage/recent}" class="menu-card">
-                <div class="menu-card-icon" style="background: #E8FAF8; color: #2ECDC0;">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                </div>
-                <div class="menu-card-text">
-                    <p class="menu-card-title">最近見たトイレ</p>
-                    <p class="menu-card-desc">閲覧履歴を確認する</p>
-                </div>
-                <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
-            </a>
-
-            <a th:href="@{/mypage/reviews}" class="menu-card">
-                <div class="menu-card-icon" style="background: #FFF3E0; color: #FF9800;">
-                    <i class="fa-solid fa-star"></i>
-                </div>
-                <div class="menu-card-text">
-                    <p class="menu-card-title">投稿したレビュー</p>
-                    <p class="menu-card-desc">自分のレビューを管理する</p>
-                </div>
-                <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
-            </a>
-
-            <a th:href="@{/mypage/inquiries}" class="menu-card">
-                <div class="menu-card-icon" style="background: #F3E5F5; color: #9C27B0;">
-                    <i class="fa-solid fa-envelope"></i>
-                </div>
-                <div class="menu-card-text">
-                    <p class="menu-card-title">お問い合わせ履歴</p>
-                    <p class="menu-card-desc">問い合わせ内容を確認する</p>
-                </div>
-                <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
-            </a>
-
-            <a th:href="@{/mypage/password}" class="menu-card">
-                <div class="menu-card-icon" style="background: #E3F2FD; color: #2196F3;">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="menu-card-text">
-                    <p class="menu-card-title">パスワード変更</p>
-                    <p class="menu-card-desc">セキュリティを更新する</p>
-                </div>
-                <i class="fa-solid fa-chevron-right menu-card-arrow"></i>
-            </a>
-        </section>
-
-        <!-- 계정 정보 섹션 -->
-        <section class="account-section">
-            <h3 class="section-title"><i class="fa-solid fa-circle-info"></i> アカウント情報</h3>
-            <div class="account-info-list">
-                <div class="account-info-row">
-                    <span class="info-label"><i class="fa-solid fa-user"></i> ユーザーID</span>
-                    <span class="info-value" th:text="${user.username}">username</span>
-                </div>
-                <div class="account-info-row">
-                    <span class="info-label"><i class="fa-solid fa-phone"></i> 電話番号</span>
-                    <span class="info-value" th:text="${user.phone != null ? user.phone : '未登録'}">未登録</span>
-                </div>
-                <div class="account-info-row">
-                    <span class="info-label"><i class="fa-solid fa-venus-mars"></i> 性別</span>
-                    <span class="info-value"
-                          th:text="${user.gender == 'M' ? '男性' : (user.gender == 'F' ? '女性' : '未登録')}">未登録</span>
-                </div>
-                <div class="account-info-row">
-                    <span class="info-label"><i class="fa-solid fa-cake-candles"></i> 生年月日</span>
-                    <span class="info-value"
-                          th:text="${user.birthdate != null ? #temporals.format(user.birthdate, 'yyyy.MM.dd') : '未登録'}">未登録</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- 로그아웃 -->
-        <div class="logout-area">
-            <a th:href="@{/logout}" class="btn-logout">
-                <i class="fa-solid fa-right-from-bracket"></i> ログアウト
-            </a>
+<!-- Main Container -->
+<div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="nearby-section">
+            <h2 class="nearby-title">近くのトイレ</h2>
+            <p class="nearby-subtitle">現在地から近い順に表示</p>
         </div>
 
-    </div>
-</main>
-
-<script th:src="@{/js/app.js}"></script>
-<script>
-    function toggleUserMenu() {
-        const dropdown = document.getElementById('userDropdown');
-        dropdown.classList.toggle('active');
-    }
-    document.addEventListener('click', function(e) {
-        const menu = document.querySelector('.user-menu');
-        const dropdown = document.getElementById('userDropdown');
-        if (menu && !menu.contains(e.target)) {
-            dropdown.classList.remove('active');
-        }
-    });
-</script>
-=======
         <!-- Search Box in Sidebar -->
         <div class="sidebar-search">
             <div class="sidebar-search-box">
@@ -301,9 +156,8 @@
 </div>
 
 <!-- Naver Maps API -->
-<script type="text/javascript" th:src="'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=' + ${naverMapsClientId}"></script>
+<script type="text/javascript" th:src="'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=' + ${naverMapsClientId} + '&language=ja'"></script>
 <!-- App JS -->
 <script th:src="@{/js/app.js(v=5)}"></script>
->>>>>>> Stashed changes
 </body>
 </html>
