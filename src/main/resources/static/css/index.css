@@ -1094,7 +1094,15 @@ body {
 .user-info-wrap {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #E0E0E0;
 }
 
 .user-info-wrap .user-nickname {
