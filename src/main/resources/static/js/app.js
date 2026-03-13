@@ -13,6 +13,9 @@ var currentLng = 126.9780; // 현재 경도
 var currentFilter = 'all'; // 현재 필터
 var myLocationMarker = null; // 내 위치 마커
 var SEARCH_RADIUS = 800;     // 검색 반경 (800m 고정)
+var currentPage = 1;         // current page for pagination
+var ITEMS_PER_PAGE = 4;      // items per page
+var allToilets = [];         // store all toilets for pagination
 var isDetailView = false;    // 상세보기 모드 여부
 var currentDetailToilet = null;  // 현재 상세보기 중인 화장실
 var currentDetailTags = [];      // 현재 상세보기 태그
@@ -211,7 +214,7 @@ function loadFilteredToilets(lat, lng, radius, filter) {
         });
 }
 
-// ========== 화장실 리스트 렌더링 ==========
+// ========== Toilet list rendering (with pagination) ==========
 function renderToiletList(toilets) {
     var list = document.getElementById('toiletList');
 
@@ -225,7 +228,21 @@ function renderToiletList(toilets) {
         return;
     }
 
-    list.innerHTML = toilets.map(function(toilet) {
+    // Store all toilets and reset to page 1
+    allToilets = toilets;
+    currentPage = 1;
+    renderPage();
+}
+
+// Render current page
+function renderPage() {
+    var list = document.getElementById('toiletList');
+    var totalPages = Math.ceil(allToilets.length / ITEMS_PER_PAGE);
+    var start = (currentPage - 1) * ITEMS_PER_PAGE;
+    var end = start + ITEMS_PER_PAGE;
+    var pageToilets = allToilets.slice(start, end);
+
+    var cardsHtml = pageToilets.map(function(toilet) {
         var tags = '';
         if (toilet.is24hours) tags += '<span>#24時間</span>';
         if (toilet.isWheelchair) tags += '<span>#車椅子対応</span>';
@@ -233,7 +250,6 @@ function renderToiletList(toilets) {
         if (toilet.hasEmergency) tags += '<span>#非常ベル</span>';
         if (toilet.hasCctv) tags += '<span>#CCTV</span>';
 
-        // 거리 텍스트
         var distanceHtml = '';
         if (toilet.distance) {
             var distKm = toilet.distance >= 1000 ?
@@ -242,7 +258,6 @@ function renderToiletList(toilets) {
             distanceHtml = '<i class="fas fa-walking"></i> ' + distKm;
         }
 
-        // 별점 + 리뷰수
         var metaHtml = '';
         if (toilet.avgScore && toilet.avgScore > 0) {
             metaHtml += '<span class="toilet-card-rating"><i class="fas fa-star"></i> ' + toilet.avgScore.toFixed(1) + '</span>';
@@ -265,6 +280,40 @@ function renderToiletList(toilets) {
             '<div class="toilet-card-detail-link"><i class="fas fa-lock"></i> 詳細情報を見るにはログインが必要です →</div>' +
         '</div>';
     }).join('');
+
+    // Pagination controls
+    var paginationHtml = '';
+    if (totalPages > 1) {
+        paginationHtml = '<div class="pagination">';
+        paginationHtml += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>';
+
+        for (var i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                paginationHtml += '<button class="page-btn active">' + i + '</button>';
+            } else if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                paginationHtml += '<button class="page-btn" onclick="goToPage(' + i + ')">' + i + '</button>';
+            } else if (i === currentPage - 2 || i === currentPage + 2) {
+                paginationHtml += '<span class="page-dots">...</span>';
+            }
+        }
+
+        paginationHtml += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>';
+        paginationHtml += '<span class="page-info">' + allToilets.length + '件中 ' + (start + 1) + '-' + Math.min(end, allToilets.length) + '件</span>';
+        paginationHtml += '</div>';
+    }
+
+    list.innerHTML = cardsHtml + paginationHtml;
+
+    // Scroll to top of list
+    list.scrollTop = 0;
+}
+
+// Go to specific page
+function goToPage(page) {
+    var totalPages = Math.ceil(allToilets.length / ITEMS_PER_PAGE);
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderPage();
 }
 
 // ========== 카드 클릭 → 지도 이동 + 인포윈도우 ==========
@@ -986,9 +1035,9 @@ function moveToMyLocation() {
     }
 }
 
-// ========== Google 로그인 (추후 구현) ==========
+// ========== Google OAuth2 로그인 ==========
 function googleLogin() {
-    showToast('Googleログインは準備中です。');
+    window.location.href = '/oauth2/authorization/google';
 }
 
 // ========== 토스트 알림 ==========
