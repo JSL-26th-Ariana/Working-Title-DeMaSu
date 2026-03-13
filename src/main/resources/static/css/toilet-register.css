@@ -2,6 +2,12 @@
    トイレ登録ページ スタイル
 ======================================== */
 
+/* ─── body 오버라이드 (style.css의 overflow:hidden 덮어쓰기) ─── */
+body {
+    overflow: auto !important;
+    height: auto !important;
+}
+
 /* ─── 페이지 배경 ─── */
 .register-page {
     min-height: 100vh;
