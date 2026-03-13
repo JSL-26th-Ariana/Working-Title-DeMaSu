@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/edit")
     public String updateProfile(@AuthenticationPrincipal UserDetails userDetails,
                                 User updateData,
-                                @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+                                @RequestParam(value = "iconFile", required = false) MultipartFile profileImage,
                                 Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
         updateData.setId(user.getId());
