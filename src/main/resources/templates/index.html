@@ -160,5 +160,11 @@
 <script type="text/javascript" th:src="'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=' + ${naverMapsClientId} + '&language=ja'"></script>
 <!-- App JS -->
 <script th:src="@{/js/app.js(v=5)}"></script>
+<script>
+    // /login 으로 리다이렉트된 경우 자동으로 로그인 모달 열기
+    if (window.location.pathname === '/login') {
+        openLoginModal();
+    }
+</script>
 </body>
 </html>
