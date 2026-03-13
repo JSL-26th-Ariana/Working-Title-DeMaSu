@@ -41,6 +41,7 @@ public class SecurityConfig {
                     "/api/toilets/**",      // 화장실 조회 API (비회원도 위치 조회 가능)
                     "/api/check-*",         // 중복 체크 API (회원가입 시 사용)
                     "/api/line/webhook",    // LINE 챗봇 Webhook
+                    "/error",               // 에러 페이지 (리다이렉트 루프 방지)
                     "/css/**",
                     "/js/**",
                     "/images/**",
@@ -49,7 +50,7 @@ public class SecurityConfig {
 
                 // 관리자 전용 페이지
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 나머지는 로그인 필요 (리뷰, 신고, 문의 등)
                 .anyRequest().authenticated()
             )
