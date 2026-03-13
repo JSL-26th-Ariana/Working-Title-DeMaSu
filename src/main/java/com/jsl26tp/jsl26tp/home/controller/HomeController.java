@@ -18,10 +18,5 @@ public class HomeController {
         return "index";
     }
 
-    // 화장실 등록 페이지
-    @GetMapping("/toilet/add")
-    public String toiletAdd(Model model) {
-        model.addAttribute("naverMapsClientId", naverMapsClientId);
-        return "toilet/register";
-    }
+
 }
