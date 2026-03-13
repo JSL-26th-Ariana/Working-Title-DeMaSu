@@ -62,3 +62,7 @@ uploads/
 
 # --- Claude ---
 .claude/
+
+
+#--- 파이썬 ----
+import_toilets.py
