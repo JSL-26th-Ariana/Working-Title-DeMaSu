@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>トイレマップ - デマス</title>
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/index.css?v=2">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -254,7 +254,7 @@
     window.__isLoggedIn = [[${#authorization.expression('isAuthenticated()')}]];
 </script>
 <!-- App JS -->
-<script th:src="@{/js/app.js(v=6)}"></script>
+<script th:src="@{/js/app.js(v=7)}"></script>
 <script>
     // /login 으로 리다이렉트된 경우 자동으로 로그인 모달 열기
     if (window.location.pathname === '/login') {

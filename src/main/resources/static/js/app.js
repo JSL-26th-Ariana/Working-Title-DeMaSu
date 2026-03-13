@@ -269,7 +269,7 @@ function renderPage() {
             metaHtml += '<span class="toilet-card-hours"><i class="far fa-clock"></i> 24時間</span>';
         }
 
-        return '<div class="toilet-card" onclick="focusToilet(' + toilet.id + ',' + toilet.latitude + ',' + toilet.longitude + ')">' +
+        return '<div class="toilet-card" onclick="viewToiletDetail(' + toilet.id + ')">' +
             '<div class="toilet-card-header">' +
                 '<div class="toilet-card-name">' + toilet.name + '</div>' +
                 (distanceHtml ? '<div class="toilet-card-distance">' + distanceHtml + '</div>' : '') +
@@ -277,7 +277,7 @@ function renderPage() {
             '<div class="toilet-card-address">' + (toilet.address || '') + '</div>' +
             (metaHtml ? '<div class="toilet-card-meta">' + metaHtml + '</div>' : '') +
             (tags ? '<div class="toilet-card-tags">' + tags + '</div>' : '') +
-            '<div class="toilet-card-detail-link"><i class="fas fa-lock"></i> 詳細情報を見るにはログインが必要です →</div>' +
+            '<div class="toilet-card-detail-link"><i class="fas fa-info-circle"></i> 詳しく見る →</div>' +
         '</div>';
     }).join('');
 

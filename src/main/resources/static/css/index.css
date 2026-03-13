@@ -1605,12 +1605,8 @@ body {
 }
 
 .detail-tab-content {
-    display: none;
-    padding-top: 16px;
-}
-
-.detail-tab-content.active {
     display: block;
+    padding-top: 16px;
 }
 
 /* ============================================
