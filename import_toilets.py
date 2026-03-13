@@ -5,8 +5,8 @@ import csv
 import subprocess
 import sys
 
-CSV_PATH = '/Users/parkminseon/Desktop/공중화장실정보.csv'
-MYSQL_CMD = ['mysql', '-u', 'jsl26', '-p1234', 'jsl26tp']
+CSV_PATH = r'C:\Users\rladp\OneDrive\바탕 화면\공중화장실정보.csv'
+MYSQL_CMD = [r'C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe', '-u', 'root', '-p1234', 'jsl26tp']
 BATCH_SIZE = 500
 
 
