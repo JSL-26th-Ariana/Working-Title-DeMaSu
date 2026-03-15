@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>最近のトイレ - デマス</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
             background: #F5F5F5;
-            min-height: 100vh;
+            min-height: calc(100vh / 0.9);
             display: flex;
             flex-direction: column;
+            zoom: 0.9;
         }
         .header {
             background: white;
@@ -173,19 +176,44 @@
             transition: background 0.2s;
         }
         .go-map-btn:hover { background: #00B385; }
+
+        /* 페이지 헤더 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #00C896;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 24px 24px 0;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .page-header {
+            padding: 12px 24px 24px;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 6px;
+        }
+        .page-subtitle {
+            font-size: 13px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
 
-<header class="header">
-    <a href="/" class="back-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m15 18-6-6 6-6"></path>
-        </svg>
-        マップに戻る
-    </a>
-    <span class="header-title">最近見たトイレ</span>
-</header>
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
+
+<!-- 페이지 헤더 -->
+<div class="page-header">
+    <h1 class="page-title">最近見たトイレ</h1>
+    <p class="page-subtitle">最近チェックしたトイレの閲覧履歴</p>
+</div>
 
 <div class="container">
 
@@ -238,5 +266,6 @@
 <!-- Footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
+<script th:src="@{/js/header.js(v=1)}"></script>
 </body>
 </html>
