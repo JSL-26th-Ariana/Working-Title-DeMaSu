@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ履歴 - デマス</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+  <link rel="stylesheet" th:href="@{/css/mypage.css}">
+</head>
+<body class="mypage">
+
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
+
+<!-- 페이지 헤더 -->
+<div class="page-header">
+  <h1 class="page-title">お問い合わせ履歴</h1>
+  <p class="page-subtitle">お問い合わせの内容と回答状況を確認できます</p>
+</div>
+
+<main class="mypage-main">
+  <div class="mypage-container">
+
+    <nav class="mp-breadcrumb">
+      <a th:href="@{/mypage}">マイページ</a>
+      <span>›</span>
+      <span>お問い合わせ履歴</span>
+    </nav>
+
+    <!-- 문의 없을 때 -->
+    <div th:if="${#lists.isEmpty(inquiries)}" class="mp-empty-state">
+      <div class="mp-empty-icon">✉️</div>
+      <p class="mp-empty-title">お問い合わせ履歴がありません</p>
+      <p class="mp-empty-desc">お困りのことがあればお気軽にお問い合わせください</p>
+      <a th:href="@{/inquiry}" class="mp-btn-edit">
+        ✏️ お問い合わせする
+      </a>
+    </div>
+
+    <!-- 문의 목록 -->
+    <div th:if="${not #lists.isEmpty(inquiries)}" class="mp-inquiry-list">
+
+      <div th:each="inquiry : ${inquiries}" class="mp-inquiry-card">
+
+        <!-- 카드 헤더 (클릭하면 펼쳐짐) -->
+        <div class="mp-inquiry-header" th:onclick="|toggleInquiry(this)|">
+          <div class="mp-inquiry-title-row">
+            <span th:if="${inquiry.status == 'ANSWERED'}"
+                  class="mp-inquiry-status mp-status-answered">回答済み</span>
+            <span th:if="${inquiry.status == 'WAITING'}"
+                  class="mp-inquiry-status mp-status-pending">回答待ち</span>
+            <span class="mp-inquiry-title" th:text="${inquiry.title}">タイトル</span>
+          </div>
+          <div class="mp-inquiry-meta">
+            <span th:text="${#temporals.format(inquiry.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
+            <span class="mp-inquiry-toggle"><i class="fa-solid fa-chevron-down"></i></span>
+          </div>
+        </div>
+
+        <!-- 카드 바디 (기본 숨김) -->
+        <div class="mp-inquiry-body">
+          <p class="mp-inquiry-content" th:text="${inquiry.content}">お問い合わせ内容</p>
+
+          <!-- 답변 있을 때 -->
+          <div th:if="${inquiry.status == 'ANSWERED' and inquiry.answer != null}"
+               class="mp-inquiry-answer">
+            <p class="mp-inquiry-answer-label">
+              💬 運営からの回答
+              <span th:text="${#temporals.format(inquiry.answeredAt, 'yyyy.MM.dd')}">2024.01.02</span>
+            </p>
+            <p th:text="${inquiry.answer}">回答内容</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 새 문의 버튼 -->
+      <div style="text-align:center; margin-top: 24px;">
+        <a th:href="@{/inquiry}" class="mp-btn-edit">
+          ✏️ 新しいお問い合わせ
+        </a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/header.js(v=1)}"></script>
+<script>
+  function toggleInquiry(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.mp-inquiry-toggle');
+    body.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

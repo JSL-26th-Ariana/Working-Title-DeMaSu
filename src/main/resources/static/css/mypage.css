@@ -859,8 +859,8 @@ body.mypage {
 
 .mp-form-group input:focus,
 .mp-form-group select:focus {
-    border-color: #2ECDC0;
-    box-shadow: 0 0 0 3px rgba(46,205,192,0.12);
+    border-color: #00C896;
+    box-shadow: 0 0 0 3px rgba(0,200,150,0.12);
 }
 
 .mp-field-hint { font-size: 12px; color: #aaa; }
@@ -882,21 +882,21 @@ body.mypage {
 
 .mp-btn-save {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 10px 24px; background: #2ECDC0; color: #fff;
+    padding: 10px 24px; background: #00C896; color: #fff;
     border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
     cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: background 0.2s;
 }
 
-.mp-btn-save:hover { background: #22A89E; }
+.mp-btn-save:hover { background: #00B385; }
 
 .mp-btn-primary {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: 10px 20px; background: #2ECDC0; color: #fff;
+    padding: 10px 20px; background: #00C896; color: #fff;
     border-radius: 8px; font-size: 14px; font-weight: 500;
     text-decoration: none; transition: background 0.2s;
 }
 
-.mp-btn-primary:hover { background: #22A89E; }
+.mp-btn-primary:hover { background: #00B385; }
 
 /* ---- 프로필 편집 레이아웃 ---- */
 .mp-edit-layout {
@@ -1153,12 +1153,12 @@ body.mypage {
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #2ECDC0;
-    background: #E8FAF8;
+    border: 3px solid #00C896;
+    background: #E8F5F1;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #2ECDC0;
+    color: #00C896;
     font-size: 36px;
     flex-shrink: 0;
 }
@@ -1174,8 +1174,8 @@ body.mypage {
     align-items: center;
     gap: 6px;
     padding: 8px 14px;
-    background: #E8FAF8;
-    color: #2ECDC0;
+    background: #E8F5F1;
+    color: #00C896;
     border-radius: 8px;
     font-size: 13px;
     font-weight: 500;
@@ -1212,4 +1212,42 @@ body.mypage {
         height: 72px;
         font-size: 24px;
     }
+}
+
+/* ---- 문의 목록 (색상 수정) ---- */
+.mp-inquiry-card {
+  background: #fff;
+  border: 1px solid #eeeeee;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.mp-inquiry-card:hover {
+  border-color: #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.mp-badge-answered {
+  background: #E8F5F1;
+  color: #00896A;
+}
+.mp-badge-waiting {
+  background: #FFF8E6;
+  color: #B07D00;
+}
+.mp-inquiry-answer {
+  background: #f9f9f9;
+  border-left: 3px solid #00C896;
+  border-radius: 0 8px 8px 0;
+  padding: 14px 16px;
+  margin-top: 12px;
+}
+.mp-inquiry-answer-header {
+  color: #00896A;
+}
+.mp-btn-primary {
+  background: #00C896;
+  border-radius: 8px;
+}
+.mp-btn-primary:hover {
+  background: #00B385;
 }

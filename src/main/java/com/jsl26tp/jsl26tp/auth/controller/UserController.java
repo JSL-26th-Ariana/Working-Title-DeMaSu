@@ -62,9 +62,19 @@ public class UserController {
         return "redirect:/mypage";
     }
 
+    // 2-1. 프로필 수정 폼 (GET /mypage/edit)
+    @GetMapping("/edit")
+    public String editForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", user);
+        return "mypage/edit";
+    }
+
     // 3. 비밀번호 변경 폼 (GET /mypage/password)
     @GetMapping("/password")
-    public String passwordForm() {
+    public String passwordForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", user); // ← 추가
         return "mypage/password";
     }
 
@@ -95,6 +105,7 @@ public class UserController {
     @GetMapping("/reviews")
     public String myReviews(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", user); // ← 추가
         model.addAttribute("reviews", reviewService.findByUserId(user.getId()));
         return "mypage/reviews";
     }
@@ -103,6 +114,7 @@ public class UserController {
     @GetMapping("/inquiries")
     public String myInquiries(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", user);
         model.addAttribute("inquiries", inquiryService.findByWriterId(user.getId()));
         return "mypage/inquiries";
     }

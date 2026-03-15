@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿したレビュー - デマス</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/mypage.css}">
+</head>
+<body class="mypage">
+
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
+
+<div class="page-header">
+    <h1 class="page-title">投稿したレビュー</h1>
+    <p class="page-subtitle">自分が書いたレビューを確認できます</p>
+</div>
+
+<main class="mypage-main">
+    <div class="mypage-container">
+
+        <nav class="mp-breadcrumb">
+            <a th:href="@{/mypage}">マイページ</a>
+            <span>›</span>
+            <span>投稿したレビュー</span>
+        </nav>
+
+        <!-- 리뷰 없을 때 -->
+        <div th:if="${#lists.isEmpty(reviews)}" class="mp-empty-state">
+            <div class="mp-empty-icon">⭐</div>
+            <p class="mp-empty-title">まだレビューがありません</p>
+            <p class="mp-empty-desc">トイレを利用したらレビューを書いてみましょう！</p>
+            <a th:href="@{/}" class="mp-btn-edit">🗺️ マップを見る</a>
+        </div>
+
+        <!-- 리뷰 목록 -->
+        <div th:if="${not #lists.isEmpty(reviews)}" class="mp-review-list">
+
+            <div th:each="review : ${reviews}" class="mp-review-card">
+
+                <!-- 카드 헤더 -->
+                <div class="mp-review-header">
+                    <div class="mp-review-toilet-name">
+                        🚻
+                        <a th:href="@{/toilet/{id}(id=${review.toiletId})}"
+                           style="color:#222; text-decoration:none;"
+                           th:text="'トイレ #' + ${review.toiletId}">トイレ名</a>
+                    </div>
+                    <!-- 별점 -->
+                    <div class="mp-review-score">
+            <span th:each="i : ${#numbers.sequence(1, 5)}"
+                  th:classappend="${#strings.equals(review.cleanScore, T(String).valueOf(i))} ? 'mp-star filled' : 'mp-star'"
+                  class="mp-star">★</span>
+                        <span class="mp-score-number" th:text="${review.cleanScore}">5</span>
+                    </div>
+                </div>
+
+                <!-- 리뷰 내용 -->
+                <div class="mp-review-body" th:text="${review.content}">レビュー内容</div>
+
+                <!-- 리뷰 이미지 (있을 때만) -->
+                <div th:if="${review.images != null and not #lists.isEmpty(review.images)}"
+                     class="mp-review-image">
+                    <img th:src="${review.images[0].imageUrl}" alt="レビュー画像">
+                </div>
+
+                <!-- 카드 푸터 -->
+                <div class="mp-review-footer">
+          <span class="mp-review-date">
+            📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
+          </span>
+                    <a th:href="@{/toilet/{id}(id=${review.toiletId})}" class="mp-btn-link">
+                        詳細を見る →
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/header.js(v=1)}"></script>
+</body>
+</html>
