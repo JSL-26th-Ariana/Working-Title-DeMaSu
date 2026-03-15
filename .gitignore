@@ -39,7 +39,7 @@ bin/
 *.tar.gz
 *.rar
 
-# --- OS 자동 생성 파일 ---
+# --- OS Generated Files ---
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -49,20 +49,20 @@ Icon?
 hs_err_pid*
 replay_pid*
 
-# --- 기타 ---
+# --- Misc ---
 *.swp
 *.swo
 *~
 
-# --- 환경 설정 (개인 DB 정보 포함, 절대 커밋 X) ---
+# --- Environment Config (contains local DB info, never commit) ---
 src/main/resources/application.properties
 
-# --- 업로드 파일 ---
+# --- Upload Files ---
 uploads/
 
 # --- Claude ---
 .claude/
 
 
-#--- 파이썬 ----
+# --- Python ---
 import_toilets.py
