@@ -12,8 +12,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'M PLUS Rounded 1c', sans-serif;
-            background: #F0FAF7;
+            background: #F5F5F5;
             min-height: 100vh;
+            zoom: 0.9;
         }
 
         /* 헤더 */
@@ -32,6 +33,7 @@
         /* 페이지 타이틀 */
         .page-header {
             padding: 12px 24px 24px;
+            text-align: center;
         }
         .page-title {
             font-size: 24px;
@@ -318,14 +320,6 @@
 
 <!-- Header + Toast (共通フラグメント) -->
 <div th:replace="~{fragments/header :: headerAndToast}"></div>
-
-<!-- 뒤로가기 -->
-<a href="/" class="back-link">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="m15 18-6-6 6-6"></path>
-    </svg>
-    マップに戻る
-</a>
 
 <!-- 페이지 헤더 -->
 <div class="page-header">

@@ -4,9 +4,9 @@
    공통 Footer 스타일
    ============================================ */
 .site-footer {
-    background: #F8F8F8;
-    padding: 40px 32px 24px;
-    border-top: 1px solid #E0E0E0;
+    background: #F0FAF6;
+    padding: 24px 32px 0px;
+    border-top: 1px solid #E8E8E8;
     font-family: 'M PLUS Rounded 1c', sans-serif;
 }
 
@@ -110,11 +110,32 @@
 .site-footer .footer-bottom {
     max-width: 1200px;
     margin: 0 auto;
-    padding-top: 16px;
+    padding: 6px 0;
     border-top: 1px solid #E0E0E0;
     font-size: 12px;
     color: #999;
     text-align: center;
+}
+
+.site-footer .footer-bottom-links {
+    display: none; /* 기본적으로 숨김 - index.html에서만 표시 */
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.site-footer .footer-bottom-links a {
+    color: #777;
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.2s;
+}
+
+.site-footer .footer-bottom-links a:hover { color: #00C896; }
+
+.site-footer .footer-bottom-links .footer-divider {
+    color: #ccc;
+    font-size: 11px;
 }
 
 @media (max-width: 1024px) {
