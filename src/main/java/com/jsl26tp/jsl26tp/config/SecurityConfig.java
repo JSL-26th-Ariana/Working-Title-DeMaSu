@@ -88,7 +88,7 @@ public class SecurityConfig {
             // 로그아웃 설정
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/login?logout=true") // 로그아웃 후 ?logout=true 파라미터와 함께 로그인 페이지로 이동 (header.js에서 자동 모달 오픈 방지용)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
