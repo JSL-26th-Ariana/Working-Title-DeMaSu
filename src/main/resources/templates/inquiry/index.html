@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お問い合わせ - デマス</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,68 +18,97 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            zoom: 0.9;
         }
-        .header {
-            background: white;
-            padding: 12px 24px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .back-btn {
-            display: flex;
+        .back-link {
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: #666;
+            color: #555;
             text-decoration: none;
             font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: background 0.2s;
+            margin: 24px auto 0;
+            max-width: 680px;
+            width: 100%;
+            padding: 0 16px;
         }
-        .back-btn:hover { background: #F5F5F5; color: #333; }
-        .header-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1A1A1A;
-        }
+        .back-link:hover { color: #00C896; }
         .container {
             max-width: 680px;
-            margin: 32px auto;
-            padding: 0 16px 48px;
+            margin: 16px auto 48px;
+            padding: 0 16px;
             flex: 1;
             width: 100%;
         }
         .card {
             background: white;
             border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            margin-bottom: 24px;
+            padding: 36px 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            margin-bottom: 20px;
         }
-        .card-title {
-            font-size: 18px;
+        /* 페이지 헤더 */
+        .page-header {
+            padding: 12px 24px 24px;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 24px;
             font-weight: 700;
             color: #1A1A1A;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
-        .card-subtitle {
+        .page-subtitle {
             font-size: 13px;
             color: #888;
-            margin-bottom: 24px;
-            line-height: 1.6;
         }
+        /* 문의 타입 선택 */
+        .type-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .type-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .type-btn {
+            flex: 1;
+            padding: 14px 8px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .type-btn:hover { border-color: #00C896; color: #00C896; }
+        .type-btn.active {
+            border-color: #00C896;
+            background: #F0FAF6;
+            color: #00C896;
+        }
+        /* 폼 */
         .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: #333;
             margin-bottom: 8px;
+        }
+        .form-group label .required {
+            color: #E53E3E;
+            margin-left: 2px;
         }
         .form-group input,
         .form-group textarea {
@@ -88,16 +120,54 @@
             font-family: 'M PLUS Rounded 1c', sans-serif;
             transition: border-color 0.2s;
             resize: none;
+            outline: none;
+            color: #1A1A1A;
         }
         .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #00C896;
+        .form-group textarea:focus { border-color: #00C896; }
+        .form-group textarea { height: 150px; }
+        .textarea-wrapper { position: relative; }
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
         }
-        .form-group textarea { height: 140px; }
+        /* 안내 박스 */
+        .info-box {
+            background: #F0FAF6;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+        }
+        .info-box-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+        }
+        .info-box ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .info-box ul li {
+            font-size: 13px;
+            color: #555;
+            padding-left: 12px;
+            position: relative;
+        }
+        .info-box ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #00C896;
+        }
+        /* 제출 버튼 */
         .submit-btn {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             background: #00C896;
             color: white;
             border: none;
@@ -109,6 +179,7 @@
             transition: background 0.2s;
         }
         .submit-btn:hover { background: #00B385; }
+        /* 성공 메시지 */
         .success-msg {
             background: #E8F5F1;
             border: 1.5px solid #00C896;
@@ -121,83 +192,56 @@
             align-items: center;
             gap: 8px;
         }
-        /* 내 문의 내역 */
-        .inquiry-list { display: flex; flex-direction: column; gap: 12px; }
-        .inquiry-item {
-            border: 1.5px solid #E8E8E8;
-            border-radius: 12px;
-            padding: 16px;
-            transition: box-shadow 0.2s;
+        /* 하단 info 카드들 */
+        .bottom-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
-        .inquiry-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        .inquiry-header {
+        .info-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .info-card-icon {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
+            align-items: center;
+            margin-bottom: 12px;
         }
-        .inquiry-title {
-            font-size: 15px;
+        .info-card h4 {
+            font-size: 14px;
             font-weight: 700;
             color: #1A1A1A;
-            flex: 1;
+            margin-bottom: 6px;
         }
-        .status-badge {
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 700;
-            white-space: nowrap;
-            margin-left: 8px;
-        }
-        .status-waiting { background: #FFF3E0; color: #E65100; }
-        .status-answered { background: #E8F5F1; color: #007A5E; }
-        .inquiry-date {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 8px;
-        }
-        .inquiry-answer {
-            background: #F8F8F8;
-            border-radius: 8px;
-            padding: 10px 14px;
+        .info-card p {
             font-size: 13px;
-            color: #555;
-            margin-top: 10px;
+            color: #888;
             line-height: 1.6;
         }
-        .inquiry-answer-label {
-            font-size: 11px;
-            font-weight: 700;
+        .info-card a {
             color: #00C896;
-            margin-bottom: 4px;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-            font-size: 14px;
+            text-decoration: none;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
-<header class="header">
-    <a href="/" class="back-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m15 18-6-6 6-6"></path>
-        </svg>
-        マップに戻る
-    </a>
-    <span class="header-title">お問い合わせ</span>
-</header>
+<!-- 공통 헤더 -->
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
+
+<!-- 페이지 헤더 -->
+<div class="page-header">
+    <h1 class="page-title">お問い合わせ</h1>
+    <p class="page-subtitle">ご質問やご意見をお聞かせください</p>
+</div>
 
 <div class="container">
 
     <!-- 문의 작성 폼 -->
     <div class="card">
-        <h2 class="card-title">お問い合わせを送る</h2>
-        <p class="card-subtitle">ご不明な点やご要望がございましたら、お気軽にお問い合わせください。<br>通常2〜3営業日以内にご回答いたします。</p>
 
         <!-- 성공 메시지 -->
         <div class="success-msg" th:if="${param.success}">
@@ -208,49 +252,95 @@
         </div>
 
         <form action="/inquiry" method="post">
+            <!-- 문의 타입 -->
+            <div class="type-label">お問い合わせ種類</div>
+            <div class="type-buttons">
+                <button type="button" class="type-btn active" onclick="selectType(this, '一般')">
+                    <span style="font-size:22px;">💬</span>
+                    一般的なお問い合わせ
+                </button>
+                <button type="button" class="type-btn" onclick="selectType(this, 'バグ')">
+                    <span style="font-size:22px;">🐛</span>
+                    バグ報告
+                </button>
+                <button type="button" class="type-btn" onclick="selectType(this, '機能提案')">
+                    <span style="font-size:22px;">💡</span>
+                    機能提案
+                </button>
+            </div>
+            <input type="hidden" name="inquiryType" id="inquiryTypeInput" value="一般">
+
+            <!-- 이메일 -->
             <div class="form-group">
-                <label>件名</label>
+                <label>メールアドレス <span class="required">*</span></label>
+                <input type="email" name="email" placeholder="example@email.com" required>
+            </div>
+
+            <!-- 제목 -->
+            <div class="form-group">
+                <label>件名 <span class="required">*</span></label>
                 <input type="text" name="title" placeholder="お問い合わせの件名を入力してください" required>
             </div>
+
+            <!-- 내용 -->
             <div class="form-group">
-                <label>内容</label>
-                <textarea name="content" placeholder="お問い合わせの内容を詳しくご記入ください" required></textarea>
+                <label>お問い合わせ内容 <span class="required">*</span></label>
+                <div class="textarea-wrapper">
+                    <textarea name="content" id="contentArea" placeholder="詳細な内容をご記入ください" maxlength="500" oninput="updateCount()" required></textarea>
+                    <div class="char-count"><span id="charCount">0</span> / 500</div>
+                </div>
             </div>
+
+            <!-- 안내 박스 -->
+            <div class="info-box">
+                <div class="info-box-title">お問い合わせについて</div>
+                <ul>
+                    <li>通常、1〜2営業日以内にご返信いたします</li>
+                    <li>緊急の場合は、件名に「緊急」と記載してください</li>
+                    <li>個人情報は適切に管理いたします</li>
+                </ul>
+            </div>
+
             <button type="submit" class="submit-btn">送信する</button>
         </form>
     </div>
 
-    <!-- 내 문의 내역 -->
-    <div class="card">
-        <h2 class="card-title" style="margin-bottom:16px;">お問い合わせ履歴</h2>
-
-        <div class="inquiry-list" th:if="${inquiries != null and !inquiries.isEmpty()}">
-            <div class="inquiry-item" th:each="inquiry : ${inquiries}">
-                <div class="inquiry-header">
-                    <span class="inquiry-title" th:text="${inquiry.title}">タイトル</span>
-                    <span class="status-badge status-answered" th:if="${inquiry.status == 'ANSWERED'}">回答済み</span>
-                    <span class="status-badge status-waiting" th:if="${inquiry.status != 'ANSWERED'}">回答待ち</span>
-                </div>
-                <div class="inquiry-date" th:text="${#temporals.format(inquiry.createdAt, 'yyyy年MM月dd日')}">2026年01月01日</div>
-                <div class="inquiry-answer" th:if="${inquiry.answer != null}">
-                    <div class="inquiry-answer-label">運営からの回答</div>
-                    <span th:text="${inquiry.answer}">回答内容</span>
-                </div>
+    <!-- 하단 카드 -->
+    <div class="bottom-cards">
+        <div class="info-card">
+            <div class="info-card-icon">
+                <span style="font-size:20px;">📧</span>
             </div>
+            <h4>メールでのお問い合わせ</h4>
+            <p>直接メールでもお問い合わせいただけます</p>
+            <a href="mailto:support@toiletmap.com">support@toiletmap.com</a>
         </div>
-
-        <div class="empty-state" th:if="${inquiries == null or inquiries.isEmpty()}">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1.5" style="margin-bottom:12px;">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            <p>まだお問い合わせがありません</p>
+        <div class="info-card">
+            <div class="info-card-icon">
+                <span style="font-size:20px;">🕐</span>
+            </div>
+            <h4>サポート時間</h4>
+            <p>平日 9:00 - 18:00<br>土日祝日は翌営業日に対応いたします</p>
         </div>
     </div>
 
 </div>
 
-<!-- Footer -->
+<!-- 공통 푸터 -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script th:src="@{/js/header.js(v=1)}"></script>
+<script>
+    function selectType(btn, type) {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('inquiryTypeInput').value = type;
+    }
+    function updateCount() {
+        var len = document.getElementById('contentArea').value.length;
+        document.getElementById('charCount').textContent = len;
+    }
+</script>
 
 </body>
 </html>

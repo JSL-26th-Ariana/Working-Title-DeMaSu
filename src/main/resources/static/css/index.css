@@ -14,6 +14,7 @@ body {
     flex-direction: column;
 }
 
+
 /* Header */
 .header {
     background: white;
@@ -109,13 +110,21 @@ body {
     background: #00B385;
 }
 
-/* Main Container */
+/* Main Container — 헤더(60px) 제외 뷰포트 꽉 채움, 스크롤 내리면 푸터 등장 */
 .main-container {
     display: flex;
-    flex: 1;
+    height: calc(100vh - 60px);
     overflow: hidden;
-    height: calc(100vh - 53px);
+    position: relative;
+    z-index: 1;
+    /* 하단 그림자 → 지도가 푸터 위에 떠있는 레이어감 */
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
 }
+
+/* ===== 지도 페이지 전용 미니멀 푸터 (index.css에서만 적용) ===== */
+
+/* 3열 콘텐츠 완전 숨김 */
+/* 지도 페이지 전용 푸터 - index.html <style> 태그에서 관리 */
 
 /* Sidebar */
 .sidebar {
@@ -130,17 +139,17 @@ body {
 .nearby-section {
     background: linear-gradient(135deg, #00C896, #00A87D);
     color: white;
-    padding: 20px 20px 16px;
+    padding: 14px 20px 10px;
 }
 
 .nearby-title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .nearby-subtitle {
-    font-size: 13px;
+    font-size: 12px;
     opacity: 0.9;
 }
 
@@ -253,7 +262,7 @@ body {
 
 /* Sidebar Search */
 .sidebar-search {
-    padding: 16px;
+    padding: 10px 16px;
     border-bottom: 1px solid #E8E8E8;
 }
 
@@ -261,11 +270,11 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 14px;
+    padding: 8px 14px;
     background: #F5F5F5;
     border-radius: 8px;
     border: 1px solid #E8E8E8;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     transition: all 0.2s;
 }
 
@@ -543,10 +552,10 @@ body {
 .toilet-card {
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: 12px 14px;
     border: 1px solid #E8E8E8;
     border-radius: 12px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     cursor: pointer;
     transition: all 0.2s;
     background: white;
@@ -562,7 +571,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .toilet-card-name {
@@ -586,14 +595,14 @@ body {
 .toilet-card-address {
     font-size: 12px;
     color: #888;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .toilet-card-meta {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     font-size: 12px;
 }
 
@@ -629,7 +638,7 @@ body {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 .toilet-card-tags span {
@@ -646,7 +655,7 @@ body {
     display: flex;
     align-items: center;
     gap: 4px;
-    padding-top: 8px;
+    padding-top: 6px;
     border-top: 1px solid #F0F0F0;
 }
 
