@@ -4,12 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>トイレマップ - デマス</title>
-    <link rel="stylesheet" href="/css/index.css?v=2">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/index.css?v=5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* zoom: 0.9 보정 - 화면 꽉 채우기 */
+        body { height: calc(100vh / 0.9) !important; overflow: hidden !important; }
+        .main-container { height: calc(100vh / 0.9 - 66px) !important; }
+
+        /* 지도 페이지 전용 - 구글맵스타일 오버레이 푸터 */
+        .site-footer .footer-content { display: none !important; }
+        .site-footer {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 50 !important;
+            background: rgba(245,245,245,0.88) !important;
+            backdrop-filter: blur(4px) !important;
+            border: none !important;
+            border-top: 1px solid rgba(0,0,0,0.06) !important;
+            padding: 0 !important;
+        }
+        /* index 전용 푸터: 왼쪽 copyright, 오른쪽 링크 */
+        .site-footer .footer-bottom {
+            max-width: 100% !important;
+            border-top: none !important;
+            padding: 4px 20px !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            font-size: 11px !important;
+            color: #666 !important;
+        }
+        .site-footer .footer-bottom::before { display: none !important; }
+        .site-footer .footer-bottom-links {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+        .site-footer .footer-bottom-links a {
+            font-size: 11px !important;
+            color: #666 !important;
+            text-decoration: none !important;
+            white-space: nowrap !important;
+        }
+        .site-footer .footer-bottom-links a:hover { color: #00C896 !important; }
+        .site-footer .footer-bottom-links .footer-divider { color: #bbb !important; font-size: 10px !important; }
+    </style>
 </head>
-<body>
+<body style="zoom: 0.9;">
 <!-- Header + Toast (共通フラグメント) -->
 <div th:replace="~{fragments/header :: headerAndToast}"></div>
 
