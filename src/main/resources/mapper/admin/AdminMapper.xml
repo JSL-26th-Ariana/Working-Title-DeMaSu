@@ -278,6 +278,8 @@
         FROM toilets t
         LEFT JOIN users u ON t.by_user_id = u.id
         WHERE t.deleted_at IS NULL
+        /* 사용자 제보 화장실만 표시 (source='USER') — 공공API 데이터 제외 */
+        AND t.source = 'USER'
         <if test="status != null and status != ''">
             AND t.status = #{status}
         </if>
@@ -287,11 +289,13 @@
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 화장실 총 건수 (deleted_at IS NULL 필터) -->
+    <!-- 화장실 총 건수 (deleted_at IS NULL, source='USER' 필터) -->
     <select id="countToilets" resultType="int">
         SELECT COUNT(*)
         FROM toilets t
         WHERE t.deleted_at IS NULL
+        /* 사용자 제보 화장실만 카운트 */
+        AND t.source = 'USER'
         <if test="status != null and status != ''">
             AND t.status = #{status}
         </if>

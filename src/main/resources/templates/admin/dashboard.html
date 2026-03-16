@@ -300,6 +300,36 @@
         .coming-soon svg { margin-bottom: 16px; }
         .coming-soon h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #CCC; }
         .coming-soon p { font-size: 13px; }
+
+        /* ── Approve Button (통보/화장실 승인용) ── */
+        .btn-approve {
+            padding: 5px 12px;
+            border: 1.5px solid #00C896;
+            color: #00C896;
+            background: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            transition: all 0.15s;
+        }
+        .btn-approve:hover { background: #00C896; color: white; }
+
+        /* ── 문의 답변 인라인 폼 ── */
+        .answer-form { display: flex; flex-direction: column; gap: 4px; min-width: 180px; }
+        .answer-textarea {
+            padding: 6px 10px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 6px;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 50px;
+            outline: none;
+        }
+        .answer-textarea:focus { border-color: #00C896; }
+        .answer-text { font-size: 12px; color: #555; max-width: 220px; word-break: break-all; white-space: pre-line; }
     </style>
 </head>
 <body>
@@ -414,42 +444,79 @@
     <!-- 通報管理 -->
     <div id="panel-reports" class="tab-panel">
         <div class="card">
-            <div class="coming-soon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#DDD" stroke-width="1.5">
-                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-                <h3>通報管理</h3>
-                <p>準備中です</p>
+            <div class="card-header">
+                <span class="card-title">通報一覧</span>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>申告者</th>
+                        <th>対象</th>
+                        <th>対象内容</th>
+                        <th>申告理由</th>
+                        <th>ステータス</th>
+                        <th>申告日</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody">
+                    <tr><td colspan="8"><div class="empty-state">読み込み中...</div></td></tr>
+                </tbody>
+            </table>
+            <div class="pagination" id="reportPagination"></div>
         </div>
     </div>
 
     <!-- トイレ承認 -->
     <div id="panel-toilets" class="tab-panel">
         <div class="card">
-            <div class="coming-soon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#DDD" stroke-width="1.5">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <h3>トイレ承認</h3>
-                <p>準備中です</p>
+            <div class="card-header">
+                <span class="card-title">トイレ承認一覧</span>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>トイレ名</th>
+                        <th>住所</th>
+                        <th>提報者</th>
+                        <th>ステータス</th>
+                        <th>登録日</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="toiletTableBody">
+                    <tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>
+                </tbody>
+            </table>
+            <div class="pagination" id="toiletPagination"></div>
         </div>
     </div>
 
     <!-- お問い合わせ -->
     <div id="panel-inquiries" class="tab-panel">
         <div class="card">
-            <div class="coming-soon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#DDD" stroke-width="1.5">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-                <h3>お問い合わせ</h3>
-                <p>準備中です</p>
+            <div class="card-header">
+                <span class="card-title">お問い合わせ一覧</span>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>作成者</th>
+                        <th>メール</th>
+                        <th>タイトル</th>
+                        <th>ステータス</th>
+                        <th>登録日</th>
+                        <th>回答</th>
+                    </tr>
+                </thead>
+                <tbody id="inquiryTableBody">
+                    <tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>
+                </tbody>
+            </table>
+            <div class="pagination" id="inquiryPagination"></div>
         </div>
     </div>
 
@@ -465,7 +532,10 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('panel-' + name).classList.add('active');
         btn.classList.add('active');
-        if (name === 'users') loadUsers(0, document.getElementById('userSearchInput').value);
+        if (name === 'users')     loadUsers(0, document.getElementById('userSearchInput').value);
+        else if (name === 'reports')   loadReports(0);
+        else if (name === 'toilets')   loadToilets(0);
+        else if (name === 'inquiries') loadInquiries(0);
     }
 
     // ── Admin dropdown ──
@@ -588,7 +658,233 @@
             .catch(() => alert('エラーが発生しました'));
     }
 
+    // =====================================================================
+    // ── 通報管理 ──
+    // =====================================================================
+    let reportCurrentPage = 0;
+
+    function loadReports(page) {
+        reportCurrentPage = page;
+        const tbody = document.getElementById('reportTableBody');
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">読み込み中...</div></td></tr>';
+
+        fetch('/api/admin/reports?' + new URLSearchParams({ page }))
+            .then(r => r.json())
+            .then(res => {
+                if (!res.data || res.data.content.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">データがありません</div></td></tr>';
+                    document.getElementById('reportPagination').innerHTML = '';
+                    return;
+                }
+                renderReportTable(res.data.content);
+                renderPagination(res.data, 'reportPagination', (p) => loadReports(p));
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">読み込みに失敗しました</div></td></tr>';
+            });
+    }
+
+    function renderReportTable(reports) {
+        const tbody = document.getElementById('reportTableBody');
+        tbody.innerHTML = reports.map(r => {
+            // 상태 배지: PENDING=주황, PROCESSED=초록, DISMISSED=빨강
+            const statusBadge = r.status === 'PENDING'
+                ? '<span class="badge badge-suspended">処理待ち</span>'
+                : r.status === 'PROCESSED'
+                    ? '<span class="badge badge-active">処理済み</span>'
+                    : '<span class="badge badge-deleted">却下済み</span>';
+
+            const date = r.createdAt ? r.createdAt.substring(0, 10) : '-';
+            const targetType = r.targetType === 'REVIEW' ? 'レビュー' : 'トイレ';
+            // PENDING일 때만 버튼 활성화
+            const disabled = r.status !== 'PENDING' ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : '';
+
+            return `<tr>
+                <td class="td-id">${r.id}</td>
+                <td class="td-username">${r.reporterNickname || '-'}</td>
+                <td>${targetType}</td>
+                <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.targetName || '-'}</td>
+                <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.reason || '-'}</td>
+                <td>${statusBadge}</td>
+                <td>${date}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn-approve" onclick="resolveReport(${r.id})" ${disabled}>承認</button>
+                        <button class="btn-delete" onclick="dismissReport(${r.id})" ${disabled}>却下</button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // 신고 승인: 대상 콘텐츠 조치 + status="PROCESSED"
+    function resolveReport(id) {
+        if (!confirm('この申告を承認しますか？対象コンテンツに措置が取られます。')) return;
+        fetch(`/api/admin/reports/${id}/resolve`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadReports(reportCurrentPage))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
+    // 신고 기각: status="DISMISSED"
+    function dismissReport(id) {
+        if (!confirm('この申告を却下しますか？')) return;
+        fetch(`/api/admin/reports/${id}/dismiss`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadReports(reportCurrentPage))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
+    // =====================================================================
+    // ── トイレ承認 ──
+    // =====================================================================
+    let toiletCurrentPage = 0;
+
+    function loadToilets(page) {
+        toiletCurrentPage = page;
+        const tbody = document.getElementById('toiletTableBody');
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
+
+        fetch('/api/admin/toilets?' + new URLSearchParams({ page }))
+            .then(r => r.json())
+            .then(res => {
+                if (!res.data || res.data.content.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">データがありません</div></td></tr>';
+                    document.getElementById('toiletPagination').innerHTML = '';
+                    return;
+                }
+                renderToiletTable(res.data.content);
+                renderPagination(res.data, 'toiletPagination', (p) => loadToilets(p));
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込みに失敗しました</div></td></tr>';
+            });
+    }
+
+    function renderToiletTable(toilets) {
+        const tbody = document.getElementById('toiletTableBody');
+        tbody.innerHTML = toilets.map(t => {
+            // 상태 배지: PENDING=주황, APPROVED=초록, REJECTED=빨강
+            const statusBadge = t.status === 'PENDING'
+                ? '<span class="badge badge-suspended">承認待ち</span>'
+                : t.status === 'APPROVED'
+                    ? '<span class="badge badge-active">承認済み</span>'
+                    : '<span class="badge badge-deleted">却下済み</span>';
+
+            const date = t.createdAt ? t.createdAt.substring(0, 10) : '-';
+            // PENDING일 때만 버튼 활성화
+            const disabled = t.status !== 'PENDING' ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : '';
+
+            return `<tr>
+                <td class="td-id">${t.id}</td>
+                <td class="td-username">${t.name || '-'}</td>
+                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t.address || '-'}</td>
+                <td>${t.byUserNickname || '-'}</td>
+                <td>${statusBadge}</td>
+                <td>${date}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn-approve" onclick="approveToilet(${t.id})" ${disabled}>承認</button>
+                        <button class="btn-delete" onclick="rejectToilet(${t.id})" ${disabled}>却下</button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    // 화장실 승인: status="APPROVED"
+    function approveToilet(id) {
+        if (!confirm('このトイレを承認しますか？地図に表示されます。')) return;
+        fetch(`/api/admin/toilets/${id}/approve`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadToilets(toiletCurrentPage))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
+    // 화장실 반려: status="REJECTED"
+    function rejectToilet(id) {
+        if (!confirm('このトイレを却下しますか？')) return;
+        fetch(`/api/admin/toilets/${id}/reject`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadToilets(toiletCurrentPage))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
+    // =====================================================================
+    // ── お問い合わせ ──
+    // =====================================================================
+    let inquiryCurrentPage = 0;
+    let currentAdminId = null; // 현재 로그인한 관리자 ID (답변 등록 시 필요)
+
+    function loadInquiries(page) {
+        inquiryCurrentPage = page;
+        const tbody = document.getElementById('inquiryTableBody');
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
+
+        fetch('/api/admin/inquiries?' + new URLSearchParams({ page }))
+            .then(r => r.json())
+            .then(res => {
+                if (!res.data || res.data.content.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">データがありません</div></td></tr>';
+                    document.getElementById('inquiryPagination').innerHTML = '';
+                    return;
+                }
+                renderInquiryTable(res.data.content);
+                renderPagination(res.data, 'inquiryPagination', (p) => loadInquiries(p));
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込みに失敗しました</div></td></tr>';
+            });
+    }
+
+    function renderInquiryTable(inquiries) {
+        const tbody = document.getElementById('inquiryTableBody');
+        tbody.innerHTML = inquiries.map(q => {
+            // 상태 배지: WAITING=주황, ANSWERED=초록
+            const statusBadge = q.status === 'WAITING'
+                ? '<span class="badge badge-suspended">未回答</span>'
+                : '<span class="badge badge-active">回答済み</span>';
+
+            const date = q.createdAt ? q.createdAt.substring(0, 10) : '-';
+
+            // WAITING: 답변 입력 폼 / ANSWERED: 답변 내용 표시
+            const answerCell = q.status === 'WAITING'
+                ? `<div class="answer-form">
+                       <textarea class="answer-textarea" id="answer-${q.id}" placeholder="回答を入力..."></textarea>
+                       <button class="btn-approve" onclick="answerInquiry(${q.id})">登録</button>
+                   </div>`
+                : `<span class="answer-text">${q.answer || '-'}</span>`;
+
+            return `<tr>
+                <td class="td-id">${q.id}</td>
+                <td class="td-username">${q.writerNickname || '-'}</td>
+                <td>${q.writerEmail || '-'}</td>
+                <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${q.title || '-'}</td>
+                <td>${statusBadge}</td>
+                <td>${date}</td>
+                <td>${answerCell}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    // 문의 답변 등록: POST /api/admin/inquiries/{id}/answer
+    function answerInquiry(id) {
+        const textarea = document.getElementById('answer-' + id);
+        const answer = textarea ? textarea.value.trim() : '';
+        if (!answer) { alert('回答を入力してください。'); return; }
+        if (!currentAdminId) { alert('管理者情報を取得できませんでした。ページを再読み込みしてください。'); return; }
+        const params = new URLSearchParams({ answer, adminId: currentAdminId });
+        fetch(`/api/admin/inquiries/${id}/answer?${params}`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadInquiries(inquiryCurrentPage))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
     // ── Init ──
+    // 현재 관리자 ID 가져오기 (문의 답변 등록 시 사용)
+    fetch('/api/admin/me')
+        .then(r => r.json())
+        .then(res => { if (res.data) currentAdminId = res.data.id; });
     loadUsers(0, '');
 </script>
 </body>

@@ -3,9 +3,13 @@ package com.jsl26tp.jsl26tp.admin.controller;
 import com.jsl26tp.jsl26tp.common.ApiResponse;
 import com.jsl26tp.jsl26tp.admin.domain.*;
 import com.jsl26tp.jsl26tp.admin.service.AdminService;
+import com.jsl26tp.jsl26tp.config.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 管理者 Controller (FR-SCR004)
@@ -63,6 +67,21 @@ public class AdminController {
     @GetMapping("/admin/inquiries")
     public String inquiriesPage() {
         return "admin/inquiries";
+    }
+
+    // =====================================================================
+    // 0. 현재 로그인한 관리자 정보 (문의 답변 등록 시 adminId 필요)
+    // =====================================================================
+
+    /** 현재 로그인한 관리자 ID/닉네임 반환 → dashboard.html JS에서 answerInquiry에 사용 */
+    @GetMapping("/api/admin/me")
+    @ResponseBody
+    public ApiResponse<Map<String, Object>> getCurrentAdmin(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ApiResponse.ok(Map.of(
+                "id", userDetails.getId(),
+                "nickname", userDetails.getNickname()
+        ));
     }
 
     // =====================================================================
