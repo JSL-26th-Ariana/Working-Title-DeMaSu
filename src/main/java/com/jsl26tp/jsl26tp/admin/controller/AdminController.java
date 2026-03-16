@@ -7,6 +7,7 @@ import com.jsl26tp.jsl26tp.config.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -63,10 +64,33 @@ public class AdminController {
         return "admin/toilets";
     }
 
+    /**
+     * 화장실 상세 페이지 → templates/admin/toilet-detail.html
+     * AdminToilet 객체를 모델에 담아서 Thymeleaf로 렌더링
+     */
+    @GetMapping("/admin/toilets/{id}")
+    public String toiletDetailPage(@PathVariable Long id, Model model) {
+        model.addAttribute("toilet", adminService.getToiletById(id));
+        return "admin/toilet-detail";
+    }
+
     /** 문의 관리 페이지 → templates/admin/inquiries.html */
     @GetMapping("/admin/inquiries")
     public String inquiriesPage() {
         return "admin/inquiries";
+    }
+
+    /**
+     * 문의 상세 페이지 → templates/admin/inquiry-detail.html
+     * AdminInquiry 객체 + 현재 관리자 ID를 모델에 담아서 Thymeleaf로 렌더링
+     * adminId는 답변 등록 시 JS에서 사용 (th:inline="javascript" 로 전달)
+     */
+    @GetMapping("/admin/inquiries/{id}")
+    public String inquiryDetailPage(@PathVariable Long id, Model model,
+                                    @AuthenticationPrincipal CustomUserDetails userDetails) {
+        model.addAttribute("inquiry", adminService.getInquiryById(id));
+        model.addAttribute("adminId", userDetails.getId());
+        return "admin/inquiry-detail";
     }
 
     // =====================================================================

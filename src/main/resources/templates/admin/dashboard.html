@@ -316,20 +316,22 @@
         }
         .btn-approve:hover { background: #00C896; color: white; }
 
-        /* ── 문의 답변 인라인 폼 ── */
-        .answer-form { display: flex; flex-direction: column; gap: 4px; min-width: 180px; }
-        .answer-textarea {
-            padding: 6px 10px;
-            border: 1.5px solid #E0E0E0;
+        /* ── 詳細ボタン (상세 페이지 이동 링크) ── */
+        .btn-detail {
+            padding: 5px 12px;
+            border: 1.5px solid #00C896;
+            color: #00C896;
+            background: none;
             border-radius: 6px;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
             font-size: 12px;
-            resize: vertical;
-            min-height: 50px;
-            outline: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: inline-block;
         }
-        .answer-textarea:focus { border-color: #00C896; }
-        .answer-text { font-size: 12px; color: #555; max-width: 220px; word-break: break-all; white-space: pre-line; }
+        .btn-detail:hover { background: #00C896; color: white; }
     </style>
 </head>
 <body>
@@ -483,7 +485,7 @@
                         <th>提報者</th>
                         <th>ステータス</th>
                         <th>登録日</th>
-                        <th>操作</th>
+                        <th>詳細</th>
                     </tr>
                 </thead>
                 <tbody id="toiletTableBody">
@@ -509,7 +511,7 @@
                         <th>タイトル</th>
                         <th>ステータス</th>
                         <th>登録日</th>
-                        <th>回答</th>
+                        <th>詳細</th>
                     </tr>
                 </thead>
                 <tbody id="inquiryTableBody">
@@ -772,9 +774,8 @@
                     : '<span class="badge badge-deleted">却下済み</span>';
 
             const date = t.createdAt ? t.createdAt.substring(0, 10) : '-';
-            // PENDING일 때만 버튼 활성화
-            const disabled = t.status !== 'PENDING' ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : '';
 
+            // 詳細ボタン → /admin/toilets/{id} 상세 페이지로 이동 (편의시설 확인 후 承認/却下)
             return `<tr>
                 <td class="td-id">${t.id}</td>
                 <td class="td-username">${t.name || '-'}</td>
@@ -782,12 +783,7 @@
                 <td>${t.byUserNickname || '-'}</td>
                 <td>${statusBadge}</td>
                 <td>${date}</td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn-approve" onclick="approveToilet(${t.id})" ${disabled}>承認</button>
-                        <button class="btn-delete" onclick="rejectToilet(${t.id})" ${disabled}>却下</button>
-                    </div>
-                </td>
+                <td><a href="/admin/toilets/${t.id}" class="btn-detail">詳細</a></td>
             </tr>`;
         }).join('');
     }
@@ -814,7 +810,6 @@
     // ── お問い合わせ ──
     // =====================================================================
     let inquiryCurrentPage = 0;
-    let currentAdminId = null; // 현재 로그인한 관리자 ID (답변 등록 시 필요)
 
     function loadInquiries(page) {
         inquiryCurrentPage = page;
@@ -847,14 +842,7 @@
 
             const date = q.createdAt ? q.createdAt.substring(0, 10) : '-';
 
-            // WAITING: 답변 입력 폼 / ANSWERED: 답변 내용 표시
-            const answerCell = q.status === 'WAITING'
-                ? `<div class="answer-form">
-                       <textarea class="answer-textarea" id="answer-${q.id}" placeholder="回答を入力..."></textarea>
-                       <button class="btn-approve" onclick="answerInquiry(${q.id})">登録</button>
-                   </div>`
-                : `<span class="answer-text">${q.answer || '-'}</span>`;
-
+            // 詳細ボタン → /admin/inquiries/{id} 상세 페이지로 이동 (본문 확인 + 답변 작성)
             return `<tr>
                 <td class="td-id">${q.id}</td>
                 <td class="td-username">${q.writerNickname || '-'}</td>
@@ -862,29 +850,12 @@
                 <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${q.title || '-'}</td>
                 <td>${statusBadge}</td>
                 <td>${date}</td>
-                <td>${answerCell}</td>
+                <td><a href="/admin/inquiries/${q.id}" class="btn-detail">詳細</a></td>
             </tr>`;
         }).join('');
     }
 
-    // 문의 답변 등록: POST /api/admin/inquiries/{id}/answer
-    function answerInquiry(id) {
-        const textarea = document.getElementById('answer-' + id);
-        const answer = textarea ? textarea.value.trim() : '';
-        if (!answer) { alert('回答を入力してください。'); return; }
-        if (!currentAdminId) { alert('管理者情報を取得できませんでした。ページを再読み込みしてください。'); return; }
-        const params = new URLSearchParams({ answer, adminId: currentAdminId });
-        fetch(`/api/admin/inquiries/${id}/answer?${params}`, { method: 'POST' })
-            .then(r => r.json())
-            .then(() => loadInquiries(inquiryCurrentPage))
-            .catch(() => alert('エラーが発生しました'));
-    }
-
     // ── Init ──
-    // 현재 관리자 ID 가져오기 (문의 답변 등록 시 사용)
-    fetch('/api/admin/me')
-        .then(r => r.json())
-        .then(res => { if (res.data) currentAdminId = res.data.id; });
     loadUsers(0, '');
 </script>
 </body>
