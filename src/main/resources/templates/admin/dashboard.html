@@ -532,8 +532,19 @@
                 <td>${statusBadge}</td>
                 <td>
                     <div class="action-btns">
-                        <button class="btn-suspend" onclick="suspendUser(${u.id})">停止</button>
-                        <button class="btn-delete" onclick="deleteUser(${u.id})">削除</button>
+                        ${
+                            // DELETED 상태: 두 버튼 모두 비활성화
+                            u.status === 'DELETED'
+                                ? `<button class="btn-suspend" disabled style="opacity:0.35;cursor:not-allowed;">停止</button>
+                                   <button class="btn-delete" disabled style="opacity:0.35;cursor:not-allowed;">削除</button>`
+                            // SUSPENDED 상태: 정지 버튼 대신 해제 버튼 표시
+                            : u.status === 'SUSPENDED'
+                                ? `<button class="btn-suspend" onclick="unsuspendUser(${u.id})">解除</button>
+                                   <button class="btn-delete" onclick="deleteUser(${u.id})">削除</button>`
+                            // ACTIVE 상태: 정상 버튼
+                            : `<button class="btn-suspend" onclick="suspendUser(${u.id})">停止</button>
+                               <button class="btn-delete" onclick="deleteUser(${u.id})">削除</button>`
+                        }
                     </div>
                 </td>
             </tr>`;
@@ -563,6 +574,15 @@
     function deleteUser(id) {
         if (!confirm('このユーザーを削除しますか？この操作は元に戻せません。')) return;
         fetch(`/api/admin/users/${id}/delete`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadUsers(userCurrentPage, userSearchKeyword))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
+    // 정지 해제: SUSPENDED → ACTIVE 로 변경 (POST /api/admin/users/{id}/unsuspend)
+    function unsuspendUser(id) {
+        if (!confirm('このユーザーの停止を解除しますか？')) return;
+        fetch(`/api/admin/users/${id}/unsuspend`, { method: 'POST' })
             .then(r => r.json())
             .then(() => loadUsers(userCurrentPage, userSearchKeyword))
             .catch(() => alert('エラーが発生しました'));
