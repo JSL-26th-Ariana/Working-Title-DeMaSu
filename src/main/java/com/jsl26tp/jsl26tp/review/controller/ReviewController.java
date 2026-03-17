@@ -71,18 +71,39 @@ public class ReviewController {
     }
 
     /*
+     * 리뷰 수정 페이지 이동
+     */
+    @GetMapping("/edit/{id}")
+    public String editPage(@PathVariable("id") Long id,
+                           @AuthenticationPrincipal CustomUserDetails userDetails,
+                           Model model) {
+
+        Review review = reviewService.getReviewDetail(id);
+
+        if (!review.getUserId().equals(userDetails.getId())) {
+            return "redirect:/mypage/reviews";
+        }
+
+        Toilet toilet = toiletService.getDetail(review.getToiletId(), null);
+
+        model.addAttribute("review", review);
+        model.addAttribute("toilet", toilet);
+
+        return "review/edit";
+    }
+
+    /*
      * 리뷰 수정
      * http://localhost:8090/review/api/update
      */
     @PostMapping("/api/update")
-    @ResponseBody
-    public ApiResponse<String> updateReview(
+    public String updateReview(
             @ModelAttribute Review review,
             @RequestParam(value = "files", required = false) List<MultipartFile> files) {
 
         reviewService.updateReview(review, files);
 
-        return ApiResponse.ok("OK");
+        return "redirect:/mypage/reviews";
     }
 
     /*
