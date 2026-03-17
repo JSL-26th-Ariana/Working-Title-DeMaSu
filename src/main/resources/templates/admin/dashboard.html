@@ -494,11 +494,10 @@
                         <th>ステータス</th>
                         <th>登録日</th>
                         <th>詳細</th>
-                        <th>削除</th>
                     </tr>
                 </thead>
                 <tbody id="toiletTableBody">
-                    <tr><td colspan="8"><div class="empty-state">読み込み中...</div></td></tr>
+                    <tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>
                 </tbody>
             </table>
             <div class="pagination" id="toiletPagination"></div>
@@ -812,7 +811,6 @@
             const date = t.createdAt ? t.createdAt.substring(0, 10) : '-';
 
             // 詳細ボタン → /admin/toilets/{id} 상세 페이지로 이동 (편의시설 확인 후 承認/却下)
-            // 削除ボタン → DELETE /api/admin/toilets/{id} 소프트 삭제
             return `<tr>
                 <td class="td-id">${t.id}</td>
                 <td class="td-username">${t.name || '-'}</td>
@@ -821,7 +819,6 @@
                 <td>${statusBadge}</td>
                 <td>${date}</td>
                 <td><a href="/admin/toilets/${t.id}" class="btn-detail">詳細</a></td>
-                <td><button class="btn-delete" onclick="deleteToilet(${t.id})">削除</button></td>
             </tr>`;
         }).join('');
     }
@@ -839,15 +836,6 @@
     function rejectToilet(id) {
         if (!confirm('このトイレを却下しますか？')) return;
         fetch(`/api/admin/toilets/${id}/reject`, { method: 'POST' })
-            .then(r => r.json())
-            .then(() => loadToilets(toiletCurrentPage))
-            .catch(() => alert('エラーが発生しました'));
-    }
-
-    // 화장실 삭제: deleted_at = NOW() 소프트 삭제 (DELETE /api/admin/toilets/{id})
-    function deleteToilet(id) {
-        if (!confirm('このトイレを削除しますか？この操作は元に戻せません。')) return;
-        fetch(`/api/admin/toilets/${id}`, { method: 'DELETE' })
             .then(r => r.json())
             .then(() => loadToilets(toiletCurrentPage))
             .catch(() => alert('エラーが発生しました'));

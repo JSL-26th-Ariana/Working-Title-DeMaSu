@@ -262,6 +262,25 @@ public class AdminService {
         adminMapper.answerInquiry(id, answer, adminId);
     }
 
+    /**
+     * 화장실 정보 수정 (수정 제안 승인 시 관리자가 직접 편집한 값 저장)
+     *
+     * 처리 흐름:
+     * 1. 화장실 존재 확인 (없으면 TOILET_NOT_FOUND)
+     * 2. toilets 테이블 UPDATE (name, address, 좌표, 운영시간, 설비 등)
+     * 3. 영향행 0이면 이미 삭제된 화장실 → BAD_REQUEST
+     *
+     * @param id  수정 대상 화장실 ID
+     * @param req 관리자가 편집한 수정 내용 DTO
+     */
+    @Transactional
+    public void updateToilet(Long id, ToiletUpdateRequest req) {
+        getToiletById(id); // 존재 확인 (없으면 TOILET_NOT_FOUND)
+        if (adminMapper.updateToilet(id, req) == 0) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST);
+        }
+    }
+
     // =====================================================================
     // 5. 수정 제안 관리
     // ToiletEditRequestMapper를 주입해서 사용 (해당 파일 수정 없음)

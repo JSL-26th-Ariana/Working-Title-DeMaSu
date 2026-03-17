@@ -5,6 +5,7 @@ import com.jsl26tp.jsl26tp.admin.domain.*;
 import com.jsl26tp.jsl26tp.admin.service.AdminService;
 import com.jsl26tp.jsl26tp.config.CustomUserDetails;
 import com.jsl26tp.jsl26tp.toilet.domain.ToiletEditRequest;
+import com.jsl26tp.jsl26tp.admin.domain.ToiletUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -232,6 +233,21 @@ public class AdminController {
         return ApiResponse.ok();
     }
 
+    /**
+     * 화장실 정보 수정 (수정 제안 승인 시 관리자가 직접 편집한 값 저장)
+     * PUT /api/admin/toilets/{id}
+     * - 요청 바디: ToiletUpdateRequest (JSON)
+     * - 수정 제안 상태 변경은 별도 API(/api/admin/edit-requests/{id}/approve)로 처리
+     */
+    @PutMapping("/api/admin/toilets/{id}")
+    @ResponseBody
+    public ApiResponse<Void> updateToilet(
+            @PathVariable Long id,
+            @RequestBody ToiletUpdateRequest req) {
+        adminService.updateToilet(id, req);
+        return ApiResponse.ok();
+    }
+
     // =====================================================================
     // 4. 문의 관리 API (FR-SCR004-5)
     // =====================================================================
@@ -274,8 +290,15 @@ public class AdminController {
     public String editRequestDetailPage(@PathVariable Long id, Model model) {
         ToiletEditRequest req = adminService.getEditRequestById(id);
         model.addAttribute("editRequest", req);
-        // 해당 화장실의 현재 정보도 함께 전달 (내용 비교용)
-        model.addAttribute("toilet", adminService.getToiletById(req.getToiletId()));
+        // 화장실이 삭제됐거나 존재하지 않으면 null + 삭제 플래그 전달
+        // (소프트 삭제 시 findToiletById는 deleted_at IS NULL 필터로 null 반환)
+        try {
+            model.addAttribute("toilet", adminService.getToiletById(req.getToiletId()));
+            model.addAttribute("toiletDeleted", false);
+        } catch (com.jsl26tp.jsl26tp.common.BusinessException e) {
+            model.addAttribute("toilet", null);
+            model.addAttribute("toiletDeleted", true);
+        }
         return "admin/edit-request-detail";
     }
 
