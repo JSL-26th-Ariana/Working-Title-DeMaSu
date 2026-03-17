@@ -153,13 +153,6 @@
         }
         .btn-reject:hover { background: #E53E3E; color: white; }
 
-        /* ── 삭제 버튼 (강제 삭제 — 상태와 무관하게 항상 표시) ── */
-        .btn-delete {
-            padding: 9px 22px; border: 1.5px solid #999; color: #999;
-            background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
-            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
-        }
-        .btn-delete:hover { background: #999; color: white; }
     </style>
 </head>
 <body>
@@ -215,8 +208,6 @@
                 <button class="btn-approve" onclick="approveToilet(TOILET_ID)">承認</button>
                 <button class="btn-reject"  onclick="rejectToilet(TOILET_ID)">却下</button>
             </th:block>
-            <!-- 삭제 버튼: 상태와 무관하게 항상 표시 (소프트 삭제) -->
-            <button class="btn-delete" onclick="deleteToilet(TOILET_ID)">削除</button>
         </div>
     </div>
 
@@ -350,19 +341,6 @@
             .catch(() => alert('エラーが発生しました'));
     }
 
-    /* ── 화장실 강제 삭제: deleted_at = NOW() 소프트 삭제 ──
-       DELETE /api/admin/toilets/{id}
-       삭제 후 대시보드로 리다이렉트 */
-    function deleteToilet(id) {
-        if (!confirm('このトイレを削除しますか？この操作は元に戻せません。')) return;
-        fetch(`/api/admin/toilets/${id}`, { method: 'DELETE' })
-            .then(r => r.json())
-            .then(() => {
-                alert('削除しました。');
-                window.location.href = '/admin/dashboard';
-            })
-            .catch(() => alert('エラーが発生しました'));
-    }
 </script>
 
 </body>
