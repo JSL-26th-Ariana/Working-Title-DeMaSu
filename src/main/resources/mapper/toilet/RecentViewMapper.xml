@@ -26,4 +26,10 @@
         DELETE FROM recent_views WHERE user_id = #{userId}
     </delete>
 
+    <!-- 개별 삭제 -->
+    <delete id="deleteByToiletId">
+        DELETE FROM recent_views
+        WHERE user_id = #{userId} AND toilet_id = #{toiletId}
+    </delete>
+
 </mapper>

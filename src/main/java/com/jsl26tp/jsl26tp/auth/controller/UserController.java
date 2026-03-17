@@ -118,4 +118,23 @@ public class UserController {
         model.addAttribute("inquiries", inquiryService.findByWriterId(user.getId()));
         return "mypage/inquiries";
     }
+
+    // 8. 최근 본 화장실 개별 삭제 (DELETE /mypage/recent/{toiletId})
+    @DeleteMapping("/recent/{toiletId}")
+    @ResponseBody
+    public ApiResponse<Void> deleteRecentView(@AuthenticationPrincipal UserDetails userDetails,
+                                              @PathVariable Long toiletId) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        recentViewService.deleteByToiletId(user.getId(), toiletId);
+        return ApiResponse.ok(null);
+    }
+
+    // 9. 최근 본 화장실 전체 삭제 (DELETE /mypage/recent)
+    @DeleteMapping("/recent")
+    @ResponseBody
+    public ApiResponse<Void> deleteAllRecentViews(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        recentViewService.deleteByUserId(user.getId());
+        return ApiResponse.ok(null);
+    }
 }
