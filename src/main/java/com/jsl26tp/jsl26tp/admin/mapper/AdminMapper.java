@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
+// ToiletUpdateRequest: 수정 제안 승인 시 화장실 정보 수정 DTO (admin/domain 패키지)
+
 /**
  * 管理者専用 MyBatis Mapper
  *
@@ -156,4 +158,26 @@ public interface AdminMapper {
             @Param("answer") String answer,
             @Param("adminId") Long adminId
     );
+
+    /**
+     * 화장실 정보 수정 (수정 제안 승인 시 관리자가 직접 편집한 값 반영)
+     * → toilets 테이블 UPDATE (name, address, 좌표, 운영시간, 설비 등)
+     * @param id  수정 대상 화장실 ID
+     * @param req 관리자가 편집한 수정 내용 DTO
+     */
+    int updateToilet(
+            @Param("id") Long id,
+            @Param("req") ToiletUpdateRequest req
+    );
+
+    // =====================================================================
+    // 5. 화장실 삭제 (관리자 강제 삭제)
+    // =====================================================================
+
+    /**
+     * 화장실 소프트 삭제
+     * → SET deleted_at = NOW() (toilets 테이블은 deleted_at 기반 소프트 삭제)
+     * - deleted_at IS NULL 조건이 있는 모든 조회에서 자동으로 제외됨
+     */
+    int deleteToilet(@Param("id") Long id);
 }

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用規約 - デマス</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            background: #F5F5F5;
+            min-height: calc(100vh / 0.9);
+            display: flex;
+            flex-direction: column;
+            zoom: 0.9;
+            line-height: 1.6;
+        }
+        .page-header-banner {
+            background: linear-gradient(135deg, #00C896, #00A87D);
+            color: white;
+            text-align: center;
+            padding: 52px 24px 44px;
+        }
+        .page-header-banner h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .page-header-banner p {
+            font-size: 14px;
+            opacity: 0.75;
+        }
+        .container {
+            max-width: 800px;
+            margin: 48px auto;
+            padding: 0 24px 60px;
+            flex: 1;
+            width: 100%;
+        }
+        .policy-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 48px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        }
+        .policy-section {
+            margin-bottom: 32px;
+        }
+        .policy-section:last-child { margin-bottom: 0; }
+        .policy-section h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #E8F9F5;
+        }
+        .policy-section h2 span {
+            color: #00C896;
+            margin-right: 6px;
+        }
+        .policy-section p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .policy-section ol, .policy-section ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+        .policy-section li {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 4px;
+        }
+        .policy-intro {
+            background: #F0FAF6;
+            border-left: 4px solid #00C896;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #444;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
+
+<!-- ページヘッダーバナー -->
+<div class="page-header-banner">
+    <h1>📋 利用規約</h1>
+    <p>デマスのご利用にあたってのルールと条件</p>
+</div>
+
+<div class="container">
+    <div class="policy-card">
+
+        <div class="policy-intro">
+            この利用規約（以下、「本規約」といいます。）は、デマス（以下、「当サービス」といいます。）がこのウェブサイト上で提供するサービスの利用条件を定めるものです。ユーザーの皆さまには、本規約に従って当サービスをご利用いただきます。
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第1条</span>適用</h2>
+            <p>本規約は、ユーザーと当サービスとの間のサービスの利用に関わる一切の関係に適用されるものとします。</p>
+            <p>当サービスはサービスに関し、本規約のほか、ご利用にあたってのルール等、各種の定め（以下、「個別規定」といいます。）をすることがあります。これら個別規定はその名称のいかんに関わらず、本規約の一部を構成するものとします。</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第2条</span>禁止事項</h2>
+            <p>ユーザーは、当サービスの利用にあたり、以下の行為をしてはなりません。</p>
+            <ol>
+                <li>法令または公序良俗に違反する行為</li>
+                <li>犯罪行為に関連する行為</li>
+                <li>当サービスのサーバーまたはネットワークの機能を破壊したり、妨害したりする行為</li>
+                <li>当サービスの運営を妨害するおそれのある行為</li>
+                <li>他のユーザーに関する個人情報等を収集または蓄積する行為</li>
+                <li>不正アクセスをし、またはこれを試みる行為</li>
+                <li>他のユーザーに成りすます行為</li>
+                <li>当サービスに関連して、反社会的勢力に対して直接または間接に利益を供与する行為</li>
+                <li>その他、当サービスが不適切と判断する行為</li>
+            </ol>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第3条</span>サービスの提供の停止等</h2>
+            <p>当サービスは、以下のいずれかの事由があると判断した場合、ユーザーに事前に通知することなく本サービスの全部または一部の提供を停止または中断することができるものとします。</p>
+            <ol>
+                <li>本サービスにかかるコンピュータシステムの保守点検または更新を行う場合</li>
+                <li>地震、落雷、火災、停電または天災などの不可抗力により、本サービスの提供が困難となった場合</li>
+                <li>コンピュータまたは通信回線等が事故により停止した場合</li>
+                <li>その他、当サービスが本サービスの提供が困難と判断した場合</li>
+            </ol>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第4条</span>免責事項</h2>
+            <p>当サービスの提供するサービスに関して、当サービスは以下の事項について責任を負いません。</p>
+            <ol>
+                <li>当サービスに掲載されたトイレ情報の正確性・最新性・完全性</li>
+                <li>ユーザーが投稿したコンテンツによって生じた損害</li>
+                <li>本サービスの提供の停止、中断、変更等によってユーザーに生じた損害</li>
+                <li>その他、当サービスのご利用に関連してユーザーに生じた損害</li>
+            </ol>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第5条</span>お問い合わせ</h2>
+            <p>本規約に関するお問い合わせは、<a href="/inquiry" style="color:#00C896; text-decoration:none; font-weight:600;">お問い合わせフォーム</a>よりお願いいたします。</p>
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/header.js(v=1)}"></script>
+</body>
+</html>

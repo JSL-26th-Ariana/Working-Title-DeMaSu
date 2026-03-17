@@ -32,13 +32,6 @@ public class ReviewService {
     private String reviewPath;
 
     /*
-     * 내가 쓴 리뷰 목록 조회
-     */
-    public List<Review> findByUserId(Long userId) {
-        return reviewMapper.findByUserId(userId);
-    }
-
-    /*
      * 리뷰 게시
      */
     public void writeReview(Review review, List<MultipartFile> files) {
@@ -74,7 +67,7 @@ public class ReviewService {
 
             ReviewImage image = new ReviewImage();
             image.setReviewId(review.getId());
-            image.setImageUrl("/upload/review/" + uniqueName);
+            image.setImageUrl("/uploads/review/" + uniqueName);
 
             reviewImageMapper.insertImage(image);
 
@@ -179,11 +172,9 @@ public class ReviewService {
     /*
      * 내가 쓴 리뷰 목록 조회
      */
-
     public List<Review> getMyReviews(Long userId) {
         return reviewMapper.findByUserId(userId);
     }
-
 
 }
 

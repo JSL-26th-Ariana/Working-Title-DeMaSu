@@ -27,5 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
         //   → ~/jsl26tp-uploads/review/abc.jpg 파일 서빙
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + uploadPath);
+
+        registry.addResourceHandler("/profile/**")
+                .addResourceLocations("file:" + uploadPath + "profile/");
     }
 }

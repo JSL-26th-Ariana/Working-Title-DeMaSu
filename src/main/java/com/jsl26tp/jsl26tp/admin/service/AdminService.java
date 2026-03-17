@@ -4,6 +4,8 @@ import com.jsl26tp.jsl26tp.common.BusinessException;
 import com.jsl26tp.jsl26tp.common.ErrorCode;
 import com.jsl26tp.jsl26tp.admin.domain.*;
 import com.jsl26tp.jsl26tp.admin.mapper.AdminMapper;
+import com.jsl26tp.jsl26tp.toilet.domain.ToiletEditRequest;
+import com.jsl26tp.jsl26tp.toilet.mapper.ToiletEditRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +27,11 @@ public class AdminService {
 
     private final AdminMapper adminMapper;
 
+    // ToiletEditRequestMapper: 다른 팀원 파일 수정 없이 주입만 해서 사용
+    private final ToiletEditRequestMapper editRequestMapper;
+
     /** 페이지당 표시 건수 (모든 목록 공통) */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 10;
 
     // =====================================================================
     // 1. 회원 관리 (FR-SCR004-1: 회원 정지, FR-SCR004-2: 계정 삭제)
@@ -255,5 +260,102 @@ public class AdminService {
     public void answerInquiry(Long id, String answer, Long adminId) {
         getInquiryById(id); // 존재 확인
         adminMapper.answerInquiry(id, answer, adminId);
+    }
+
+    /**
+     * 화장실 정보 수정 (수정 제안 승인 시 관리자가 직접 편집한 값 저장)
+     *
+     * 처리 흐름:
+     * 1. 화장실 존재 확인 (없으면 TOILET_NOT_FOUND)
+     * 2. toilets 테이블 UPDATE (name, address, 좌표, 운영시간, 설비 등)
+     * 3. 영향행 0이면 이미 삭제된 화장실 → BAD_REQUEST
+     *
+     * @param id  수정 대상 화장실 ID
+     * @param req 관리자가 편집한 수정 내용 DTO
+     */
+    @Transactional
+    public void updateToilet(Long id, ToiletUpdateRequest req) {
+        getToiletById(id); // 존재 확인 (없으면 TOILET_NOT_FOUND)
+        if (adminMapper.updateToilet(id, req) == 0) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST);
+        }
+    }
+
+    // =====================================================================
+    // 5. 수정 제안 관리
+    // ToiletEditRequestMapper를 주입해서 사용 (해당 파일 수정 없음)
+    // =====================================================================
+
+    /**
+     * 수정 제안 목록 조회 (페이징)
+     * - ToiletEditRequestMapper.findAllRequests() 전체 목록을 가져온 뒤 페이징 처리
+     * - PENDING 우선 노출을 위해 DB 쿼리가 ORDER BY created_at DESC 정렬함
+     *
+     * @param page 현재 페이지 번호 (0-based)
+     * @return AdminPageResponse — content/number/totalPages 필드로 dashboard.html JS와 매핑
+     */
+    public AdminPageResponse<ToiletEditRequest> getEditRequestList(int page) {
+        // 전체 목록 조회 후 서버 사이드 페이징 (editRequestMapper에 LIMIT/OFFSET 파라미터 없음)
+        List<ToiletEditRequest> all = editRequestMapper.findAllRequests();
+        int totalCount = all.size();
+        int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
+
+        // 페이지에 해당하는 범위만 잘라서 반환
+        int from = page * PAGE_SIZE;
+        int to = Math.min(from + PAGE_SIZE, totalCount);
+        List<ToiletEditRequest> content = (from >= totalCount)
+                ? List.of()
+                : all.subList(from, to);
+
+        return new AdminPageResponse<>(content, page, PAGE_SIZE, totalCount, totalPages);
+    }
+
+    /**
+     * 수정 제안 상세 조회
+     * @throws BusinessException BAD_REQUEST — 존재하지 않는 수정 제안 ID
+     */
+    public ToiletEditRequest getEditRequestById(Long id) {
+        ToiletEditRequest req = editRequestMapper.findById(id);
+        if (req == null) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST);
+        }
+        return req;
+    }
+
+    /**
+     * 수정 제안 승인 (PENDING → APPROVED)
+     * - 수정 제안 상태만 변경 (화장실 데이터 자동 반영 없음 — 관리자가 직접 확인 후 처리)
+     */
+    @Transactional
+    public void approveEditRequest(Long id) {
+        getEditRequestById(id); // 존재 확인
+        editRequestMapper.updateStatus(id, "APPROVED");
+    }
+
+    /**
+     * 수정 제안 거절 (PENDING → REJECTED)
+     */
+    @Transactional
+    public void rejectEditRequest(Long id) {
+        getEditRequestById(id); // 존재 확인
+        editRequestMapper.updateStatus(id, "REJECTED");
+    }
+
+    // =====================================================================
+    // 6. 화장실 강제 삭제 (관리자 전용)
+    // =====================================================================
+
+    /**
+     * 화장실 소프트 삭제
+     * → toilets.deleted_at = NOW()
+     * - 이후 deleted_at IS NULL 조건이 붙는 모든 조회(지도, 목록 등)에서 자동 제외
+     *
+     * @throws BusinessException BAD_REQUEST — 이미 삭제됐거나 존재하지 않는 화장실
+     */
+    @Transactional
+    public void deleteToilet(Long id) {
+        if (adminMapper.deleteToilet(id) == 0) {
+            throw new BusinessException(ErrorCode.BAD_REQUEST);
+        }
     }
 }

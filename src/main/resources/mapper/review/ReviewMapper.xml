@@ -25,14 +25,15 @@
 
     <!-- 리뷰 작성 -->
     <insert id="insertReview" parameterType="Review" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO reviews (toilet_id, user_id, clean_score, content)
-        VALUES (#{toiletId}, #{userId}, #{cleanScore}, #{content})
+        INSERT INTO reviews (toilet_id, user_id, clean_score, tags, content)
+        VALUES (#{toiletId}, #{userId}, #{cleanScore}, #{tags}, #{content})
     </insert>
 
     <!-- 리뷰 수정 -->
     <update id="updateReview" parameterType="Review">
         UPDATE reviews
         SET clean_score = #{cleanScore},
+            tags = #{tags},
             content     = #{content}
         WHERE id = #{id}
     </update>

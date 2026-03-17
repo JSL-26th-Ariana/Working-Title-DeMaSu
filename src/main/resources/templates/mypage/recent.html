@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最近のトイレ - デマス</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>最近見たトイレ - デマス</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             background: #F5F5F5;
             min-height: calc(100vh / 0.9);
             display: flex;
@@ -190,82 +189,146 @@
         }
         .back-link:hover { text-decoration: underline; }
         .page-header {
-            padding: 12px 24px 24px;
+            padding: 28px 24px 32px;
             text-align: center;
         }
         .page-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 0.05em;
+            font-weight: 800;
             color: #1A1A1A;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
         .page-subtitle {
-            font-size: 13px;
-            color: #888;
+            font-size: 14px;
+            color: #aaa;
         }
     </style>
 </head>
-<body>
+<body class="mypage">
 
 <div th:replace="~{fragments/header :: headerAndToast}"></div>
 
-<!-- 페이지 헤더 -->
 <div class="page-header">
     <h1 class="page-title">最近見たトイレ</h1>
     <p class="page-subtitle">最近チェックしたトイレの閲覧履歴</p>
 </div>
 
-<div class="container">
+<main class="mypage-main">
+    <div class="mypage-container">
 
-    <!-- 데이터 있는 경우 -->
-    <div th:if="${recentToilets != null and !recentToilets.isEmpty()}">
-        <div class="section-header">
-            <span class="section-title">最近見たトイレ</span>
-            <span class="section-count" th:text="${recentToilets.size()}">0</span>
-        </div>
+        <!-- 데이터 있는 경우 -->
+        <div th:if="${recentToilets != null and !recentToilets.isEmpty()}">
 
-        <div class="toilet-list">
-            <a th:each="item : ${recentToilets}"
-               th:href="@{/toilet/{id}(id=${item.toiletId})}"
-               class="toilet-card">
-                <div class="toilet-info">
-                    <div class="toilet-name" th:text="${item.toiletName}">トイレ名</div>
-                    <div class="toilet-address" th:text="${item.address}">住所</div>
-                    <div class="toilet-meta">
+            <!-- 헤더: 카운트 + 전체 삭제 버튼 -->
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:18px; font-weight:700; color:#1A1A1A;">最近見たトイレ</span>
+                    <span class="mp-count-badge" th:text="${recentToilets.size()}">0</span>
+                </div>
+                <button onclick="deleteAll()"
+                        style="font-size:13px; color:#fff; background:#00C896; border:none;
+                        border-radius:8px; padding:6px 14px; cursor:pointer; transition:all 0.2s;"
+                        onmouseover="this.style.background='#00B385';"
+                        onmouseout="this.style.background='#00C896';">
+                    全て削除
+                </button>
+            </div>
+
+            <div class="mp-toilet-list" id="toiletList">
+                <div th:each="item : ${recentToilets}"
+                     th:id="'item-' + ${item.toiletId}"
+                     class="mp-toilet-card"
+                     style="justify-content:space-between; align-items:center;">
+                    <!-- 클릭 시 상세 페이지로 이동 -->
+                    <a th:href="@{/toilet/{id}(id=${item.toiletId})}"
+                       style="text-decoration:none; flex:1; display:flex; flex-direction:column; gap:4px;">
+                        <p class="mp-toilet-name" th:text="${item.toiletName}">トイレ名</p>
+                        <p class="mp-toilet-address" th:text="${item.address}">住所</p>
+                    </a>
+                    <!-- 오른쪽: 시간 + 개별 삭제 버튼 -->
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; margin-left:16px; flex-shrink:0;">
+            <span style="font-size:11px; color:#bbb; white-space:nowrap;"
+                  th:text="${#temporals.format(item.viewedAt, 'MM/dd HH:mm')}">01/01</span>
+                        <button th:onclick="'deleteOne(' + ${item.toiletId} + ')'"
+                                style="font-size:11px; color:#00C896; background:none; border:none;
+       cursor:pointer; padding:2px 0; transition:color 0.2s;"
+                                onmouseover="this.style.color='#00896A';"
+                                onmouseout="this.style.color='#00C896';">
+                            削除
+                        </button>
                     </div>
                 </div>
-                <div class="toilet-right">
-                    <span class="viewed-date" th:text="${#temporals.format(item.viewedAt, 'MM/dd HH:mm')}">01/01</span>
-                    <span class="detail-link">詳細を見る →</span>
-                </div>
+            </div>
+        </div>
+
+        <!-- 빈 상태 -->
+        <div class="mp-empty-state" id="emptyState"
+             th:if="${recentToilets == null or recentToilets.isEmpty()}">
+            <div class="mp-empty-icon">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+            </div>
+            <p class="mp-empty-title">まだ見たトイレがありません</p>
+            <p class="mp-empty-desc">マップでトイレを探して<br>詳細情報を確認してみましょう！</p>
+            <a th:href="@{/}" class="mp-btn-edit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                マップを見る
             </a>
         </div>
+
     </div>
+</main>
 
-    <!-- 빈 상태 -->
-    <div class="empty-state" th:if="${recentToilets == null or recentToilets.isEmpty()}">
-        <div class="empty-icon">
-            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 6v6l4 2"></path>
-            </svg>
-        </div>
-        <div class="empty-title">まだ見たトイレがありません</div>
-        <div class="empty-desc">マップでトイレを探して<br>詳細情報を確認してみましょう！</div>
-        <a href="/" class="go-map-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-            マップを見る
-        </a>
-    </div>
-
-</div>
-
-<!-- Footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
+<script th:src="@{/js/app.js}"></script>
 <script th:src="@{/js/header.js(v=1)}"></script>
+<script>
+    // 개별 삭제
+    async function deleteOne(toiletId) {
+      if (!confirm('この履歴を削除しますか？')) return;
+      try {
+        const res = await fetch(`/mypage/recent/${toiletId}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          const item = document.getElementById('item-' + toiletId);
+          if (item) item.remove();
+          updateCountAndEmpty();
+        }
+      } catch (e) {
+        alert('削除に失敗しました。');
+      }
+    }
+
+    // 전체 삭제
+    async function deleteAll() {
+      if (!confirm('全ての履歴を削除しますか？')) return;
+      try {
+        const res = await fetch('/mypage/recent', { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('toiletList').innerHTML = '';
+          updateCountAndEmpty();
+        }
+      } catch (e) {
+        alert('削除に失敗しました。');
+      }
+    }
+
+    // 카운트 업데이트 + 빈 상태 처리
+    function updateCountAndEmpty() {
+      const list = document.getElementById('toiletList');
+      const badge = document.querySelector('.mp-count-badge');
+      const count = list ? list.children.length : 0;
+      if (badge) badge.textContent = count;
+      if (count === 0) location.reload();
+    }
+</script>
 </body>
 </html>

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理者ダッシュボード - デマス</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             background: #F5F5F5;
             min-height: 100vh;
             display: flex;
@@ -54,7 +54,8 @@
             background: none;
             border: none;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             font-size: 14px;
             font-weight: 500;
             color: #333;
@@ -125,7 +126,8 @@
             border: none;
             background: rgba(255,255,255,0.2);
             color: rgba(255,255,255,0.85);
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -181,7 +183,8 @@
         .search-box input {
             border: none;
             background: none;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             font-size: 13px;
             outline: none;
             width: 180px;
@@ -240,7 +243,8 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             transition: all 0.15s;
         }
         .btn-suspend:hover { background: #FF9800; color: white; }
@@ -253,7 +257,8 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             transition: all 0.15s;
         }
         .btn-delete:hover { background: #E53E3E; color: white; }
@@ -284,12 +289,41 @@
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             transition: all 0.15s;
             display: flex; align-items: center; justify-content: center;
         }
         .page-btn:hover { border-color: #00C896; color: #00C896; }
         .page-btn.active { background: #00C896; border-color: #00C896; color: white; }
+
+        /* ── 이전/다음 페이지 버튼 툴팁 ── */
+        .page-btn[data-tooltip] { position: relative; }
+        .page-btn[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);       /* 버튼 위에 표시 */
+            left: 50%; transform: translateX(-50%);
+            background: #333; color: white;
+            font-size: 12px; font-weight: 500;
+            padding: 5px 10px; border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.15s;
+            z-index: 10;
+        }
+        .page-btn[data-tooltip]::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 2px);
+            left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.15s;
+        }
+        .page-btn[data-tooltip]:hover::after,
+        .page-btn[data-tooltip]:hover::before { opacity: 1; }
 
         /* ── Coming Soon Panel ── */
         .coming-soon {
@@ -311,7 +345,8 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             transition: all 0.15s;
         }
         .btn-approve:hover { background: #00C896; color: white; }
@@ -326,7 +361,8 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             transition: all 0.15s;
             text-decoration: none;
             display: inline-block;
@@ -402,6 +438,14 @@
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
             お問い合わせ
+        </button>
+        <!-- 수정 제안 탭: 사용자가 보낸 화장실 정보 수정 요청 관리 -->
+        <button class="tab-btn" onclick="switchTab('editRequests', this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            修正提案
         </button>
     </div>
 </div>
@@ -496,6 +540,32 @@
         </div>
     </div>
 
+    <!-- 修正提案 -->
+    <div id="panel-editRequests" class="tab-panel">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">修正提案一覧</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>対象トイレ</th>
+                        <th>提案者</th>
+                        <th>内容(要約)</th>
+                        <th>ステータス</th>
+                        <th>申請日</th>
+                        <th>詳細</th>
+                    </tr>
+                </thead>
+                <tbody id="editRequestTableBody">
+                    <tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>
+                </tbody>
+            </table>
+            <div class="pagination" id="editRequestPagination"></div>
+        </div>
+    </div>
+
     <!-- お問い合わせ -->
     <div id="panel-inquiries" class="tab-panel">
         <div class="card">
@@ -534,10 +604,11 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('panel-' + name).classList.add('active');
         btn.classList.add('active');
-        if (name === 'users')     loadUsers(0, document.getElementById('userSearchInput').value);
-        else if (name === 'reports')   loadReports(0);
-        else if (name === 'toilets')   loadToilets(0);
-        else if (name === 'inquiries') loadInquiries(0);
+        if (name === 'users')            loadUsers(0, document.getElementById('userSearchInput').value);
+        else if (name === 'reports')         loadReports(0);
+        else if (name === 'toilets')         loadToilets(0);
+        else if (name === 'inquiries')       loadInquiries(0);
+        else if (name === 'editRequests')    loadEditRequests(0); // 수정 제안 탭
     }
 
     // ── Admin dropdown ──
@@ -625,12 +696,27 @@
 
     function renderPagination(data, containerId, onPageClick) {
         const container = document.getElementById(containerId);
-        if (data.totalPages <= 1) { container.innerHTML = ''; return; }
+        const cur   = data.number;      /* 현재 페이지 (0-based) */
+        const total = data.totalPages;  /* 전체 페이지 수 */
 
-        let html = '';
-        for (let i = 0; i < data.totalPages; i++) {
-            html += `<button class="page-btn ${i === data.number ? 'active' : ''}" onclick="(${onPageClick.toString()})(${i})">${i + 1}</button>`;
+        /* 이전 페이지 버튼: 첫 페이지면 disabled */
+        let html = `<button class="page-btn" data-tooltip="前のページへ"
+                        ${cur === 0 ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : `onclick="(${onPageClick.toString()})(${cur - 1})"`}>
+                        &#8249;
+                    </button>`;
+
+        /* 페이지 번호 버튼: 1페이지뿐이어도 항상 표시 */
+        for (let i = 0; i < total; i++) {
+            html += `<button class="page-btn ${i === cur ? 'active' : ''}"
+                         onclick="(${onPageClick.toString()})(${i})">${i + 1}</button>`;
         }
+
+        /* 다음 페이지 버튼: 마지막 페이지면 disabled */
+        html += `<button class="page-btn" data-tooltip="次のページへ"
+                     ${cur === total - 1 ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : `onclick="(${onPageClick.toString()})(${cur + 1})"`}>
+                     &#8250;
+                 </button>`;
+
         container.innerHTML = html;
     }
 
@@ -851,6 +937,62 @@
                 <td>${statusBadge}</td>
                 <td>${date}</td>
                 <td><a href="/admin/inquiries/${q.id}" class="btn-detail">詳細</a></td>
+            </tr>`;
+        }).join('');
+    }
+
+    // =====================================================================
+    // ── 修正提案 ──
+    // GET /api/admin/edit-requests?page=0
+    // =====================================================================
+    let editRequestCurrentPage = 0;
+
+    function loadEditRequests(page) {
+        editRequestCurrentPage = page;
+        const tbody = document.getElementById('editRequestTableBody');
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
+
+        fetch('/api/admin/edit-requests?' + new URLSearchParams({ page }))
+            .then(r => r.json())
+            .then(res => {
+                if (!res.data || res.data.content.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">データがありません</div></td></tr>';
+                    document.getElementById('editRequestPagination').innerHTML = '';
+                    return;
+                }
+                renderEditRequestTable(res.data.content);
+                renderPagination(res.data, 'editRequestPagination', (p) => loadEditRequests(p));
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込みに失敗しました</div></td></tr>';
+            });
+    }
+
+    function renderEditRequestTable(requests) {
+        const tbody = document.getElementById('editRequestTableBody');
+        tbody.innerHTML = requests.map(r => {
+            // 상태 배지: PENDING=주황, APPROVED=초록, REJECTED=빨강
+            const statusBadge = r.status === 'PENDING'
+                ? '<span class="badge badge-suspended">処理待ち</span>'
+                : r.status === 'APPROVED'
+                    ? '<span class="badge badge-active">承認済み</span>'
+                    : '<span class="badge badge-deleted">却下済み</span>';
+
+            const date = r.createdAt ? r.createdAt.substring(0, 10) : '-';
+            // 내용은 30자 이상이면 말줄임표 처리
+            const contentPreview = r.content
+                ? (r.content.length > 30 ? r.content.substring(0, 30) + '…' : r.content)
+                : '-';
+
+            // 詳細ボタン → /admin/edit-requests/{id} 상세 페이지로 이동
+            return `<tr>
+                <td class="td-id">${r.id}</td>
+                <td class="td-username">${r.toiletName || '-'}</td>
+                <td>${r.nickname || '-'}</td>
+                <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${contentPreview}</td>
+                <td>${statusBadge}</td>
+                <td>${date}</td>
+                <td><a href="/admin/edit-requests/${r.id}" class="btn-detail">詳細</a></td>
             </tr>`;
         }).join('');
     }

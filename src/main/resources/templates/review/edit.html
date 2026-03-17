@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>レビューを書く - デマス</title>
+    <title>レビューを修正 - デマス</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
@@ -16,8 +16,8 @@
 
 <!-- 페이지 헤더 -->
 <div class="page-header">
-    <h1 class="page-title">レビューを書く</h1>
-    <p class="page-subtitle">トイレの清潔さや使いやすさについて教えてください。</p>
+    <h1 class="page-title">レビューを修正</h1>
+    <p class="page-subtitle">内容を変更して保存してください。</p>
 </div>
 
 <!-- 폼 카드 -->
@@ -37,8 +37,8 @@
             <span class="toilet-info-icon">🚻</span>
             <div class="toilet-info-text">
                 <div class="label">レビュー対象</div>
-                <div class="toilet-name">スターバックス 江南駅店</div>
-                <div class="toilet-addr">ソウル特別市 江南区 江南大路 390</div>
+                <div class="toilet-name">トイレ情報</div>
+                <div class="toilet-addr">—</div>
             </div>
         </div>
 
@@ -48,14 +48,15 @@
             <span th:text="${error}"></span>
         </div>
 
-        <form th:action="@{/review/api/write}" method="post"
+        <form th:action="@{/review/api/update}" method="post"
               enctype="multipart/form-data" id="reviewForm">
 
-            <!-- 숨김: toiletId / userId -->
-            <input type="hidden" name="toiletId" th:value="${toiletId}">
-            <input type="hidden" name="userId"   th:value="${userId}">
+            <!-- 숨김 필드 -->
+            <input type="hidden" name="id"       th:value="${review.id}">
+            <input type="hidden" name="toiletId" th:value="${review.toiletId}">
+            <input type="hidden" name="userId"   th:value="${review.userId}">
 
-            <!-- ① 清潔度スコア (별점) -->
+            <!-- ① 清潔度スコア -->
             <div class="score-section">
                 <label>清潔度スコア <span class="required">*</span></label>
                 <div class="star-group" id="starGroup">
@@ -66,17 +67,19 @@
                     <span class="star" data-val="5">★</span>
                     <span class="score-label" id="scoreLabel">未選択</span>
                 </div>
-                <input type="hidden" name="cleanScore" id="cleanScore" required>
+                <input type="hidden" name="cleanScore" id="cleanScore"
+                       th:value="${review.cleanScore}"
+                       th:data-initial="${review.cleanScore}" required>
             </div>
 
             <div class="divider"></div>
 
-            <!-- ② 一言タグ -->
+            <!-- ② 태그 -->
             <div class="form-group">
                 <label>ひとことタグ <span style="color:#BBBBBB;font-weight:400;">(複数選択可)</span></label>
                 <div class="tag-group" id="tagGroup">
                     <button type="button" class="tag-btn" data-tag="石鹸"><span class="tag-emoji">🧼</span>石鹸</button>
-                    <button type="button" class="tag-btn" data-tag="清潔"><span class="tag-emoji">🧹</span>清潔</span></button>
+                    <button type="button" class="tag-btn" data-tag="清潔"><span class="tag-emoji">🧹</span>清潔</button>
                     <button type="button" class="tag-btn" data-tag="多目的トイレ"><span class="tag-emoji">🧑‍🧑‍🧒‍🧒</span>多目的トイレ</button>
                     <button type="button" class="tag-btn" data-tag="おむつ交換台"><span class="tag-emoji">👶</span>おむつ交換台</button>
                     <button type="button" class="tag-btn" data-tag="トイレットペーパー"><span class="tag-emoji">🧻</span>トイレットペーパー</button>
@@ -84,28 +87,39 @@
                     <button type="button" class="tag-btn" data-tag="バリアフリー"><span class="tag-emoji">♿</span>バリアフリー</button>
                     <button type="button" class="tag-btn" data-tag="洗面台"><span class="tag-emoji">🚿</span>洗面台</button>
                     <button type="button" class="tag-btn" data-tag="ビデ"><span class="tag-emoji">🚽</span>ビデ</button>
-
                 </div>
-                <input type="hidden" name="tags" id="tagsInput">
+                <input type="hidden" name="tags" id="tagsInput" th:value="${review.tags}">
             </div>
 
-            <!-- ③ レビュー本文 -->
+            <!-- ③ 본문 -->
             <div class="form-group">
                 <label>レビュー内容 <span class="required">*</span></label>
                 <div class="input-group textarea-group">
                     <textarea name="content" id="contentInput"
                               placeholder="清潔さ、使いやすさ、混雑具合など、気づいたことを書いてください。"
-                              required maxlength="500"></textarea>
+                              required maxlength="500"
+                              th:text="${review.content}"></textarea>
                 </div>
                 <div class="char-count"><span id="charCount">0</span> / 500</div>
             </div>
 
-            <!-- ④ 画像アップロード -->
+            <!-- ④ 이미지 -->
             <div class="image-upload-section">
                 <div class="upload-label-row">
                     <label>写真を追加</label>
                     <span class="upload-notice-inline">⚠️場所と関係のない内容や、他人の顔が写った写真はお控えください。</span>
                 </div>
+
+                <!-- 기존 이미지 미리보기 -->
+                <div th:if="${review.images != null and not #lists.isEmpty(review.images)}">
+                    <p style="font-size:12px; color:#AAAAAA; margin-bottom:8px;">現在登録されている写真（新しい写真を選択すると全て置き換えられます）</p>
+                    <div class="preview-grid" style="margin-bottom:14px;">
+                        <div th:each="img : ${review.images}" class="preview-item">
+                            <img th:src="${img.imageUrl}" alt="既存画像">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="drop-zone" id="dropZone">
                     <input type="file" name="files" id="fileInput" accept="image/*" multiple>
                     <div class="drop-zone-icon">🖼️</div>
@@ -116,13 +130,13 @@
                 <div class="preview-count" id="previewCount"></div>
             </div>
 
-            <!-- ⑤ 送信ボタン -->
+            <!-- ⑤ 저장 버튼 -->
             <p class="review-notice">
                 ⚠️ 不適切なレビューは削除される場合があります。
             </p>
 
             <button type="submit" class="btn-submit" id="submitBtn">
-                レビューを投稿する
+                修正を保存する
             </button>
 
         </form>
@@ -132,19 +146,27 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <script>
-    /* ─── 1. 별점 ─── */
+    /* ─── 1. 별점 초기화 ─── */
     const stars      = document.querySelectorAll('.star');
     const scoreInput = document.getElementById('cleanScore');
     const scoreLabel = document.getElementById('scoreLabel');
     const scoreText  = ['', '最悪', '悪い', '普通', '良い', '最高！'];
 
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const val = parseInt(star.dataset.val);
-            scoreInput.value = val;
-            scoreLabel.textContent = scoreText[val];
-            stars.forEach(s => s.classList.toggle('active', parseInt(s.dataset.val) <= val));
+    function applyStars(val) {
+        scoreInput.value = val;
+        scoreLabel.textContent = val ? scoreText[val] : '未選択';
+        stars.forEach(s => {
+            s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+            s.style.color = parseInt(s.dataset.val) <= val ? '#f59e0b' : '';
         });
+    }
+
+    // 기존 점수로 초기화
+    const initialScore = parseInt(scoreInput.dataset.initial) || 0;
+    if (initialScore) applyStars(initialScore);
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => applyStars(parseInt(star.dataset.val)));
         star.addEventListener('mouseenter', () => {
             const val = parseInt(star.dataset.val);
             stars.forEach(s => { s.style.color = parseInt(s.dataset.val) <= val ? '#f59e0b' : ''; });
@@ -155,10 +177,12 @@
         stars.forEach(s => { s.style.color = parseInt(s.dataset.val) <= selected ? '#f59e0b' : ''; });
     });
 
-    /* ─── 2. 태그 ─── */
+    /* ─── 2. 태그 초기화 ─── */
     const tagsInput    = document.getElementById('tagsInput');
-    let   selectedTags = [];
+    let   selectedTags = tagsInput.value ? tagsInput.value.split(',').map(t => t.trim()).filter(Boolean) : [];
+
     document.querySelectorAll('.tag-btn').forEach(btn => {
+        if (selectedTags.includes(btn.dataset.tag)) btn.classList.add('selected');
         btn.addEventListener('click', () => {
             const tag = btn.dataset.tag;
             btn.classList.toggle('selected');
@@ -170,7 +194,9 @@
     });
 
     /* ─── 3. 글자수 카운터 ─── */
-    document.getElementById('contentInput').addEventListener('input', function() {
+    const contentInput = document.getElementById('contentInput');
+    document.getElementById('charCount').textContent = contentInput.value.length;
+    contentInput.addEventListener('input', function() {
         document.getElementById('charCount').textContent = this.value.length;
     });
 
@@ -237,9 +263,11 @@
         }
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerHTML = '⏳ 投稿中...';
+        btn.innerHTML = '⏳ 保存中...';
     });
 </script>
-<script src="/js/header.js"></script>
+
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/header.js(v=1)}"></script>
 </body>
 </html>

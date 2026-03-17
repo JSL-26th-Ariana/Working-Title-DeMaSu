@@ -106,7 +106,7 @@ public class UserController {
     public String myReviews(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
         model.addAttribute("user", user); // ← 추가
-        model.addAttribute("reviews", reviewService.findByUserId(user.getId()));
+        model.addAttribute("reviews", reviewService.getMyReviews(user.getId()));
         return "mypage/reviews";
     }
 
@@ -127,5 +127,24 @@ public class UserController {
         User user = userService.findByUsername(userDetails.getUsername());
         userService.updateProfileIcon(user.getId(), iconName);
         return ApiResponse.ok("OK");
+    }
+
+    // 9. 최근 본 화장실 개별 삭제 (DELETE /mypage/recent/{toiletId})
+    @DeleteMapping("/recent/{toiletId}")
+    @ResponseBody
+    public ApiResponse<Void> deleteRecentView(@AuthenticationPrincipal UserDetails userDetails,
+                                              @PathVariable Long toiletId) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        recentViewService.deleteByToiletId(user.getId(), toiletId);
+        return ApiResponse.ok(null);
+    }
+
+    // 10. 최근 본 화장실 전체 삭제 (DELETE /mypage/recent)
+    @DeleteMapping("/recent")
+    @ResponseBody
+    public ApiResponse<Void> deleteAllRecentViews(@AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        recentViewService.deleteByUserId(user.getId());
+        return ApiResponse.ok(null);
     }
 }

@@ -22,11 +22,15 @@
 <main class="mypage-main">
     <div class="mypage-container">
 
-
         <section class="mp-profile-card">
             <div class="mp-profile-avatar">
                 <img th:if="${user.iconUrl != null}" th:src="${user.iconUrl}" alt="プロフィール画像">
-                <span th:if="${user.iconUrl == null}" style="font-size: 28px;">👤</span>
+                <span th:if="${user.iconUrl == null}" style="display:flex; align-items:center; justify-content:center; width:100%; height:100%;">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </span>
             </div>
             <div class="mp-profile-info">
                 <h2 class="mp-profile-nickname" th:text="${user.nickname}">ニックネーム</h2>
@@ -43,9 +47,7 @@
 
         <section class="mp-menu-grid">
             <a th:href="@{/mypage/recent}" class="mp-menu-card">
-                <div class="mp-menu-card-icon">
-                    🕐
-                </div>
+                <div class="mp-menu-card-icon">🕐</div>
                 <div class="mp-menu-card-text">
                     <p class="mp-menu-card-title">最近見たトイレ</p>
                     <p class="mp-menu-card-desc">閲覧履歴を確認する</p>
@@ -53,9 +55,7 @@
                 <span class="mp-menu-card-arrow">›</span>
             </a>
             <a th:href="@{/mypage/reviews}" class="mp-menu-card">
-                <div class="mp-menu-card-icon">
-                    ⭐
-                </div>
+                <div class="mp-menu-card-icon">⭐</div>
                 <div class="mp-menu-card-text">
                     <p class="mp-menu-card-title">投稿したレビュー</p>
                     <p class="mp-menu-card-desc">自分のレビューを管理する</p>
@@ -63,9 +63,7 @@
                 <span class="mp-menu-card-arrow">›</span>
             </a>
             <a th:href="@{/mypage/inquiries}" class="mp-menu-card">
-                <div class="mp-menu-card-icon">
-                    ✉️
-                </div>
+                <div class="mp-menu-card-icon">✉️</div>
                 <div class="mp-menu-card-text">
                     <p class="mp-menu-card-title">お問い合わせ履歴</p>
                     <p class="mp-menu-card-desc">問い合わせ内容を確認する</p>
@@ -73,9 +71,7 @@
                 <span class="mp-menu-card-arrow">›</span>
             </a>
             <a th:href="@{/mypage/password}" class="mp-menu-card">
-                <div class="mp-menu-card-icon">
-                    🔒
-                </div>
+                <div class="mp-menu-card-icon">🔒</div>
                 <div class="mp-menu-card-text">
                     <p class="mp-menu-card-title">パスワード変更</p>
                     <p class="mp-menu-card-desc">セキュリティを更新する</p>
@@ -85,7 +81,7 @@
         </section>
 
         <section class="mp-account-section">
-            <h3 class="mp-section-title">ℹ️ アカウント情報</h3>
+            <h3 class="mp-section-title">アカウント情報</h3>
             <div class="mp-account-info-list">
                 <div class="mp-account-info-row">
                     <span class="mp-info-label">👤 ユーザーID</span>
@@ -107,8 +103,6 @@
                 </div>
             </div>
         </section>
-
-
 
     </div>
 </main>

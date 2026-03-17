@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 페이지 타이틀: 문의 제목 동적 설정 -->
     <title th:text="${inquiry.title} + ' - デマス'">お問い合わせ詳細 - デマス</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         /* ── Base (dashboard.html과 동일한 기본 스타일) ── */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             background: #F5F5F5;
             min-height: 100vh;
             display: flex;
@@ -43,7 +42,7 @@
         .admin-menu-btn {
             display: flex; align-items: center; gap: 8px;
             background: none; border: none; cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             font-size: 14px; font-weight: 500; color: #333;
             padding: 6px 12px; border-radius: 8px; transition: background 0.2s;
         }
@@ -85,7 +84,7 @@
             display: inline-flex; align-items: center; gap: 6px;
             padding: 8px 16px; border-radius: 8px;
             border: 1.5px solid #E0E0E0; background: white;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             font-size: 13px; font-weight: 500; color: #555;
             text-decoration: none; cursor: pointer; transition: all 0.15s;
         }
@@ -147,7 +146,7 @@
             padding: 12px 14px;
             border: 1.5px solid #E0E0E0;
             border-radius: 10px;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             font-size: 14px;
             resize: vertical;
             min-height: 100px;
@@ -160,7 +159,7 @@
             padding: 9px 24px;
             background: #00C896; color: white;
             border: none; border-radius: 8px;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             font-size: 13px; font-weight: 700;
             cursor: pointer; transition: background 0.15s;
         }

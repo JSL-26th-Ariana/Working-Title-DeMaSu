@@ -1,10 +1,15 @@
 package com.jsl26tp.jsl26tp.review.controller;
 
 import com.jsl26tp.jsl26tp.common.ApiResponse;
+import com.jsl26tp.jsl26tp.config.CustomUserDetails;
 import com.jsl26tp.jsl26tp.review.domain.Review;
 import com.jsl26tp.jsl26tp.review.service.ReviewService;
+import com.jsl26tp.jsl26tp.toilet.domain.Toilet;
+import com.jsl26tp.jsl26tp.toilet.service.ToiletService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,13 +21,23 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ToiletService toiletService;
 
     /*
      * 리뷰 페이지 이동
      */
 
     @GetMapping("/write")
-    public String writePage() {
+    public String writePage(@RequestParam("toiletId") Long toiletId,
+                            @AuthenticationPrincipal CustomUserDetails userDetails, // 선택사항: 로그인 유저 정보
+                            Model model) {
+
+        Toilet toilet = toiletService.getDetail(toiletId, null);
+
+        model.addAttribute("toiletId", toiletId);
+        model.addAttribute("toilet", toilet);
+        model.addAttribute("userId", userDetails.getId());
+
         return "review/write";
     }
 
@@ -32,14 +47,13 @@ public class ReviewController {
      * http://localhost:8090/review/api/write
      */
     @PostMapping("/api/write")
-    @ResponseBody
-    public ApiResponse<String> writeReview(
+    public String writeReview(
             @ModelAttribute Review review,
             @RequestParam(value = "files", required = false) List<MultipartFile> files) {
 
         reviewService.writeReview(review, files);
 
-        return ApiResponse.ok("OK");
+        return "redirect:/?toiletId=" + review.getToiletId();
     }
 
     /*
@@ -57,18 +71,39 @@ public class ReviewController {
     }
 
     /*
+     * 리뷰 수정 페이지 이동
+     */
+    @GetMapping("/edit/{id}")
+    public String editPage(@PathVariable("id") Long id,
+                           @AuthenticationPrincipal CustomUserDetails userDetails,
+                           Model model) {
+
+        Review review = reviewService.getReviewDetail(id);
+
+        if (!review.getUserId().equals(userDetails.getId())) {
+            return "redirect:/mypage/reviews";
+        }
+
+        Toilet toilet = toiletService.getDetail(review.getToiletId(), null);
+
+        model.addAttribute("review", review);
+        model.addAttribute("toilet", toilet);
+
+        return "review/edit";
+    }
+
+    /*
      * 리뷰 수정
      * http://localhost:8090/review/api/update
      */
     @PostMapping("/api/update")
-    @ResponseBody
-    public ApiResponse<String> updateReview(
+    public String updateReview(
             @ModelAttribute Review review,
             @RequestParam(value = "files", required = false) List<MultipartFile> files) {
 
         reviewService.updateReview(review, files);
 
-        return ApiResponse.ok("OK");
+        return "redirect:/mypage/reviews";
     }
 
     /*

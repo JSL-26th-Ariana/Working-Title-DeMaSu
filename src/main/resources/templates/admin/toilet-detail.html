@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 페이지 타이틀: 화장실 이름 동적 설정 -->
     <title th:text="${toilet.name} + ' - デマス'">トイレ詳細 - デマス</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         /* ── Base (dashboard.html과 동일한 기본 스타일) ── */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             background: #F5F5F5;
             min-height: 100vh;
             display: flex;
@@ -43,7 +43,8 @@
         .admin-menu-btn {
             display: flex; align-items: center; gap: 8px;
             background: none; border: none; cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             font-size: 14px; font-weight: 500; color: #333;
             padding: 6px 12px; border-radius: 8px; transition: background 0.2s;
         }
@@ -85,7 +86,8 @@
             display: inline-flex; align-items: center; gap: 6px;
             padding: 8px 16px; border-radius: 8px;
             border: 1.5px solid #E0E0E0; background: white;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6;
             font-size: 13px; font-weight: 500; color: #555;
             text-decoration: none; cursor: pointer; transition: all 0.15s;
         }
@@ -143,15 +145,18 @@
         .btn-approve {
             padding: 9px 22px; border: 1.5px solid #00C896; color: #00C896;
             background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
-            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
+            cursor: pointer; font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6; transition: all 0.15s;
         }
         .btn-approve:hover { background: #00C896; color: white; }
         .btn-reject {
             padding: 9px 22px; border: 1.5px solid #E53E3E; color: #E53E3E;
             background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
-            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
+            cursor: pointer; font-family: 'LINESeedJP_OTF', sans-serif;
+            line-height: 1.6; transition: all 0.15s;
         }
         .btn-reject:hover { background: #E53E3E; color: white; }
+
     </style>
 </head>
 <body>
@@ -200,11 +205,13 @@
             ダッシュボードに戻る
         </a>
 
-        <!-- PENDING 상태일 때만 承認/却下 버튼 표시 -->
-        <div class="action-row" th:if="${toilet.status == 'PENDING'}">
+        <div class="action-row">
+            <!-- PENDING 상태일 때만 承認/却下 버튼 표시 -->
             <!-- th:onclick 대신 plain onclick 사용 (TOILET_ID는 아래 th:inline JS로 전달) -->
-            <button class="btn-approve" onclick="approveToilet(TOILET_ID)">承認</button>
-            <button class="btn-reject"  onclick="rejectToilet(TOILET_ID)">却下</button>
+            <th:block th:if="${toilet.status == 'PENDING'}">
+                <button class="btn-approve" onclick="approveToilet(TOILET_ID)">承認</button>
+                <button class="btn-reject"  onclick="rejectToilet(TOILET_ID)">却下</button>
+            </th:block>
         </div>
     </div>
 
@@ -337,6 +344,7 @@
             })
             .catch(() => alert('エラーが発生しました'));
     }
+
 </script>
 
 </body>

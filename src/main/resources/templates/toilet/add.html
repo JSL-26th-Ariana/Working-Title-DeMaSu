@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新しいトイレを追加 - デマス</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             background: #F5F5F5;
             min-height: 100vh;
             zoom: 0.9;
+            line-height: 1.6;
         }
 
         /* 헤더 */
@@ -32,18 +32,19 @@
 
         /* 페이지 타이틀 */
         .page-header {
-            padding: 12px 24px 24px;
+            padding: 28px 24px 32px;
             text-align: center;
         }
         .page-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 0.05em;
+            font-weight: 800;
             color: #1A1A1A;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
         .page-subtitle {
-            font-size: 13px;
-            color: #888;
+            font-size: 14px;
+            color: #aaa;
         }
 
         /* 성공 메시지 */
@@ -105,7 +106,7 @@
             border: 1.5px solid #E8E8E8;
             border-radius: 10px;
             font-size: 14px;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             background: #FAFAFA;
             transition: border-color 0.2s, background 0.2s;
             color: #1A1A1A;
@@ -244,7 +245,7 @@
             font-weight: 500;
             color: #555;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             transition: all 0.2s;
             text-align: center;
         }
@@ -270,7 +271,7 @@
             color: #555;
             cursor: pointer;
             background: white;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             transition: all 0.2s;
             user-select: none;
         }
@@ -298,7 +299,7 @@
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'LINESeedJP_OTF', sans-serif;
             transition: background 0.2s, transform 0.1s;
             display: flex;
             align-items: center;
@@ -312,7 +313,8 @@
 
         @media (max-width: 600px) {
             .two-col, .facility-grid, .type-buttons { grid-template-columns: 1fr; }
-            .page-title { font-size: 20px; }
+            .page-title { font-size: 20px;
+            letter-spacing: 0.05em; }
         }
     </style>
 </head>
@@ -375,7 +377,7 @@
             background: transparent; border: 1.5px solid #00C896;
             color: #00C896; padding: 8px 16px; border-radius: 8px;
             font-size: 13px; font-weight: 500; cursor: pointer;
-            font-family: 'M PLUS Rounded 1c', sans-serif; margin-bottom: 16px;">
+            font-family: 'LINESeedJP_OTF', sans-serif; margin-bottom: 16px;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
@@ -461,6 +463,14 @@
                 <input type="checkbox" name="hasEmergency" value="1">
                 <span class="facility-icon">🔔</span>
                 <span class="facility-name">非常ベル</span>
+                <svg class="check-mark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </label>
+            <label class="facility-item" onclick="toggleFacility(this)">
+                <input type="checkbox" name="hasEmergency" value="1">
+                <span class="facility-icon">🚽</span>
+                <span class="facility-name">ビデ</span>
                 <svg class="check-mark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>

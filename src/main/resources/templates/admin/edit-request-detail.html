@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修正提案詳細 - デマス</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/footer.css">
+    <style>
+        /* ── Base ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background: #F5F5F5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Header ── */
+        .header {
+            background: white;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 700; color: #1A1A1A; text-decoration: none;
+        }
+        .logo-icon {
+            width: 32px; height: 32px; background: #62a897; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .admin-menu { position: relative; }
+        .admin-menu-btn {
+            display: flex; align-items: center; gap: 8px;
+            background: none; border: none; cursor: pointer;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 14px; font-weight: 500; color: #333;
+            padding: 6px 12px; border-radius: 8px; transition: background 0.2s;
+        }
+        .admin-menu-btn:hover { background: #F5F5F5; }
+        .admin-avatar {
+            width: 32px; height: 32px; background: #E8F5F1; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .admin-dropdown {
+            display: none; position: absolute; right: 0; top: calc(100% + 8px);
+            background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            min-width: 160px; overflow: hidden; z-index: 200;
+        }
+        .admin-dropdown.open { display: block; }
+        .admin-dropdown a {
+            display: block; padding: 12px 16px; font-size: 14px;
+            color: #333; text-decoration: none; transition: background 0.15s;
+        }
+        .admin-dropdown a:hover { background: #F5F5F5; }
+        .admin-dropdown a.logout { color: #E53E3E; }
+
+        /* ── Content ── */
+        .content {
+            flex: 1;
+            padding: 24px 32px 48px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ── 상단 행: 뒤로 가기 + 승인/거절 버튼 ── */
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative; /* 삭제 경고 문구 absolute 기준점 */
+        }
+        .btn-back {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 8px;
+            border: 1.5px solid #E0E0E0; background: white;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 13px; font-weight: 500; color: #555;
+            text-decoration: none; cursor: pointer; transition: all 0.15s;
+        }
+        .btn-back:hover { border-color: #00C896; color: #00C896; }
+        .action-row { display: flex; gap: 8px; align-items: center; }
+
+        /* ── 화장실 삭제 버튼 ── */
+        .btn-danger {
+            padding: 9px 22px; border: 1.5px solid #999; color: #666;
+            background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
+            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
+            position: relative; /* 툴팁 기준점 */
+        }
+        .btn-danger:hover { border-color: #E53E3E; color: #E53E3E; }
+
+        /* ── CSS 툴팁: hover 시 버튼 위에 말풍선 표시 ── */
+        .btn-danger::after {
+            content: attr(data-tooltip);         /* data-tooltip 속성 값을 텍스트로 표시 */
+            position: absolute;
+            top: calc(100% + 8px);               /* 버튼 아래쪽에 표시 */
+            left: 50%; transform: translateX(-50%);
+            background: #333; color: white;
+            font-size: 12px; font-weight: 500;
+            padding: 6px 12px; border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0; pointer-events: none;    /* 기본적으로 숨김 */
+            transition: opacity 0.15s;
+            z-index: 10;
+        }
+        /* 툴팁 위 삼각형 화살표 */
+        .btn-danger::before {
+            content: '';
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-bottom-color: #333;           /* 아래 방향이므로 bottom에 색상 */
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.15s;
+        }
+        .btn-danger:hover::after,
+        .btn-danger:hover::before { opacity: 1; }
+
+        /* ── 삭제된 화장실 경고 문구: top-row 가운데 배치 ── */
+        .toilet-deleted-notice {
+            position: absolute;
+            left: 50%; transform: translateX(-50%);
+            font-size: 13px; font-weight: 700; color: #E53E3E;
+            white-space: nowrap;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            padding: 20px 24px;
+            display: flex; align-items: center; gap: 12px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        .card-title { font-size: 17px; font-weight: 700; color: #1A1A1A; flex: 1; }
+
+        /* ── 읽기 전용 Detail Rows (수정 제안 내용 카드) ── */
+        .detail-body { padding: 8px 0; }
+        .detail-row {
+            display: flex;
+            padding: 13px 24px;
+            border-bottom: 1px solid #F8F8F8;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label {
+            width: 160px; font-size: 13px; font-weight: 700;
+            color: #888; flex-shrink: 0; padding-top: 1px;
+        }
+        .detail-value { font-size: 14px; color: #333; }
+
+        /* ── 수정 내용 본문: 줄바꿈 보존 ── */
+        .content-text {
+            font-size: 14px; color: #333;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        /* ── Status Badge ── */
+        .badge {
+            display: inline-block; padding: 4px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: 700;
+        }
+        .badge-active    { background: #E8F5F1; color: #007A5E; }
+        .badge-suspended { background: #FFF3E0; color: #E65100; }
+        .badge-deleted   { background: #FFEBEE; color: #C62828; }
+
+        /* ── 승인/거절 버튼 ── */
+        .btn-approve {
+            padding: 9px 22px; border: 1.5px solid #00C896; color: #00C896;
+            background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
+            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
+        }
+        .btn-approve:hover { background: #00C896; color: white; }
+        .btn-reject {
+            padding: 9px 22px; border: 1.5px solid #E53E3E; color: #E53E3E;
+            background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
+            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
+        }
+        .btn-reject:hover { background: #E53E3E; color: white; }
+
+        /* ── 편집 폼 스타일 (수정 가능한 화장실 정보 카드) ── */
+        .form-body { padding: 16px 24px; }
+        .form-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid #F8F8F8;
+        }
+        .form-row:last-child { border-bottom: none; }
+        .form-label {
+            width: 160px; font-size: 13px; font-weight: 700;
+            color: #888; flex-shrink: 0; padding-top: 8px;
+        }
+        .form-control {
+            flex: 1;
+            padding: 7px 12px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 8px;
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-size: 14px; color: #333;
+            transition: border-color 0.15s;
+        }
+        .form-control:focus { outline: none; border-color: #00C896; }
+        /* 읽기 전용 폼 (PENDING 아닌 상태) */
+        .form-control:disabled {
+            background: #F8F8F8; color: #999; cursor: not-allowed;
+        }
+        select.form-control { padding: 7px 10px; }
+
+        /* ── 체크박스 그룹 (설비 정보) ── */
+        .checkbox-group {
+            display: flex; flex-wrap: wrap; gap: 12px; padding-top: 4px;
+        }
+        .checkbox-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 14px; color: #333; cursor: pointer;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 16px; height: 16px; accent-color: #00C896; cursor: pointer;
+        }
+        .checkbox-item input[type="checkbox"]:disabled { cursor: not-allowed; }
+
+        /* ── 카드 안내 문구 (PENDING 아닌 경우) ── */
+        .form-notice {
+            padding: 12px 24px;
+            font-size: 13px; color: #999;
+            background: #FAFAFA;
+            border-bottom: 1px solid #F0F0F0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+    <a href="/" class="logo">
+        <div class="logo-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+        </div>
+        トイレマップ
+    </a>
+    <div class="admin-menu">
+        <button class="admin-menu-btn" onclick="toggleAdminMenu(event)">
+            <div class="admin-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00C896" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            管理者
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+                <path d="m6 9 6 6 6-6"></path>
+            </svg>
+        </button>
+        <div class="admin-dropdown" id="adminDropdown">
+            <a href="/">マップに戻る</a>
+            <a href="/logout" class="logout">ログアウト</a>
+        </div>
+    </div>
+</header>
+
+<!-- ── Content ── -->
+<div class="content">
+
+    <!-- 상단 행: 뒤로 가기 + PENDING일 때만 승인/거절 버튼 -->
+    <div class="top-row">
+        <a href="/admin/dashboard" class="btn-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            ダッシュボードに戻る
+        </a>
+
+        <div class="action-row">
+            <!-- 삭제된 화장실 경고 문구: toiletDeleted=true일 때만 표시 -->
+            <span class="toilet-deleted-notice" th:if="${toiletDeleted}">＊削除済みのトイレです＊</span>
+
+            <!-- 화장실 삭제 버튼: 화장실이 존재할 때만 표시 -->
+            <button class="btn-danger"
+                    th:unless="${toiletDeleted}"
+                    data-tooltip="存在しないトイレを削除しますか？"
+                    onclick="deleteToilet(TOILET_ID)">削除</button>
+
+            <!-- PENDING 상태일 때만 승인/거절 버튼 표시 -->
+            <button class="btn-approve" th:if="${editRequest.status == 'PENDING' and !toiletDeleted}"
+                    onclick="approveRequest(EDIT_REQUEST_ID)">承認</button>
+            <button class="btn-reject"  th:if="${editRequest.status == 'PENDING'}"
+                    onclick="rejectRequest(EDIT_REQUEST_ID)">却下</button>
+        </div>
+    </div>
+
+    <!-- ── 수정 제안 정보 카드 (읽기 전용) ── -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">修正提案</span>
+            <!-- 현재 제안 상태 배지 -->
+            <span class="badge badge-suspended" th:if="${editRequest.status == 'PENDING'}">処理待ち</span>
+            <span class="badge badge-active"    th:if="${editRequest.status == 'APPROVED'}">承認済み</span>
+            <span class="badge badge-deleted"   th:if="${editRequest.status == 'REJECTED'}">却下済み</span>
+        </div>
+        <div class="detail-body">
+            <div class="detail-row">
+                <span class="detail-label">対象トイレ</span>
+                <span class="detail-value" th:text="${editRequest.toiletName} ?: '-'">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">提案者</span>
+                <!-- 탈퇴 회원이면 nickname이 null일 수 있음 -->
+                <span class="detail-value" th:text="${editRequest.nickname} ?: '(退会済み)'">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">申請日</span>
+                <!-- LocalDateTime → 날짜 부분만 표시 (substring 방식: #temporals 의존 없음) -->
+                <span class="detail-value"
+                      th:text="${editRequest.createdAt != null ? editRequest.createdAt.toString().substring(0, 10) : '-'}">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">修正内容</span>
+                <!-- 줄바꿈 보존을 위해 pre-wrap CSS 적용 -->
+                <span class="content-text" th:text="${editRequest.content} ?: '-'">-</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── 화장실 정보 편집 카드 ── -->
+    <!--
+        toiletDeleted=true: 화장실이 이미 삭제됨 → 폼 대신 안내 메시지만 표시
+        PENDING 상태: 폼 편집 가능 — 관리자가 수정 제안을 참고해 직접 값을 수정 후 승인
+        PENDING 아님: 폼 disabled — 처리된 내용 참고용으로만 표시
+    -->
+
+    <!-- 화장실이 삭제된 경우: 안내 카드만 표시 -->
+    <div class="card" th:if="${toiletDeleted}">
+        <div class="card-header">
+            <span class="card-title">トイレ情報の編集</span>
+            <span class="badge badge-deleted">削除済み</span>
+        </div>
+        <div class="form-notice" style="padding: 20px 24px; font-size:14px; color:#999;">
+            このトイレはすでに削除されています。編集できません。
+        </div>
+    </div>
+
+    <div class="card" th:unless="${toiletDeleted}">
+        <div class="card-header">
+            <span class="card-title">トイレ情報の編集</span>
+            <!-- 화장실 현재 상태 배지 -->
+            <span class="badge badge-suspended" th:if="${toilet.status == 'PENDING'}">承認待ち</span>
+            <span class="badge badge-active"    th:if="${toilet.status == 'APPROVED'}">承認済み</span>
+            <span class="badge badge-deleted"   th:if="${toilet.status == 'REJECTED'}">却下済み</span>
+        </div>
+
+        <!-- PENDING 아닌 경우 안내 문구 표시 -->
+        <div class="form-notice" th:unless="${editRequest.status == 'PENDING'}">
+            ※ この修正提案はすでに処理済みです。情報は参照のみです。
+        </div>
+
+        <div class="form-body">
+            <!-- 화장실 이름 -->
+            <div class="form-row">
+                <label class="form-label" for="f-name">トイレ名</label>
+                <input id="f-name" class="form-control" type="text"
+                       th:value="${toilet.name}"
+                       th:disabled="${editRequest.status != 'PENDING'}">
+            </div>
+
+            <!-- 주소 -->
+            <div class="form-row">
+                <label class="form-label" for="f-address">住所</label>
+                <input id="f-address" class="form-control" type="text"
+                       th:value="${toilet.address}"
+                       th:disabled="${editRequest.status != 'PENDING'}">
+            </div>
+
+            <!-- 위도 -->
+            <div class="form-row">
+                <label class="form-label" for="f-latitude">緯度</label>
+                <input id="f-latitude" class="form-control" type="number" step="0.0000001"
+                       th:value="${toilet.latitude}"
+                       th:disabled="${editRequest.status != 'PENDING'}">
+            </div>
+
+            <!-- 경도 -->
+            <div class="form-row">
+                <label class="form-label" for="f-longitude">経度</label>
+                <input id="f-longitude" class="form-control" type="number" step="0.0000001"
+                       th:value="${toilet.longitude}"
+                       th:disabled="${editRequest.status != 'PENDING'}">
+            </div>
+
+            <!-- 24시간 여부 -->
+            <div class="form-row">
+                <label class="form-label">24時間</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input id="f-is24hours" type="checkbox"
+                               th:checked="${toilet.is24hours}"
+                               th:disabled="${editRequest.status != 'PENDING'}"
+                               onchange="toggle24hours(this.checked)">
+                        24時間営業
+                    </label>
+                </div>
+            </div>
+
+            <!-- 운영 시간 (24시간이면 disabled) -->
+            <div class="form-row">
+                <label class="form-label" for="f-openHours">営業時間</label>
+                <input id="f-openHours" class="form-control" type="text"
+                       placeholder="例: 09:00-21:00"
+                       th:value="${toilet.openHours}"
+                       th:disabled="${editRequest.status != 'PENDING' or toilet.is24hours == true}">
+            </div>
+
+            <!-- 변기 타입 -->
+            <div class="form-row">
+                <label class="form-label" for="f-toiletType">便器タイプ</label>
+                <select id="f-toiletType" class="form-control"
+                        th:disabled="${editRequest.status != 'PENDING'}">
+                    <!-- 값이 없으면 선택 없음 -->
+                    <option value="" th:selected="${toilet.toiletType == null}">選択なし</option>
+                    <option value="WESTERN" th:selected="${toilet.toiletType == 'WESTERN'}">洋式</option>
+                    <option value="SQUAT"   th:selected="${toilet.toiletType == 'SQUAT'}">和式</option>
+                </select>
+            </div>
+
+            <!-- 설비 체크박스 그룹 -->
+            <!-- null-safe: Boolean null에 == true 비교 (th:checked에서 null → false로 처리됨) -->
+            <div class="form-row">
+                <label class="form-label">設備</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input id="f-isWheelchair" type="checkbox"
+                               th:checked="${toilet.isWheelchair == true}"
+                               th:disabled="${editRequest.status != 'PENDING'}">
+                        車椅子対応
+                    </label>
+                    <label class="checkbox-item">
+                        <input id="f-hasPaper" type="checkbox"
+                               th:checked="${toilet.hasPaper == true}"
+                               th:disabled="${editRequest.status != 'PENDING'}">
+                        トイレットペーパー
+                    </label>
+                    <label class="checkbox-item">
+                        <input id="f-hasSoap" type="checkbox"
+                               th:checked="${toilet.hasSoap == true}"
+                               th:disabled="${editRequest.status != 'PENDING'}">
+                        石鹸
+                    </label>
+                    <label class="checkbox-item">
+                        <input id="f-hasSanitary" type="checkbox"
+                               th:checked="${toilet.hasSanitary == true}"
+                               th:disabled="${editRequest.status != 'PENDING'}">
+                        生理用品自販機
+                    </label>
+                    <label class="checkbox-item">
+                        <input id="f-hasDiaper" type="checkbox"
+                               th:checked="${toilet.hasDiaper == true}"
+                               th:disabled="${editRequest.status != 'PENDING'}">
+                        おむつ交換台
+                    </label>
+                    <label class="checkbox-item">
+                        <input id="f-hasEmergency" type="checkbox"
+                               th:checked="${toilet.hasEmergency == true}"
+                               th:disabled="${editRequest.status != 'PENDING'}">
+                        非常ベル
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<!--
+    Thymeleaf 인라인 JS: 서버 데이터를 JS 변수로 안전하게 전달
+    - th:onclick 방식은 동적 ID 전달이 불안정 → 이 패턴 사용
+    - TOILET_ID: 화장실 수정 API(PUT /api/admin/toilets/{id})에 사용
+    - EDIT_REQUEST_ID: 수정 제안 승인/거절 API에 사용
+-->
+<script th:inline="javascript">
+    /* toilet이 null(삭제됨)일 수 있으므로 null-safe 처리 */
+    const TOILET_ID        = /*[[${toilet != null ? toilet.id : null}]]*/ null;
+    const EDIT_REQUEST_ID  = /*[[${editRequest.id}]]*/ 0;
+</script>
+
+<script>
+    /* ── 관리자 드롭다운 ── */
+    function toggleAdminMenu(e) {
+        e.stopPropagation();
+        document.getElementById('adminDropdown').classList.toggle('open');
+    }
+    document.addEventListener('click', function () {
+        document.getElementById('adminDropdown').classList.remove('open');
+    });
+
+    /* ── 24시간 토글: 체크하면 영업시간 입력 비활성화 ──
+       PENDING 상태에서만 동작 (PENDING 아니면 이미 disabled) */
+    function toggle24hours(checked) {
+        document.getElementById('f-openHours').disabled = checked;
+        if (checked) {
+            document.getElementById('f-openHours').value = '';
+        }
+    }
+
+    /* ── 폼에서 수정된 화장실 데이터 수집 ──
+       승인 시 PUT API에 전달할 JSON 객체로 반환 */
+    function collectFormData() {
+        return {
+            name:         document.getElementById('f-name').value.trim(),
+            address:      document.getElementById('f-address').value.trim(),
+            latitude:     parseFloat(document.getElementById('f-latitude').value) || null,
+            longitude:    parseFloat(document.getElementById('f-longitude').value) || null,
+            openHours:    document.getElementById('f-openHours').value.trim() || null,
+            is24hours:    document.getElementById('f-is24hours').checked,
+            toiletType:   document.getElementById('f-toiletType').value || null,
+            isWheelchair: document.getElementById('f-isWheelchair').checked,
+            hasPaper:     document.getElementById('f-hasPaper').checked,
+            hasSoap:      document.getElementById('f-hasSoap').checked,
+            hasSanitary:  document.getElementById('f-hasSanitary').checked,
+            hasDiaper:    document.getElementById('f-hasDiaper').checked,
+            hasEmergency: document.getElementById('f-hasEmergency').checked,
+        };
+    }
+
+    /* ── 수정 제안 승인 ──
+       1단계: PUT /api/admin/toilets/{toiletId}  → 화장실 정보 저장
+       2단계: POST /api/admin/edit-requests/{id}/approve → 제안 상태 APPROVED
+       두 단계 모두 성공해야 완료 (순차 실행) */
+    function approveRequest(editRequestId) {
+        if (!confirm('修正内容を保存して、この提案を承認しますか？')) return;
+
+        const data = collectFormData();
+
+        // 1단계: 화장실 정보 수정
+        // ApiResponse 응답 형식: { success: boolean, data: ..., message: ... }
+        fetch(`/api/admin/toilets/${TOILET_ID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (!res.success) throw new Error(res.message || '화장실 수정 실패');
+
+            // 2단계: 수정 제안 상태 APPROVED
+            return fetch(`/api/admin/edit-requests/${editRequestId}/approve`, { method: 'POST' });
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (!res.success) throw new Error(res.message || '승인 처리 실패');
+            alert('承認しました。');
+            window.location.href = '/admin/dashboard';
+        })
+        .catch(err => alert('エラーが発生しました: ' + err.message));
+    }
+
+    /* ── 화장실 삭제 ──
+       DELETE /api/admin/toilets/{toiletId} → 소프트 삭제 (deleted_at = NOW())
+       삭제 후 대시보드로 이동 */
+    function deleteToilet(toiletId) {
+        if (!confirm('このトイレを削除しますか？\nこの操作は取り消せません。')) return;
+        fetch(`/api/admin/toilets/${toiletId}`, { method: 'DELETE' })
+        .then(r => r.json())
+        .then(res => {
+            if (!res.success) throw new Error(res.message || '삭제 실패');
+            alert('削除しました。');
+            window.location.href = '/admin/dashboard';
+        })
+        .catch(err => alert('エラーが発生しました: ' + err.message));
+    }
+
+    /* ── 수정 제안 거절 ──
+       화장실 정보는 변경하지 않고 제안 상태만 REJECTED */
+    function rejectRequest(editRequestId) {
+        if (!confirm('この修正提案を却下しますか？')) return;
+
+        fetch(`/api/admin/edit-requests/${editRequestId}/reject`, { method: 'POST' })
+        .then(r => r.json())
+        .then(res => {
+            if (!res.success) throw new Error(res.message || '거절 처리 실패');
+            alert('却下しました。');
+            window.location.href = '/admin/dashboard';
+        })
+        .catch(err => alert('エラーが発生しました: ' + err.message));
+    }
+</script>
+
+</body>
+</html>
