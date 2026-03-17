@@ -10,6 +10,7 @@ public class Review {
     private Long toiletId;
     private Long userId;
     private String cleanScore;
+    private String tags;
     private String content;
     private String status;           // ACTIVE, HIDDEN
     private LocalDateTime createdAt;
