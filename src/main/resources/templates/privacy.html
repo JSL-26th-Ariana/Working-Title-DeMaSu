@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プライバシーポリシー - デマス</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            background: #F5F5F5;
+            min-height: calc(100vh / 0.9);
+            display: flex;
+            flex-direction: column;
+            zoom: 0.9;
+            line-height: 1.6;
+        }
+        .page-header-banner {
+            background: linear-gradient(135deg, #00C896, #00A87D);
+            color: white;
+            text-align: center;
+            padding: 52px 24px 44px;
+        }
+        .page-header-banner h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .page-header-banner p {
+            font-size: 14px;
+            opacity: 0.75;
+        }
+        .container {
+            max-width: 800px;
+            margin: 48px auto;
+            padding: 0 24px 60px;
+            flex: 1;
+            width: 100%;
+        }
+        .policy-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 48px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        }
+        .policy-section {
+            margin-bottom: 32px;
+        }
+        .policy-section:last-child { margin-bottom: 0; }
+        .policy-section h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #E8F9F5;
+        }
+        .policy-section h2 span {
+            color: #00C896;
+            margin-right: 6px;
+        }
+        .policy-section p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        .policy-section ol, .policy-section ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+        .policy-section li {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 4px;
+        }
+        .policy-intro {
+            background: #F0FAF6;
+            border-left: 4px solid #00C896;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #444;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
+
+<!-- 페이지 헤더 배너 -->
+<div class="page-header-banner">
+    <h1>🔒 プライバシーポリシー</h1>
+    <p>デマスにおける個人情報の取扱いについて</p>
+</div>
+
+<div class="container">
+    <div class="policy-card">
+
+        <div class="policy-intro">
+            デマス（以下、「当サービス」といいます。）は、本サービスにおけるユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第1条</span>個人情報の定義</h2>
+            <p>「個人情報」とは、個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報を指します。</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第2条</span>個人情報の収集方法</h2>
+            <p>当サービスは、ユーザーが利用登録をする際に氏名、生年月日、住所、メールアドレスなどの個人情報をお尋ねすることがあります。</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第3条</span>Googleアカウントの連携</h2>
+            <ol>
+                <li>当サービスは、Google LLCの提供する認証サービス（Googleログイン）を利用しています。</li>
+                <li>ユーザーがGoogleログインを利用して本サービスに登録・ログインする場合、当サービスはGoogleから提供される以下の情報を取得します。
+                    <ul style="margin-top:6px;">
+                        <li>氏名（表示名）</li>
+                        <li>メールアドレス</li>
+                        <li>プロフィール画像</li>
+                        <li>言語設定</li>
+                    </ul>
+                </li>
+                <li>取得した情報は、ユーザーの本人確認およびサービスの利便性向上のためにのみ利用されます。</li>
+            </ol>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第4条</span>個人情報を収集・利用する目的</h2>
+            <p>当サービスが個人情報を収集・利用する目的は、以下のとおりです。</p>
+            <ol>
+                <li>当サービスの提供・運営のため</li>
+                <li>ユーザーからのお問い合わせに回答するため</li>
+                <li>ユーザーが利用中のサービスの新機能、更新情報等をご案内するため</li>
+            </ol>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第5条</span>個人情報の第三者提供</h2>
+            <p>当サービスは、次に掲げる場合を除いて、あらかじめユーザーの同意を得ることなく第三者に個人情報を提供することはありません。</p>
+            <ol>
+                <li>法令に基づく場合</li>
+                <li>人の生命、身体または財産の保護のために必要がある場合</li>
+            </ol>
+        </div>
+
+        <div class="policy-section">
+            <h2><span>第6条</span>お問い合わせ窓口</h2>
+            <p>本ポリシーに関するお問い合わせは、<a href="/inquiry" style="color:#00C896; text-decoration:none; font-weight:600;">お問い合わせフォーム</a>よりお願いいたします。</p>
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script th:src="@{/js/header.js(v=1)}"></script>
+</body>
+</html>

@@ -8,7 +8,179 @@
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/index.css?v=5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <style>
+        /* ===== Splash Screen ===== */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(145deg, #00C896 0%, #00A880 100%);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.7s ease;
+        }
+        #splash-screen.splash-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .splash-inner {
+            text-align: center;
+            position: relative;
+        }
+        .splash-pin-wrap {
+            position: relative;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 28px;
+        }
+        .s-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.35);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.3);
+            opacity: 0;
+        }
+        .s-ring-1 { width: 110px; height: 110px; animation: sRing 2.4s ease-out 0.3s infinite; }
+        .s-ring-2 { width: 165px; height: 165px; animation: sRing 2.4s ease-out 0.8s infinite; }
+        .s-ring-3 { width: 220px; height: 220px; animation: sRing 2.4s ease-out 1.3s infinite; }
+        @keyframes sRing {
+            0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
+        }
+        .splash-pin-icon {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) translateY(-40px) scale(0.4);
+            opacity: 0;
+            animation: sPinDrop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+        }
+        @keyframes sPinDrop {
+            to { transform: translate(-50%, -50%) translateY(0) scale(1); opacity: 1; }
+        }
+        .splash-brand {
+            font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+            font-size: 64px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.14em;
+            transform: translateY(18px);
+            opacity: 0;
+            animation: sSlideUp 0.55s ease 0.55s forwards;
+        }
+        .splash-tagline {
+            font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+            font-size: 18px;
+            color: rgba(255,255,255,0.82);
+            letter-spacing: 0.12em;
+            margin-top: 12px;
+            transform: translateY(12px);
+            opacity: 0;
+            animation: sSlideUp 0.55s ease 0.9s forwards;
+        }
+        /* ===== Location Permission Modal ===== */
+        #location-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(6px);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+        }
+        #location-modal.show {
+            display: flex;
+            animation: locIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes locIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .loc-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 40px 32px 32px;
+            width: 320px;
+            max-width: 88vw;
+            text-align: center;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+            animation: locCardIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes locCardIn {
+            from { transform: scale(0.88) translateY(20px); opacity: 0; }
+            to   { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .loc-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #00C896, #00A880);
+            border-radius: 20px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loc-title {
+            font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1B1D1F;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+        .loc-desc {
+            font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+            font-size: 14px;
+            color: #6B7684;
+            line-height: 1.75;
+            margin-bottom: 28px;
+            letter-spacing: 0.03em;
+        }
+        .loc-btn-allow {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00C896, #00A880);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+        .loc-btn-allow:hover {
+            box-shadow: 0 6px 20px rgba(0,200,150,0.35);
+            transform: translateY(-1px);
+        }
+        .loc-btn-later {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #fff;
+            color: #6B7684;
+            border: 1.5px solid #DEE3E8;
+            border-radius: 14px;
+            font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+        .loc-btn-later:hover {
+            background: #F8FAFB;
+            border-color: #C5CCD3;
+        }
+        @keyframes sSlideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
         /* zoom: 0.9 보정 - 화면 꽉 채우기 */
         body { height: calc(100vh / 0.9) !important; overflow: hidden !important; }
         .main-container { height: calc(100vh / 0.9 - 66px) !important; }
@@ -55,6 +227,42 @@
     </style>
 </head>
 <body style="zoom: 0.9;">
+
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash-screen">
+    <div class="splash-inner">
+        <div class="splash-pin-wrap">
+            <div class="s-ring s-ring-1"></div>
+            <div class="s-ring s-ring-2"></div>
+            <div class="s-ring s-ring-3"></div>
+            <div class="splash-pin-icon">
+                <svg width="62" height="62" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="white"/>
+                    <circle cx="12" cy="10" r="3.2" fill="#00C896"/>
+                </svg>
+            </div>
+        </div>
+        <div class="splash-brand">デマス</div>
+        <div class="splash-tagline">トイレを、みんなのために。</div>
+    </div>
+</div>
+
+<!-- ===== LOCATION PERMISSION MODAL ===== -->
+<div id="location-modal">
+    <div class="loc-card">
+        <div class="loc-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="white"/>
+                <circle cx="12" cy="10" r="3" fill="#00C896"/>
+            </svg>
+        </div>
+        <div class="loc-title">位置情報の利用</div>
+        <div class="loc-desc">お近くのトイレを表示するために、<br>位置情報の利用を許可してください。</div>
+        <button class="loc-btn-allow" onclick="allowLocation()">位置情報を許可する</button>
+        <button class="loc-btn-later" onclick="dismissLocationModal()">後で設定する</button>
+    </div>
+</div>
+
 <!-- Header + Toast (共通フラグメント) -->
 <div th:replace="~{fragments/header :: headerAndToast}"></div>
 
@@ -79,6 +287,9 @@
                 <button class="filter-tag" data-filter="isWheelchair">車椅子対応</button>
                 <button class="filter-tag" data-filter="hasDiaper">おむつ交換台</button>
                 <button class="filter-tag" data-filter="hasPaper">清潔</button>
+                <button class="filter-tag" data-filter="EmergencyBell">非常ベール</button>
+                <button class="filter-tag" data-filter="Accessible Restroom">多目的トイレ</button>
+                <button class="filter-tag" data-filter="Bidet">ビデ</button>
             </div>
         </div>
 
@@ -269,6 +480,51 @@
     });
 
     // ドロップダウン・トーストはheader.jsで管理
+</script>
+
+<script>
+    // ===== Splash Screen (세션당 1회만) =====
+    (function () {
+        const splash = document.getElementById('splash-screen');
+        if (!splash) return;
+
+        // 이미 본 경우 즉시 제거
+        if (sessionStorage.getItem('splashShown')) {
+            splash.remove();
+            return;
+        }
+
+        sessionStorage.setItem('splashShown', '1');
+        setTimeout(function () {
+            splash.classList.add('splash-out');
+            setTimeout(function () {
+                splash.remove();
+                // 위치 동의 팝업 표시
+                document.getElementById('location-modal').classList.add('show');
+            }, 750);
+        }, 2800);
+    })();
+
+    function allowLocation() {
+        dismissLocationModal();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (pos) { /* app.js가 지도 중심 이동 처리 */ },
+                function (err) { console.warn('位置情報が拒否されました:', err); }
+            );
+        }
+    }
+
+    function dismissLocationModal() {
+        const modal = document.getElementById('location-modal');
+        modal.style.transition = 'opacity 0.25s ease';
+        modal.style.opacity = '0';
+        setTimeout(function () {
+            modal.classList.remove('show');
+            modal.style.opacity = '';
+            modal.style.transition = '';
+        }, 250);
+    }
 </script>
 </body>
 </html>

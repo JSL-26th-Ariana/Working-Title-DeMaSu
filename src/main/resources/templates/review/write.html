@@ -4,61 +4,366 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レビューを書く - デマス</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/review-write.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            background: #F5F5F5;
+            min-height: calc(100vh / 0.9);
+            display: flex;
+            flex-direction: column;
+            zoom: 0.9;
+        }
+
+        /* ─── 페이지 헤더 ─── */
+        .page-header {
+            padding: 28px 24px 32px;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        /* 화장실 정보 카드 (카드 위) */
+        .toilet-info-card {
+            background: white;
+            border-radius: 14px;
+            padding: 16px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .toilet-info-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        .toilet-info-text { flex: 1; }
+        .toilet-info-card .label {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #00C896;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .toilet-info-card .toilet-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 2px;
+        }
+        .toilet-info-card .toilet-addr {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* ─── 본문 영역 ─── */
+        .container {
+            max-width: 720px;
+            margin: 32px auto 56px;
+            padding: 0 16px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 36px 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            margin-bottom: 20px;
+        }
+
+        /* ─── 에러 메시지 ─── */
+        .error-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            color: #e53e3e;
+            font-size: 13px;
+        }
+
+        /* ─── 폼 그룹 공통 ─── */
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label,
+        .score-section label,
+        .image-upload-section label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .required { color: #e53e3e; }
+
+        /* ─── 구분선 ─── */
+        .divider {
+            height: 1px;
+            background: #F0F0F0;
+            margin: 4px 0 24px;
+        }
+
+        /* ─── 별점 ─── */
+        .score-section { margin-bottom: 24px; }
+        .star-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .star-group .star {
+            font-size: 32px;
+            cursor: pointer;
+            color: #E0E0E0;
+            transition: color 0.15s ease, transform 0.15s ease;
+            user-select: none;
+        }
+        .star-group .star:hover,
+        .star-group .star.active { color: #f59e0b; }
+        .star-group .star:hover { transform: scale(1.15); }
+        .score-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #999;
+            margin-left: 8px;
+        }
+
+        /* ─── 태그 ─── */
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag-btn {
+            padding: 7px 15px;
+            border-radius: 20px;
+            border: 1.5px solid #E0E0E0;
+            background: white;
+            font-size: 12px;
+            font-weight: 500;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+        .tag-btn:hover { border-color: #00C896; color: #00C896; }
+        .tag-btn.selected { background: #00C896; border-color: #00C896; color: white; }
+        .tag-btn .tag-emoji { margin-right: 4px; }
+
+        /* ─── 텍스트 입력 ─── */
+        .input-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #FAFAFA;
+            border: 1.5px solid #E8E8E8;
+            border-radius: 10px;
+            padding: 12px 14px;
+            transition: border-color 0.15s;
+        }
+        .input-group:focus-within { border-color: #00C896; }
+        .input-group .input-emoji { color: #BBBBBB; margin-top: 2px; flex-shrink: 0; font-size: 16px; }
+        .input-group textarea {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            color: #333;
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+            width: 100%;
+        }
+        .input-group textarea::placeholder { color: #BBBBBB; }
+        .char-count {
+            text-align: right;
+            font-size: 11px;
+            color: #BBBBBB;
+            margin-top: 4px;
+        }
+
+        /* ─── 이미지 업로드 ─── */
+        .image-upload-section { margin-bottom: 24px; }
+        .upload-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .upload-label-row label {
+            margin-bottom: 0 !important;
+        }
+        .upload-notice-inline {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .drop-zone {
+            border: 2px dashed #E0E0E0;
+            border-radius: 12px;
+            padding: 28px 20px;
+            text-align: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+        .drop-zone:hover,
+        .drop-zone.dragover { border-color: #00C896; background: rgba(29,200,187,0.04); }
+        .drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .drop-zone-icon { font-size: 32px; color: #CCCCCC; margin-bottom: 10px; }
+        .drop-zone p { font-size: 13px; color: #AAAAAA; line-height: 1.6; }
+        .drop-zone span.highlight { color: #00C896; font-weight: 600; }
+        .drop-zone .file-limit { font-size: 11px; color: #CCCCCC; margin-top: 6px; }
+
+        /* 미리보기 */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .preview-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: #E8E8E8;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px; right: 5px;
+            background: rgba(0,0,0,0.55);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px; height: 22px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s ease;
+        }
+        .preview-item .remove-btn:hover { background: #e53e3e; }
+        .preview-count { font-size: 11px; color: #AAAAAA; margin-top: 6px; }
+
+        /* ─── 제출 버튼 ─── */
+        .review-notice {
+            font-size: 13px;
+            font-weight: 700;
+            color: #555;
+            text-align: center;
+            margin-bottom: 12px;
+            background: #FFFBF0;
+            border: 1px solid #FFE8A0;
+            border-radius: 10px;
+            padding: 10px 16px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00C896, #00A880);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(29,200,187,0.35);
+        }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ─── 반응형 ─── */
+        @media (max-width: 600px) {
+            .card { padding: 24px 18px; }
+            .page-title { font-size: 26px; }
+            .preview-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 400px) {
+            .preview-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Header + Toast (共通フラグメント) -->
 <div th:replace="~{fragments/header :: headerAndToast}"></div>
 
-<div class="review-container">
+<!-- 페이지 헤더 -->
+<div class="page-header">
+    <h1 class="page-title">レビューを書く</h1>
+    <p class="page-subtitle">トイレの清潔さや使いやすさについて教えてください。</p>
+</div>
 
-    <!-- ── 왼쪽: 비주얼 영역 ── -->
-    <div class="review-visual">
-        <div class="visual-content">
-            <i class="fas fa-star visual-icon"></i>
-            <h1>レビューを書く</h1>
-            <p>あなたの体験を共有して<br>みんなの旅をサポートしよう。</p>
+<!-- 폼 카드 -->
+<div class="container">
+    <div class="card">
 
-            <!-- 화장실 정보 카드 -->
-            <div class="toilet-info-card" th:if="${toilet}">
+        <!-- 화장실 정보 카드 -->
+        <div class="toilet-info-card" th:if="${toilet}">
+            <span class="toilet-info-icon">🚻</span>
+            <div class="toilet-info-text">
                 <div class="label">レビュー対象</div>
                 <div class="toilet-name" th:text="${toilet.name}">トイレ名</div>
                 <div class="toilet-addr" th:text="${toilet.address}">住所</div>
             </div>
-
-            <!-- 더미 데이터 -->
-            <div class="toilet-info-card" th:unless="${toilet}">
+        </div>
+        <div class="toilet-info-card" th:unless="${toilet}">
+            <span class="toilet-info-icon">🚻</span>
+            <div class="toilet-info-text">
                 <div class="label">レビュー対象</div>
                 <div class="toilet-name">スターバックス 江南駅店</div>
                 <div class="toilet-addr">ソウル特別市 江南区 江南大路 390</div>
             </div>
-
-        </div>
-        <div class="visual-decoration">
-            <div class="circle circle-1"></div>
-            <div class="circle circle-2"></div>
-            <div class="circle circle-3"></div>
-        </div>
-    </div>
-
-    <!-- ── 오른쪽: 폼 영역 ── -->
-    <div class="review-form-area">
-        <div class="form-header">
-            <a th:href="@{/toilet/{id}(id=${toiletId})}" href="#" class="back-link">
-                <i class="fas fa-arrow-left"></i> 戻る
-            </a>
-            <h2>レビューを書く</h2>
-            <p>トイレの清潔さや使いやすさについて教えてください。</p>
         </div>
 
         <!-- 에러 메시지 -->
         <div class="error-message" th:if="${error}" style="display:flex;">
-            <i class="fas fa-exclamation-circle"></i>
+            <span>⚠️</span>
             <span th:text="${error}"></span>
         </div>
 
@@ -87,16 +392,18 @@
 
             <!-- ② 一言タグ -->
             <div class="form-group">
-                <label>ひとことタグ <span style="color:var(--gray-400);font-weight:400;">(複数選択可)</span></label>
+                <label>ひとことタグ <span style="color:#BBBBBB;font-weight:400;">(複数選択可)</span></label>
                 <div class="tag-group" id="tagGroup">
-                    <button type="button" class="tag-btn" data-tag="清潔"><i class="fas fa-soap"></i>清潔</button>
-                    <button type="button" class="tag-btn" data-tag="広い"><i class="fas fa-expand-arrows-alt"></i>広い</button>
-                    <button type="button" class="tag-btn" data-tag="匂いあり"><i class="fas fa-wind"></i>匂いあり</button>
-                    <button type="button" class="tag-btn" data-tag="紙あり"><i class="fas fa-toilet-paper"></i>紙あり</button>
-                    <button type="button" class="tag-btn" data-tag="混雑"><i class="fas fa-people-arrows"></i>混雑</button>
-                    <button type="button" class="tag-btn" data-tag="バリアフリー"><i class="fas fa-wheelchair"></i>バリアフリー</button>
-                    <button type="button" class="tag-btn" data-tag="洗面台あり"><i class="fas fa-sink"></i>洗面台あり</button>
-                    <button type="button" class="tag-btn" data-tag="ウォシュレット"><i class="fas fa-tint"></i>ウォシュレット</button>
+                    <button type="button" class="tag-btn" data-tag="石鹸"><span class="tag-emoji">🧼</span>石鹸</button>
+                    <button type="button" class="tag-btn" data-tag="清潔"><span class="tag-emoji">🧹</span>清潔</span></button>
+                    <button type="button" class="tag-btn" data-tag="多目的トイレ"><span class="tag-emoji">🧑‍🧑‍🧒‍🧒</span>多目的トイレ</button>
+                    <button type="button" class="tag-btn" data-tag="おむつ交換台"><span class="tag-emoji">👶</span>おむつ交換台</button>
+                    <button type="button" class="tag-btn" data-tag="トイレットペーパー"><span class="tag-emoji">🧻</span>トイレットペーパー</button>
+                    <button type="button" class="tag-btn" data-tag="混雑"><span class="tag-emoji">👥</span>混雑</button>
+                    <button type="button" class="tag-btn" data-tag="バリアフリー"><span class="tag-emoji">♿</span>バリアフリー</button>
+                    <button type="button" class="tag-btn" data-tag="洗面台"><span class="tag-emoji">🚿</span>洗面台</button>
+                    <button type="button" class="tag-btn" data-tag="ビデ"><span class="tag-emoji">🚽</span>ビデ</button>
+
                 </div>
                 <input type="hidden" name="tags" id="tagsInput">
             </div>
@@ -105,7 +412,6 @@
             <div class="form-group">
                 <label>レビュー内容 <span class="required">*</span></label>
                 <div class="input-group textarea-group">
-                    <i class="fas fa-pen-to-square"></i>
                     <textarea name="content" id="contentInput"
                               placeholder="清潔さ、使いやすさ、混雑具合など、気づいたことを書いてください。"
                               required maxlength="500"></textarea>
@@ -115,17 +421,15 @@
 
             <!-- ④ 画像アップロード -->
             <div class="image-upload-section">
-                <label>写真を追加 <span style="color:var(--gray-400);font-weight:400;">(最大5枚)</span></label>
+                <div class="upload-label-row">
+                    <label>写真を追加</label>
+                    <span class="upload-notice-inline">⚠️場所と関係のない内容や、他人の顔が写った写真はお控えください。</span>
+                </div>
                 <div class="drop-zone" id="dropZone">
                     <input type="file" name="files" id="fileInput" accept="image/*" multiple>
-                    <div class="drop-zone-icon"><i class="fas fa-image"></i></div>
+                    <div class="drop-zone-icon">🖼️</div>
                     <p><span class="highlight">クリックして選択</span>、またはここにドラッグ＆ドロップ</p>
                     <p class="file-limit">PNG, JPG, WEBP ／ 1ファイル最大5MB ／ 最大5枚</p>
-
-                    <p class="upload-notice">
-                        <i class="fas fa-circle-info"></i>
-                        場所と関係のない内容や、他人の顔が写った写真の投稿はお控えください。
-                    </p>
                 </div>
                 <div class="preview-grid" id="previewGrid"></div>
                 <div class="preview-count" id="previewCount"></div>
@@ -133,18 +437,18 @@
 
             <!-- ⑤ 送信ボタン -->
             <p class="review-notice">
-                <i class="fas fa-triangle-exclamation"></i>
-                不適切なレビューは削除される場合があります。
+                ⚠️ 不適切なレビューは削除される場合があります。
             </p>
 
             <button type="submit" class="btn-submit" id="submitBtn">
-                <i class="fas fa-paper-plane"></i> レビューを投稿する
+                レビューを投稿する
             </button>
 
         </form>
     </div>
-
 </div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 <script>
     /* ─── 1. 별점 ─── */
@@ -234,9 +538,7 @@
                 item.className = 'preview-item';
                 item.innerHTML = `
                     <img src="${e.target.result}" alt="preview">
-                    <button type="button" class="remove-btn" onclick="removeFile(${index})">
-                        <i class="fas fa-times"></i>
-                    </button>`;
+                    <button type="button" class="remove-btn" onclick="removeFile(${index})">✕</button>`;
                 previewGrid.appendChild(item);
             };
             reader.readAsDataURL(file);
@@ -254,10 +556,9 @@
         }
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 投稿中...';
+        btn.innerHTML = '⏳ 投稿中...';
     });
 </script>
-<!-- 共通ヘッダーJS -->
 <script src="/js/header.js"></script>
 </body>
 </html>

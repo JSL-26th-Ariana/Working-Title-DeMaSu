@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     background: linear-gradient(135deg, #E8F5F1 0%, #D4EDE5 100%);
     min-height: 100vh;
     display: flex;
@@ -159,7 +159,7 @@ body {
     border: 1px solid #E0E0E0;
     border-radius: 6px;
     font-size: 14px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: border-color 0.2s;
 }
 

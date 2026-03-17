@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     background: #F5F5F5;
     min-height: 100vh;
     display: flex;
@@ -66,7 +66,7 @@ body {
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     text-decoration: none;
     transition: all 0.2s;
 }
@@ -83,7 +83,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     padding: 8px 16px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: color 0.2s;
 }
 
@@ -100,7 +100,7 @@ body {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     text-decoration: none;
     display: inline-block;
     transition: background 0.2s;
@@ -295,7 +295,7 @@ body {
     outline: none;
     font-size: 14px;
     color: #1A1A1A;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .sidebar-search-box input::placeholder {
@@ -316,7 +316,7 @@ body {
     font-size: 12px;
     color: #666;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: all 0.2s;
     white-space: nowrap;
 }
@@ -384,7 +384,7 @@ body {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     box-shadow: 0 4px 15px rgba(0, 200, 150, 0.3);
     transition: all 0.2s;
     white-space: nowrap;
@@ -817,7 +817,7 @@ body {
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .btn-write-review:hover {
@@ -998,7 +998,7 @@ body {
     min-width: 220px;
     max-width: 300px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .iw-title {
@@ -1087,7 +1087,7 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     z-index: 20000;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .toast-notification.show {
@@ -1260,7 +1260,7 @@ body {
     border: 1px solid #E0E0E0;
     border-radius: 8px;
     font-size: 14px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: border-color 0.2s;
 }
 
@@ -1313,7 +1313,7 @@ body {
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     margin-bottom: 20px;
     transition: background 0.2s;
 }
@@ -1358,7 +1358,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     margin-bottom: 20px;
     transition: background 0.2s;
 }
@@ -1406,7 +1406,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: all 0.2s;
     white-space: nowrap;
 }
@@ -1435,7 +1435,7 @@ body {
     font-size: 14px;
     font-weight: 500;
     color: #1A1A1A;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: background 0.2s;
 }
 
@@ -1492,7 +1492,7 @@ body {
     font-size: 14px;
     font-weight: 500;
     transition: background 0.15s;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .dropdown-item:hover {
@@ -1600,7 +1600,7 @@ body {
     border-bottom: 2px solid transparent;
     margin-bottom: -2px;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: all 0.2s;
 }
 
@@ -1639,7 +1639,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     text-decoration: none;
     color: #333;
 }
@@ -1710,7 +1710,7 @@ body {
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     transition: all 0.2s;
 }
 
@@ -1733,7 +1733,7 @@ body {
     border: 1px solid #E0E0E0;
     border-radius: 6px;
     font-size: 12px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     color: #333;
     background: white;
     cursor: pointer;
@@ -1752,7 +1752,7 @@ body {
     cursor: pointer;
     padding: 4px 8px;
     transition: color 0.2s;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .review-report-btn:hover {
@@ -1859,7 +1859,7 @@ body {
     color: #666;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .edit-cat-btn:hover {
@@ -1904,7 +1904,7 @@ body {
     border: 1.5px solid #E0E0E0;
     border-radius: 10px;
     font-size: 14px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     color: #333;
     resize: vertical;
     min-height: 120px;
@@ -1939,7 +1939,7 @@ body {
     color: white;
     font-size: 14px;
     font-weight: 600;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;

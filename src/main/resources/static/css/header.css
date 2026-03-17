@@ -1,7 +1,7 @@
 /* ============================================
    デマス 共通ヘッダー CSS
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
 
 .header {
     background: white;
@@ -13,7 +13,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
 }
 
 .logo {
@@ -57,7 +58,8 @@
     font-weight: 500;
     cursor: pointer;
     text-decoration: none;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
     transition: all 0.2s;
     white-space: nowrap;
 }
@@ -75,7 +77,8 @@
     font-weight: 500;
     cursor: pointer;
     padding: 8px 16px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
     transition: color 0.2s;
 }
 
@@ -92,7 +95,8 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
     text-decoration: none;
     display: inline-block;
     transition: background 0.2s;
@@ -119,7 +123,8 @@
     font-size: 14px;
     font-weight: 500;
     color: #1A1A1A;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
     transition: background 0.2s;
 }
 
@@ -176,7 +181,8 @@
     font-size: 14px;
     font-weight: 500;
     transition: background 0.15s;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
 }
 
 .dropdown-item:hover {
@@ -211,7 +217,8 @@
     border-radius: 24px;
     font-size: 14px;
     font-weight: 500;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', sans-serif;
+    line-height: 1.6;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;

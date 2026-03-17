@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿したレビュー - デマス</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
     <link rel="stylesheet" th:href="@{/css/mypage.css}">
@@ -23,18 +23,12 @@
 <main class="mypage-main">
     <div class="mypage-container">
 
-        <nav class="mp-breadcrumb">
-            <a th:href="@{/mypage}">マイページ</a>
-            <span>›</span>
-            <span>投稿したレビュー</span>
-        </nav>
-
         <!-- 리뷰 없을 때 -->
         <div th:if="${#lists.isEmpty(reviews)}" class="mp-empty-state">
-            <div class="mp-empty-icon">⭐</div>
+            <div class="mp-empty-icon">📝</div>
             <p class="mp-empty-title">まだレビューがありません</p>
-            <p class="mp-empty-desc">トイレを利用したらレビューを書いてみましょう！</p>
-            <a th:href="@{/}" class="mp-btn-edit">🗺️ マップを見る</a>
+            <p class="mp-empty-desc">みんなのために、レビューを残しませんか？</p>
+            <a th:href="@{/}" class="mp-btn-edit">マップを見る</a>
         </div>
 
         <!-- 리뷰 목록 -->
@@ -53,8 +47,7 @@
                     <!-- 별점 -->
                     <div class="mp-review-score">
             <span th:each="i : ${#numbers.sequence(1, 5)}"
-                  th:classappend="${i <= T(java.lang.Integer).parseInt(review.cleanScore)} ? 'filled' : ''"
-                  class="mp-star">★</span>
+                  th:class="${review.cleanScore != null and review.cleanScore.compareTo(i.toString()) >= 0} ? 'mp-star filled' : 'mp-star'">★</span>
                         <span class="mp-score-number" th:text="${review.cleanScore}">5</span>
                     </div>
                 </div>
@@ -70,22 +63,19 @@
 
                 <!-- 카드 푸터 -->
                 <div class="mp-review-footer">
-    <span class="mp-review-date">
-        📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
-    </span>
-
+                    <span class="mp-review-date">
+                        📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
+                    </span>
                     <div class="mp-review-actions" style="display: flex; gap: 8px;">
                         <a th:href="@{/review/edit/{id}(id=${review.id})}" class="mp-btn-edit">
-                            <i class="fas fa-pen"></i>修正
+                            ✏️ 修正
                         </a>
-
                         <button type="button" class="btn-delete"
                                 th:data-id="${review.id}"
                                 th:data-toilet-id="${review.toiletId}"
                                 style="padding: 6px 12px; font-size: 13px; border-radius: 8px;">
-                            <i class="fas fa-trash"></i>削除
+                            🗑️ 削除
                         </button>
-
                         <a th:href="@{/(toiletId=${review.toiletId})}" class="mp-btn-link">
                             詳細を見る →
                         </a>

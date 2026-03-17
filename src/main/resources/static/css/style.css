@@ -35,11 +35,24 @@
 }
 
 body {
-    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--gray-900);
     background: var(--bg);
     overflow: hidden;
     height: 100vh;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ─── 전역 타이포그래피 ─── */
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+}
+
+p, span, label, li, td, th {
+    line-height: 1.6;
 }
 
 /* ========== 앱 컨테이너 ========== */
@@ -781,7 +794,7 @@ body {
     min-width: 220px;
     max-width: 300px;
     box-shadow: var(--shadow-lg);
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .iw-title {

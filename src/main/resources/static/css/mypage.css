@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
+/* 폰트는 각 HTML head에서 로드 */
 
 * {
     margin: 0;
@@ -7,10 +7,10 @@
 }
 
 body {
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     background-color: #F5F5F5;
     color: #1A1A1A;
-    min-height: 100vh;
+    min-height: calc(100vh / 0.9);
     display: flex;
     flex-direction: column;
     zoom: 0.9;
@@ -31,18 +31,18 @@ body {
 
 /* ── 페이지 헤더 ── */
 .page-header {
-    padding: 12px 24px 24px;
+    padding: 28px 24px 32px;
     text-align: center;
 }
 .page-title {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 800;
     color: #1A1A1A;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
 }
 .page-subtitle {
-    font-size: 13px;
-    color: #888;
+    font-size: 14px;
+    color: #aaa;
 }
 
 /* ── 페이지 래퍼 ── */
@@ -164,7 +164,7 @@ body {
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     font-size: 14px;
     color: #6b7280;
     cursor: pointer;
@@ -221,7 +221,7 @@ body {
     padding: 10px 14px;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     font-size: 14px;
     color: #111827;
     background: #fff;
@@ -330,7 +330,7 @@ body {
     color: #fff;
     border: none;
     border-radius: 10px;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -345,7 +345,7 @@ body {
     color: #ef4444;
     border: 1.5px solid #ef4444;
     border-radius: 10px;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -382,6 +382,7 @@ footer {
     padding: 40px 20px 0px;
     margin-top: auto;
     border-top: 1px solid #E8E8E8;
+    flex-shrink: 0;
 }
 
 .footer-content {
@@ -488,6 +489,9 @@ footer {
 body.mypage {
     overflow: auto !important;
     height: auto !important;
+    min-height: calc(100vh / 0.9) !important;
+    display: flex !important;
+    flex-direction: column !important;
     background: #f5f5f5;
 }
 
@@ -617,7 +621,10 @@ body.mypage {
 }
 
 /* ---- 메인 영역 ---- */
-.mypage-main { padding: 32px 20px 60px; }
+.mypage-main {
+    padding: 32px 20px 60px;
+    flex: 1;
+}
 
 .mypage-container {
     max-width: 800px;
@@ -646,6 +653,7 @@ body.mypage {
 .mp-page-title h1 {
     font-size: 20px;
     font-weight: 700;
+    letter-spacing: 0.05em;
     color: #222;
     margin: 0;
     display: flex;
@@ -850,7 +858,7 @@ body.mypage {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     font-size: 14px;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'LINESeedJP_OTF', sans-serif;
     color: #333;
     background: #fff;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -884,7 +892,7 @@ body.mypage {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 10px 24px; background: #00C896; color: #fff;
     border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
-    cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: background 0.2s;
+    cursor: pointer; font-family: 'LINESeedJP_OTF', sans-serif; transition: background 0.2s;
 }
 
 .mp-btn-save:hover { background: #00B385; }
@@ -955,7 +963,7 @@ body.mypage {
 .mp-input-with-toggle input {
     flex: 1; padding: 10px 44px 10px 14px;
     border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s; font-family: 'Noto Sans JP', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s; font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .mp-input-with-toggle input:focus {
