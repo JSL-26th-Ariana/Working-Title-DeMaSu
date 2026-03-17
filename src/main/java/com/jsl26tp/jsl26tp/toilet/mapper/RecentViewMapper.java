@@ -16,4 +16,7 @@ public interface RecentViewMapper {
 
     // 조회 기록 삭제
     void deleteByUserId(@Param("userId") Long userId);
+
+    // 개별 삭제 추가
+    void deleteByToiletId(@Param("userId") Long userId, @Param("toiletId") Long toiletId);
 }

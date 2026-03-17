@@ -21,4 +21,9 @@ public class RecentViewService {
     public void deleteByUserId(Long userId) {
         recentViewMapper.deleteByUserId(userId);
     }
+
+    // 개별 삭제
+    public void deleteByToiletId(Long userId, Long toiletId) {
+        recentViewMapper.deleteByToiletId(userId, toiletId);
+    }
 }
