@@ -23,6 +23,12 @@
 <main class="mypage-main">
     <div class="mypage-container">
 
+        <nav class="mp-breadcrumb">
+            <a th:href="@{/mypage}">マイページ</a>
+            <span>›</span>
+            <span>投稿したレビュー</span>
+        </nav>
+
         <!-- 리뷰 없을 때 -->
         <div th:if="${#lists.isEmpty(reviews)}" class="mp-empty-state">
             <div class="mp-empty-icon">📝</div>
@@ -40,7 +46,7 @@
                 <div class="mp-review-header">
                     <div class="mp-review-toilet-name">
                         🚻
-                        <a th:href="@{/toilet/{id}(id=${review.toiletId})}"
+                        <a th:href="@{/(toiletId=${review.toiletId})}"
                            style="color:#222; text-decoration:none;"
                            th:text="'トイレ #' + ${review.toiletId}">トイレ名</a>
                     </div>
