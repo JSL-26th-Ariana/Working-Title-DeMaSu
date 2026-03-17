@@ -437,4 +437,20 @@
         WHERE id = #{id}
     </update>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- 5. 화장실 삭제 (관리자 강제 삭제)                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <!--
+    화장실 소프트 삭제
+    - deleted_at = NOW() 로 삭제 처리 (물리 삭제 아님)
+    - 이후 deleted_at IS NULL 조건이 붙는 모든 조회에서 자동 제외됨
+    -->
+    <update id="deleteToilet">
+        UPDATE toilets
+        SET deleted_at = NOW()
+        WHERE id = #{id}
+          AND deleted_at IS NULL
+    </update>
+
 </mapper>
