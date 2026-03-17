@@ -123,6 +123,17 @@ public class UserService {
         userMapper.updatePassword(id, passwordEncoder.encode(newPassword));
     }
 
+    // 프로필 아이콘 선택 (프리셋 아이콘)
+    public void updateProfileIcon(Long userId, String iconName) {
+        String iconUrl = "/images/profiles/" + iconName + ".png";
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
+        user.setIconUrl(iconUrl);
+        userMapper.updateUser(user);
+    }
+
     // 프로필 이미지 저장
     public String saveProfileImage(MultipartFile file) {
         if (file == null || file.isEmpty()) return null;

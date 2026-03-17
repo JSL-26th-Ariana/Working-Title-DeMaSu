@@ -118,4 +118,14 @@ public class UserController {
         model.addAttribute("inquiries", inquiryService.findByWriterId(user.getId()));
         return "mypage/inquiries";
     }
+
+    // 8. 프로필 아이콘 선택 (POST /mypage/api/icon)
+    @PostMapping("/api/icon")
+    @ResponseBody
+    public ApiResponse<String> updateProfileIcon(@AuthenticationPrincipal UserDetails userDetails,
+                                                  @RequestParam String iconName) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        userService.updateProfileIcon(user.getId(), iconName);
+        return ApiResponse.ok("OK");
+    }
 }
