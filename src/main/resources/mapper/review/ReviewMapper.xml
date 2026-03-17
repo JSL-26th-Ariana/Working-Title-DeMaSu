@@ -33,6 +33,7 @@
     <update id="updateReview" parameterType="Review">
         UPDATE reviews
         SET clean_score = #{cleanScore},
+            tags = #{tags},
             content     = #{content}
         WHERE id = #{id}
     </update>
