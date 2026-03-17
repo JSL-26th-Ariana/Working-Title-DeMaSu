@@ -74,7 +74,7 @@ public class ReviewService {
 
             ReviewImage image = new ReviewImage();
             image.setReviewId(review.getId());
-            image.setImageUrl("/upload/review/" + uniqueName);
+            image.setImageUrl("/uploads/review/" + uniqueName);
 
             reviewImageMapper.insertImage(image);
 
