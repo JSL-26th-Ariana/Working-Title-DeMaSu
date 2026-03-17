@@ -31,7 +31,7 @@ public class AdminService {
     private final ToiletEditRequestMapper editRequestMapper;
 
     /** 페이지당 표시 건수 (모든 목록 공통) */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 10;
 
     // =====================================================================
     // 1. 회원 관리 (FR-SCR004-1: 회원 정지, FR-SCR004-2: 계정 삭제)
