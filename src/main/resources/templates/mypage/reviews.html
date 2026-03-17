@@ -53,7 +53,7 @@
                     <!-- 별점 -->
                     <div class="mp-review-score">
             <span th:each="i : ${#numbers.sequence(1, 5)}"
-                  th:classappend="${#strings.equals(review.cleanScore, T(String).valueOf(i))} ? 'mp-star filled' : 'mp-star'"
+                  th:classappend="${i <= T(java.lang.Integer).parseInt(review.cleanScore)} ? 'filled' : ''"
                   class="mp-star">★</span>
                         <span class="mp-score-number" th:text="${review.cleanScore}">5</span>
                     </div>
@@ -70,12 +70,26 @@
 
                 <!-- 카드 푸터 -->
                 <div class="mp-review-footer">
-          <span class="mp-review-date">
-            📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
-          </span>
-                    <a th:href="@{/toilet/{id}(id=${review.toiletId})}" class="mp-btn-link">
-                        詳細を見る →
-                    </a>
+    <span class="mp-review-date">
+        📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
+    </span>
+
+                    <div class="mp-review-actions" style="display: flex; gap: 8px;">
+                        <a th:href="@{/review/edit/{id}(id=${review.id})}" class="mp-btn-edit">
+                            <i class="fas fa-pen"></i>修正
+                        </a>
+
+                        <button type="button" class="btn-delete"
+                                th:data-id="${review.id}"
+                                th:data-toilet-id="${review.toiletId}"
+                                style="padding: 6px 12px; font-size: 13px; border-radius: 8px;">
+                            <i class="fas fa-trash"></i>削除
+                        </button>
+
+                        <a th:href="@{/(toiletId=${review.toiletId})}" class="mp-btn-link">
+                            詳細を見る →
+                        </a>
+                    </div>
                 </div>
 
             </div>
@@ -85,6 +99,47 @@
 </main>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script>
+    function showAlert(msg, type = 'success') {
+        document.querySelectorAll('.mp-alert').forEach(el => el.remove());
+
+        const icon  = type === 'success' ? 'fa-circle-check' : 'fa-circle-xmark';
+        const alert = document.createElement('div');
+        alert.className = `mp-alert mp-alert-${type}`;
+        alert.innerHTML = `<i class="fas ${icon}"></i>${msg}`;
+
+        const breadcrumb = document.querySelector('.mp-breadcrumb');
+        breadcrumb.insertAdjacentElement('afterend', alert);
+
+        setTimeout(() => alert.remove(), 3000);
+    }
+
+    // 삭제
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', function () {
+            if (!confirm('このレビューを削除しますか？')) return;
+
+            const id   = this.dataset.id;
+            const card = this.closest('.mp-review-card');
+
+            fetch(`/review/api/${id}/delete`, { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        card.style.transition = 'opacity 0.3s';
+                        card.style.opacity = '0';
+                        setTimeout(() => card.remove(), 300);
+                        showAlert('レビューを削除しました。');
+                    } else {
+                        showAlert('削除に失敗しました。', 'error');
+                    }
+                })
+                .catch(() => showAlert('削除に失敗しました。', 'error'));
+        });
+    });
+</script>
+
 
 <script th:src="@{/js/app.js}"></script>
 <script th:src="@{/js/header.js(v=1)}"></script>
