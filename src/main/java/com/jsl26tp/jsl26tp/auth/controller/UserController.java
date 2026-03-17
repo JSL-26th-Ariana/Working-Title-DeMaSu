@@ -119,7 +119,17 @@ public class UserController {
         return "mypage/inquiries";
     }
 
-    // 8. 최근 본 화장실 개별 삭제 (DELETE /mypage/recent/{toiletId})
+    // 8. 프로필 아이콘 선택 (POST /mypage/api/icon)
+    @PostMapping("/api/icon")
+    @ResponseBody
+    public ApiResponse<String> updateProfileIcon(@AuthenticationPrincipal UserDetails userDetails,
+                                                  @RequestParam String iconName) {
+        User user = userService.findByUsername(userDetails.getUsername());
+        userService.updateProfileIcon(user.getId(), iconName);
+        return ApiResponse.ok("OK");
+    }
+
+    // 9. 최근 본 화장실 개별 삭제 (DELETE /mypage/recent/{toiletId})
     @DeleteMapping("/recent/{toiletId}")
     @ResponseBody
     public ApiResponse<Void> deleteRecentView(@AuthenticationPrincipal UserDetails userDetails,
@@ -129,7 +139,7 @@ public class UserController {
         return ApiResponse.ok(null);
     }
 
-    // 9. 최근 본 화장실 전체 삭제 (DELETE /mypage/recent)
+    // 10. 최근 본 화장실 전체 삭제 (DELETE /mypage/recent)
     @DeleteMapping("/recent")
     @ResponseBody
     public ApiResponse<Void> deleteAllRecentViews(@AuthenticationPrincipal UserDetails userDetails) {
