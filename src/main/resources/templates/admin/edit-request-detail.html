@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 페이지 타이틀: 화장실 이름 동적 설정 -->
-    <title th:text="${toilet.name} + ' - デマス'">トイレ詳細 - デマス</title>
+    <title>修正提案詳細 - デマス</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/footer.css">
@@ -69,12 +68,12 @@
         .content {
             flex: 1;
             padding: 24px 32px 48px;
-            max-width: 860px;
+            max-width: 900px;
             width: 100%;
             margin: 0 auto;
         }
 
-        /* ── 상단 행: 뒤로 가기 버튼 + 承認/却下 버튼 ── */
+        /* ── 상단 행: 뒤로 가기 버튼 + 승인/거절 버튼 ── */
         .top-row {
             display: flex;
             justify-content: space-between;
@@ -92,7 +91,7 @@
         .btn-back:hover { border-color: #00C896; color: #00C896; }
         .action-row { display: flex; gap: 8px; }
 
-        /* ── Card (dashboard.html과 동일) ── */
+        /* ── Card ── */
         .card {
             background: white;
             border-radius: 16px;
@@ -121,16 +120,14 @@
         }
         .detail-value { font-size: 14px; color: #333; }
 
-        /* ── 편의시설 태그 목록 ── */
-        .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
-        .tag {
-            padding: 4px 12px; border-radius: 20px;
-            font-size: 12px; font-weight: 700;
-            background: #E8F5F1; color: #007A5E;
+        /* ── 수정 내용 본문: 줄바꿈 보존 ── */
+        .content-text {
+            font-size: 14px; color: #333;
+            white-space: pre-wrap; /* 줄바꿈 그대로 렌더링 */
+            line-height: 1.6;
         }
-        .tag-none { font-size: 13px; color: #BBB; }
 
-        /* ── Status Badge (dashboard.html과 동일) ── */
+        /* ── Status Badge ── */
         .badge {
             display: inline-block; padding: 4px 12px;
             border-radius: 20px; font-size: 12px; font-weight: 700;
@@ -153,13 +150,14 @@
         }
         .btn-reject:hover { background: #E53E3E; color: white; }
 
-        /* ── 삭제 버튼 (강제 삭제 — 상태와 무관하게 항상 표시) ── */
-        .btn-delete {
-            padding: 9px 22px; border: 1.5px solid #999; color: #999;
-            background: none; border-radius: 8px; font-size: 13px; font-weight: 700;
-            cursor: pointer; font-family: 'M PLUS Rounded 1c', sans-serif; transition: all 0.15s;
+        /* ── 편의시설 태그 ── */
+        .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 12px; font-weight: 700;
+            background: #E8F5F1; color: #007A5E;
         }
-        .btn-delete:hover { background: #999; color: white; }
+        .tag-none { font-size: 13px; color: #BBB; }
     </style>
 </head>
 <body>
@@ -198,9 +196,9 @@
 <!-- ── Content ── -->
 <div class="content">
 
-    <!-- 상단 행: 뒤로 가기 버튼 + 상태에 따른 액션 버튼 -->
+    <!-- 상단 행: 뒤로 가기 버튼 + 상태에 따른 승인/거절 버튼 -->
     <div class="top-row">
-        <!-- ダッシュボードに戻る: 화장실 승인 탭으로 돌아감 -->
+        <!-- ダッシュボードに戻る -->
         <a href="/admin/dashboard" class="btn-back">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="m15 18-6-6 6-6"></path>
@@ -208,69 +206,71 @@
             ダッシュボードに戻る
         </a>
 
-        <div class="action-row">
-            <!-- PENDING 상태일 때만 承認/却下 버튼 표시 -->
-            <!-- th:onclick 대신 plain onclick 사용 (TOILET_ID는 아래 th:inline JS로 전달) -->
-            <th:block th:if="${toilet.status == 'PENDING'}">
-                <button class="btn-approve" onclick="approveToilet(TOILET_ID)">承認</button>
-                <button class="btn-reject"  onclick="rejectToilet(TOILET_ID)">却下</button>
-            </th:block>
-            <!-- 삭제 버튼: 상태와 무관하게 항상 표시 (소프트 삭제) -->
-            <button class="btn-delete" onclick="deleteToilet(TOILET_ID)">削除</button>
+        <!-- PENDING 상태일 때만 승인/거절 버튼 표시 -->
+        <!-- th:inline="javascript"로 ID를 전달하고 plain onclick에서 참조 -->
+        <div class="action-row" th:if="${editRequest.status == 'PENDING'}">
+            <button class="btn-approve" onclick="approveRequest(EDIT_REQUEST_ID)">承認</button>
+            <button class="btn-reject"  onclick="rejectRequest(EDIT_REQUEST_ID)">却下</button>
         </div>
     </div>
 
-    <!-- ── 화장실 기본 정보 카드 ── -->
+    <!-- ── 수정 제안 정보 카드 ── -->
     <div class="card">
         <div class="card-header">
-            <!-- 화장실 이름 + 승인 상태 배지 -->
-            <span class="card-title" th:text="${toilet.name}">トイレ名</span>
+            <span class="card-title">修正提案</span>
+            <!-- 현재 제안 상태 배지 -->
+            <span class="badge badge-suspended" th:if="${editRequest.status == 'PENDING'}">処理待ち</span>
+            <span class="badge badge-active"    th:if="${editRequest.status == 'APPROVED'}">承認済み</span>
+            <span class="badge badge-deleted"   th:if="${editRequest.status == 'REJECTED'}">却下済み</span>
+        </div>
+        <div class="detail-body">
+            <div class="detail-row">
+                <span class="detail-label">対象トイレ</span>
+                <!-- 화장실 이름 표시 (없으면 '-') -->
+                <span class="detail-value" th:text="${editRequest.toiletName} ?: '-'">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">提案者</span>
+                <!-- 제안자 닉네임 (탈퇴 회원이면 null 가능) -->
+                <span class="detail-value" th:text="${editRequest.nickname} ?: '(退会済み)'">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">申請日</span>
+                <!-- LocalDateTime → 날짜 부분만 표시 -->
+                <span class="detail-value"
+                      th:text="${editRequest.createdAt != null ? editRequest.createdAt.toString().substring(0, 10) : '-'}">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">修正内容</span>
+                <!-- 줄바꿈 보존을 위해 pre-wrap CSS 적용 -->
+                <span class="content-text" th:text="${editRequest.content} ?: '-'">-</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── 현재 화장실 정보 카드 (비교용) ── -->
+    <!-- 관리자가 제안 내용과 현재 정보를 비교해서 판단할 수 있도록 표시 -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">現在のトイレ情報（参考）</span>
+            <!-- 화장실 현재 상태 배지 -->
             <span class="badge badge-suspended" th:if="${toilet.status == 'PENDING'}">承認待ち</span>
             <span class="badge badge-active"    th:if="${toilet.status == 'APPROVED'}">承認済み</span>
             <span class="badge badge-deleted"   th:if="${toilet.status == 'REJECTED'}">却下済み</span>
         </div>
         <div class="detail-body">
             <div class="detail-row">
+                <span class="detail-label">トイレ名</span>
+                <span class="detail-value" th:text="${toilet.name} ?: '-'">-</span>
+            </div>
+            <div class="detail-row">
                 <span class="detail-label">住所</span>
                 <span class="detail-value" th:text="${toilet.address} ?: '-'">-</span>
             </div>
             <div class="detail-row">
-                <span class="detail-label">提報者</span>
-                <span class="detail-value" th:text="${toilet.byUserNickname} ?: '-'">-</span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">ステータス</span>
-                <span class="detail-value">
-                    <!-- 상태를 텍스트로 표시 -->
-                    <th:block th:if="${toilet.status == 'PENDING'}">承認待ち</th:block>
-                    <th:block th:if="${toilet.status == 'APPROVED'}">承認済み</th:block>
-                    <th:block th:if="${toilet.status == 'REJECTED'}">却下済み</th:block>
-                </span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">登録日</span>
-                <!-- LocalDateTime → 날짜 부분만 표시 -->
-                <span class="detail-value"
-                      th:text="${toilet.createdAt != null ? toilet.createdAt.toString().substring(0, 10) : '-'}">-</span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">緯度 / 経度</span>
-                <span class="detail-value"
-                      th:text="${toilet.latitude + ' / ' + toilet.longitude}">-</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── 편의시설 정보 카드 ── -->
-    <div class="card">
-        <div class="card-header">
-            <span class="card-title">設備情報</span>
-        </div>
-        <div class="detail-body">
-            <div class="detail-row">
                 <span class="detail-label">営業時間</span>
                 <span class="detail-value">
-                    <!-- 24시간 여부에 따라 분기 -->
+                    <!-- 24시간 여부 분기 -->
                     <th:block th:if="${toilet.is24hours}">24時間</th:block>
                     <th:block th:unless="${toilet.is24hours}" th:text="${toilet.openHours} ?: '-'">-</th:block>
                 </span>
@@ -286,7 +286,6 @@
             <div class="detail-row">
                 <span class="detail-label">設備</span>
                 <div class="detail-value">
-                    <!-- 각 편의시설을 태그로 표시 (true일 때만 태그 렌더링) -->
                     <div class="tag-list">
                         <span class="tag" th:if="${toilet.isWheelchair}">車椅子対応</span>
                         <span class="tag" th:if="${toilet.hasPaper}">ペーパーあり</span>
@@ -294,11 +293,15 @@
                         <span class="tag" th:if="${toilet.hasSanitary}">生理用品自販機</span>
                         <span class="tag" th:if="${toilet.hasDiaper}">おむつ交換台</span>
                         <span class="tag" th:if="${toilet.hasEmergency}">非常ベル</span>
-                        <!-- 편의시설이 하나도 없을 때 메시지 표시 -->
-                        <!-- null-safe 비교: Boolean null에 ! 연산자 적용 불가 → != true 로 대체 -->
+                        <!-- null-safe: Boolean null에 ! 연산자 불가 → != true 로 대체 -->
                         <span class="tag-none" th:if="${toilet.isWheelchair != true and toilet.hasPaper != true and toilet.hasSoap != true and toilet.hasSanitary != true and toilet.hasDiaper != true and toilet.hasEmergency != true}">設備情報なし</span>
                     </div>
                 </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">緯度 / 経度</span>
+                <span class="detail-value"
+                      th:text="${toilet.latitude + ' / ' + toilet.longitude}">-</span>
             </div>
         </div>
     </div>
@@ -308,10 +311,11 @@
 <!-- Footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<!-- Thymeleaf 인라인 JS: 서버에서 toilet.id를 JS 변수로 설정 -->
+<!-- Thymeleaf 인라인 JS: 서버에서 editRequest.id를 JS 변수로 설정 -->
+<!-- th:onclick 대신 이 방식 사용 (동적 ID 전달 안전한 패턴) -->
 <script th:inline="javascript">
-    /* [[${toilet.id}]] — 현재 화장실 ID (승인/반려 API 호출 시 사용) */
-    const TOILET_ID = /*[[${toilet.id}]]*/ 0;
+    /* [[${editRequest.id}]] — 현재 수정 제안 ID (승인/거절 API 호출 시 사용) */
+    const EDIT_REQUEST_ID = /*[[${editRequest.id}]]*/ 0;
 </script>
 
 <script>
@@ -324,11 +328,12 @@
         document.getElementById('adminDropdown').classList.remove('open');
     });
 
-    /* ── 화장실 승인: PENDING → APPROVED ──
+    /* ── 수정 제안 승인: PENDING → APPROVED ──
+       POST /api/admin/edit-requests/{id}/approve
        승인 후 대시보드로 리다이렉트 */
-    function approveToilet(id) {
-        if (!confirm('このトイレを承認しますか？地図に表示されます。')) return;
-        fetch(`/api/admin/toilets/${id}/approve`, { method: 'POST' })
+    function approveRequest(id) {
+        if (!confirm('この修正提案を承認しますか？')) return;
+        fetch(`/api/admin/edit-requests/${id}/approve`, { method: 'POST' })
             .then(r => r.json())
             .then(() => {
                 alert('承認しました。');
@@ -337,28 +342,15 @@
             .catch(() => alert('エラーが発生しました'));
     }
 
-    /* ── 화장실 반려: PENDING → REJECTED ──
-       반려 후 대시보드로 리다이렉트 */
-    function rejectToilet(id) {
-        if (!confirm('このトイレを却下しますか？')) return;
-        fetch(`/api/admin/toilets/${id}/reject`, { method: 'POST' })
+    /* ── 수정 제안 거절: PENDING → REJECTED ──
+       POST /api/admin/edit-requests/{id}/reject
+       거절 후 대시보드로 리다이렉트 */
+    function rejectRequest(id) {
+        if (!confirm('この修正提案を却下しますか？')) return;
+        fetch(`/api/admin/edit-requests/${id}/reject`, { method: 'POST' })
             .then(r => r.json())
             .then(() => {
                 alert('却下しました。');
-                window.location.href = '/admin/dashboard';
-            })
-            .catch(() => alert('エラーが発生しました'));
-    }
-
-    /* ── 화장실 강제 삭제: deleted_at = NOW() 소프트 삭제 ──
-       DELETE /api/admin/toilets/{id}
-       삭제 후 대시보드로 리다이렉트 */
-    function deleteToilet(id) {
-        if (!confirm('このトイレを削除しますか？この操作は元に戻せません。')) return;
-        fetch(`/api/admin/toilets/${id}`, { method: 'DELETE' })
-            .then(r => r.json())
-            .then(() => {
-                alert('削除しました。');
                 window.location.href = '/admin/dashboard';
             })
             .catch(() => alert('エラーが発生しました'));

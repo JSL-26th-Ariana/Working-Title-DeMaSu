@@ -156,4 +156,15 @@ public interface AdminMapper {
             @Param("answer") String answer,
             @Param("adminId") Long adminId
     );
+
+    // =====================================================================
+    // 5. 화장실 삭제 (관리자 강제 삭제)
+    // =====================================================================
+
+    /**
+     * 화장실 소프트 삭제
+     * → SET deleted_at = NOW() (toilets 테이블은 deleted_at 기반 소프트 삭제)
+     * - deleted_at IS NULL 조건이 있는 모든 조회에서 자동으로 제외됨
+     */
+    int deleteToilet(@Param("id") Long id);
 }

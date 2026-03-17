@@ -403,6 +403,14 @@
             </svg>
             お問い合わせ
         </button>
+        <!-- 수정 제안 탭: 사용자가 보낸 화장실 정보 수정 요청 관리 -->
+        <button class="tab-btn" onclick="switchTab('editRequests', this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            修正提案
+        </button>
     </div>
 </div>
 
@@ -486,13 +494,40 @@
                         <th>ステータス</th>
                         <th>登録日</th>
                         <th>詳細</th>
+                        <th>削除</th>
                     </tr>
                 </thead>
                 <tbody id="toiletTableBody">
-                    <tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>
+                    <tr><td colspan="8"><div class="empty-state">読み込み中...</div></td></tr>
                 </tbody>
             </table>
             <div class="pagination" id="toiletPagination"></div>
+        </div>
+    </div>
+
+    <!-- 修正提案 -->
+    <div id="panel-editRequests" class="tab-panel">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">修正提案一覧</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>対象トイレ</th>
+                        <th>提案者</th>
+                        <th>内容(要約)</th>
+                        <th>ステータス</th>
+                        <th>申請日</th>
+                        <th>詳細</th>
+                    </tr>
+                </thead>
+                <tbody id="editRequestTableBody">
+                    <tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>
+                </tbody>
+            </table>
+            <div class="pagination" id="editRequestPagination"></div>
         </div>
     </div>
 
@@ -534,10 +569,11 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('panel-' + name).classList.add('active');
         btn.classList.add('active');
-        if (name === 'users')     loadUsers(0, document.getElementById('userSearchInput').value);
-        else if (name === 'reports')   loadReports(0);
-        else if (name === 'toilets')   loadToilets(0);
-        else if (name === 'inquiries') loadInquiries(0);
+        if (name === 'users')            loadUsers(0, document.getElementById('userSearchInput').value);
+        else if (name === 'reports')         loadReports(0);
+        else if (name === 'toilets')         loadToilets(0);
+        else if (name === 'inquiries')       loadInquiries(0);
+        else if (name === 'editRequests')    loadEditRequests(0); // 수정 제안 탭
     }
 
     // ── Admin dropdown ──
@@ -776,6 +812,7 @@
             const date = t.createdAt ? t.createdAt.substring(0, 10) : '-';
 
             // 詳細ボタン → /admin/toilets/{id} 상세 페이지로 이동 (편의시설 확인 후 承認/却下)
+            // 削除ボタン → DELETE /api/admin/toilets/{id} 소프트 삭제
             return `<tr>
                 <td class="td-id">${t.id}</td>
                 <td class="td-username">${t.name || '-'}</td>
@@ -784,6 +821,7 @@
                 <td>${statusBadge}</td>
                 <td>${date}</td>
                 <td><a href="/admin/toilets/${t.id}" class="btn-detail">詳細</a></td>
+                <td><button class="btn-delete" onclick="deleteToilet(${t.id})">削除</button></td>
             </tr>`;
         }).join('');
     }
@@ -801,6 +839,15 @@
     function rejectToilet(id) {
         if (!confirm('このトイレを却下しますか？')) return;
         fetch(`/api/admin/toilets/${id}/reject`, { method: 'POST' })
+            .then(r => r.json())
+            .then(() => loadToilets(toiletCurrentPage))
+            .catch(() => alert('エラーが発生しました'));
+    }
+
+    // 화장실 삭제: deleted_at = NOW() 소프트 삭제 (DELETE /api/admin/toilets/{id})
+    function deleteToilet(id) {
+        if (!confirm('このトイレを削除しますか？この操作は元に戻せません。')) return;
+        fetch(`/api/admin/toilets/${id}`, { method: 'DELETE' })
             .then(r => r.json())
             .then(() => loadToilets(toiletCurrentPage))
             .catch(() => alert('エラーが発生しました'));
@@ -851,6 +898,62 @@
                 <td>${statusBadge}</td>
                 <td>${date}</td>
                 <td><a href="/admin/inquiries/${q.id}" class="btn-detail">詳細</a></td>
+            </tr>`;
+        }).join('');
+    }
+
+    // =====================================================================
+    // ── 修正提案 ──
+    // GET /api/admin/edit-requests?page=0
+    // =====================================================================
+    let editRequestCurrentPage = 0;
+
+    function loadEditRequests(page) {
+        editRequestCurrentPage = page;
+        const tbody = document.getElementById('editRequestTableBody');
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
+
+        fetch('/api/admin/edit-requests?' + new URLSearchParams({ page }))
+            .then(r => r.json())
+            .then(res => {
+                if (!res.data || res.data.content.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">データがありません</div></td></tr>';
+                    document.getElementById('editRequestPagination').innerHTML = '';
+                    return;
+                }
+                renderEditRequestTable(res.data.content);
+                renderPagination(res.data, 'editRequestPagination', (p) => loadEditRequests(p));
+            })
+            .catch(() => {
+                tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込みに失敗しました</div></td></tr>';
+            });
+    }
+
+    function renderEditRequestTable(requests) {
+        const tbody = document.getElementById('editRequestTableBody');
+        tbody.innerHTML = requests.map(r => {
+            // 상태 배지: PENDING=주황, APPROVED=초록, REJECTED=빨강
+            const statusBadge = r.status === 'PENDING'
+                ? '<span class="badge badge-suspended">処理待ち</span>'
+                : r.status === 'APPROVED'
+                    ? '<span class="badge badge-active">承認済み</span>'
+                    : '<span class="badge badge-deleted">却下済み</span>';
+
+            const date = r.createdAt ? r.createdAt.substring(0, 10) : '-';
+            // 내용은 30자 이상이면 말줄임표 처리
+            const contentPreview = r.content
+                ? (r.content.length > 30 ? r.content.substring(0, 30) + '…' : r.content)
+                : '-';
+
+            // 詳細ボタン → /admin/edit-requests/{id} 상세 페이지로 이동
+            return `<tr>
+                <td class="td-id">${r.id}</td>
+                <td class="td-username">${r.toiletName || '-'}</td>
+                <td>${r.nickname || '-'}</td>
+                <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${contentPreview}</td>
+                <td>${statusBadge}</td>
+                <td>${date}</td>
+                <td><a href="/admin/edit-requests/${r.id}" class="btn-detail">詳細</a></td>
             </tr>`;
         }).join('');
     }
