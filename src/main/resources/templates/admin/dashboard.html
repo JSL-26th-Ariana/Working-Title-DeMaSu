@@ -297,6 +297,34 @@
         .page-btn:hover { border-color: #00C896; color: #00C896; }
         .page-btn.active { background: #00C896; border-color: #00C896; color: white; }
 
+        /* ── 이전/다음 페이지 버튼 툴팁 ── */
+        .page-btn[data-tooltip] { position: relative; }
+        .page-btn[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);       /* 버튼 위에 표시 */
+            left: 50%; transform: translateX(-50%);
+            background: #333; color: white;
+            font-size: 12px; font-weight: 500;
+            padding: 5px 10px; border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.15s;
+            z-index: 10;
+        }
+        .page-btn[data-tooltip]::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 2px);
+            left: 50%; transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.15s;
+        }
+        .page-btn[data-tooltip]:hover::after,
+        .page-btn[data-tooltip]:hover::before { opacity: 1; }
+
         /* ── Coming Soon Panel ── */
         .coming-soon {
             text-align: center;
@@ -668,12 +696,27 @@
 
     function renderPagination(data, containerId, onPageClick) {
         const container = document.getElementById(containerId);
-        if (data.totalPages <= 1) { container.innerHTML = ''; return; }
+        const cur   = data.number;      /* 현재 페이지 (0-based) */
+        const total = data.totalPages;  /* 전체 페이지 수 */
 
-        let html = '';
-        for (let i = 0; i < data.totalPages; i++) {
-            html += `<button class="page-btn ${i === data.number ? 'active' : ''}" onclick="(${onPageClick.toString()})(${i})">${i + 1}</button>`;
+        /* 이전 페이지 버튼: 첫 페이지면 disabled */
+        let html = `<button class="page-btn" data-tooltip="前のページへ"
+                        ${cur === 0 ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : `onclick="(${onPageClick.toString()})(${cur - 1})"`}>
+                        &#8249;
+                    </button>`;
+
+        /* 페이지 번호 버튼: 1페이지뿐이어도 항상 표시 */
+        for (let i = 0; i < total; i++) {
+            html += `<button class="page-btn ${i === cur ? 'active' : ''}"
+                         onclick="(${onPageClick.toString()})(${i})">${i + 1}</button>`;
         }
+
+        /* 다음 페이지 버튼: 마지막 페이지면 disabled */
+        html += `<button class="page-btn" data-tooltip="次のページへ"
+                     ${cur === total - 1 ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : `onclick="(${onPageClick.toString()})(${cur + 1})"`}>
+                     &#8250;
+                 </button>`;
+
         container.innerHTML = html;
     }
 
