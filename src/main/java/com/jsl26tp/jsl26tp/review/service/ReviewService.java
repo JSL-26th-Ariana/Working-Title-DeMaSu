@@ -32,13 +32,6 @@ public class ReviewService {
     private String reviewPath;
 
     /*
-     * 내가 쓴 리뷰 목록 조회
-     */
-    public List<Review> findByUserId(Long userId) {
-        return reviewMapper.findByUserId(userId);
-    }
-
-    /*
      * 리뷰 게시
      */
     public void writeReview(Review review, List<MultipartFile> files) {
@@ -174,6 +167,13 @@ public class ReviewService {
     public Integer getReviewCount(Long toiletId) {
         Integer count = reviewMapper.getReviewCount(toiletId);
         return count != null ? count : 0;
+    }
+
+    /*
+     * 내가 쓴 리뷰 목록 조회
+     */
+    public List<Review> getMyReviews(Long userId) {
+        return reviewMapper.findByUserId(userId);
     }
 
 }

@@ -106,7 +106,7 @@ public class UserController {
     public String myReviews(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
         model.addAttribute("user", user); // ← 추가
-        model.addAttribute("reviews", reviewService.findByUserId(user.getId()));
+        model.addAttribute("reviews", reviewService.getMyReviews(user.getId()));
         return "mypage/reviews";
     }
 
