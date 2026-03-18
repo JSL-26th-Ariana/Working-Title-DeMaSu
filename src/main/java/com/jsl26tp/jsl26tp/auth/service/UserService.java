@@ -107,7 +107,36 @@ public class UserService {
         userMapper.updateUser(user);
     }
 
-    // 비밀번호 변경
+    /**
+     * 비밀번호 찾기 - 본인 확인
+     * username + email이 DB에서 일치하는지 검증
+     * 불일치 시 USER_NOT_FOUND 예외 (보안상 어느 필드가 틀렸는지 노출하지 않음)
+     */
+    public void verifyIdentity(String username, String email) {
+        User user = userMapper.findByUsername(username);
+        // username이 없거나 email이 일치하지 않으면 동일한 에러 반환 (보안)
+        if (user == null || !email.equals(user.getEmail())) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
+    }
+
+    /**
+     * 비밀번호 찾기 - 새 비밀번호로 재설정
+     * 본인 확인(verifyIdentity) 후 비밀번호 BCrypt 암호화하여 저장
+     */
+    public void resetPasswordByIdentity(String username, String email, String newPassword) {
+        // 본인 확인 재검증 (API 직접 호출 방지)
+        verifyIdentity(username, email);
+        // 새 비밀번호 길이 검증
+        if (newPassword.length() < 8) {
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+        }
+        User user = userMapper.findByUsername(username);
+        // BCrypt 암호화 후 저장
+        userMapper.updatePassword(user.getId(), passwordEncoder.encode(newPassword));
+    }
+
+    // 비밀번호 변경 (로그인 상태에서 현재 비밀번호 확인 후 변경)
     public void updatePassword(Long id, String currentPassword, String newPassword) {
         // 현재 비밀번호 검증
         User user = userMapper.findById(id);
