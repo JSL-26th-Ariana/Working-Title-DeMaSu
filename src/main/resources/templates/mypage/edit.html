@@ -41,7 +41,7 @@
         <!-- 아이콘 섹션 (넷플릭스 스타일 프리셋 선택) -->
         <div class="mp-edit-icon-section">
           <div class="mp-icon-preview" id="iconPreviewWrap">
-            <img th:if="${user.iconUrl != null}" th:src="@{${user.iconUrl}}" alt="プロフィール画像">
+            <img th:if="${user.iconUrl != null}" th:src="${user.iconUrl}" alt="プロフィール画像">
             <span th:if="${user.iconUrl == null}" style="display:flex; align-items:center; justify-content:center; width:100%; height:100%;">
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#00C896" stroke-width="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>

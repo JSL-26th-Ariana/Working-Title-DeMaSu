@@ -945,11 +945,11 @@ function renderReviewCard(review) {
     }
 
     // 프로필 아이콘
-    var iconSrc = review.iconUrl || '/img/default.png';
+    var iconSrc = review.iconUrl || '/img/default.svg';
 
     return '<div class="review-card">' +
         '<div class="review-card-header">' +
-            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar" onerror="this.src=\'/img/default.png\'">' +
+            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar" onerror="this.src=\'/img/default.svg\'">' +
             '<div class="review-author-info">' +
                 '<span class="review-nickname">' + escapeHtml(review.nickname || '匿名') + '</span>' +
                 '<span class="review-date">' + dateStr + '</span>' +
@@ -981,11 +981,11 @@ function renderBlurredReviewCard(review) {
         }
     }
 
-    var iconSrc = review.iconUrl || '/img/default.png';
+    var iconSrc = review.iconUrl || '/img/default.svg';
 
     return '<div class="review-card">' +
         '<div class="review-card-header">' +
-            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar blurred-content" onerror="this.src=\'/img/default.png\'">' +
+            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar blurred-content" onerror="this.src=\'/img/default.svg\'">' +
             '<div class="review-author-info">' +
                 '<span class="review-nickname blurred-content">' + escapeHtml(review.nickname || '匿名') + '</span>' +
                 '<span class="review-date blurred-content">' + dateStr + '</span>' +
@@ -1109,22 +1109,36 @@ document.querySelectorAll('.filter-tag').forEach(function(tag) {
 
 // ========== 검색 ==========
 var searchInput = document.getElementById('searchInput');
+var regionSelect = document.getElementById('regionSelect');
+
+function triggerSearch() {
+    if (isDetailView) {
+        backToList();
+    }
+    var region = regionSelect ? regionSelect.value : '';
+    var keyword = searchInput ? searchInput.value.trim() : '';
+    var combined = (region + ' ' + keyword).trim();
+
+    if (combined.length >= 1) {
+        searchToilets(combined);
+    } else {
+        loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+    }
+}
+
 if (searchInput) {
     var searchTimeout;
     searchInput.addEventListener('input', function() {
-        if (isDetailView) {
-            backToList();
-        }
         clearTimeout(searchTimeout);
-        var self = this;
         searchTimeout = setTimeout(function() {
-            var keyword = self.value.trim();
-            if (keyword.length >= 2) {
-                searchToilets(keyword);
-            } else if (keyword.length === 0) {
-                loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-            }
+            triggerSearch();
         }, 500);
+    });
+}
+
+if (regionSelect) {
+    regionSelect.addEventListener('change', function() {
+        triggerSearch();
     });
 }
 
