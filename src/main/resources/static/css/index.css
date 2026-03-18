@@ -1224,9 +1224,9 @@ body {
 .login-modal-content {
     background: white;
     border-radius: 16px;
-    padding: 40px;
+    padding: 32px;
     width: 90%;
-    max-width: 420px;
+    max-width: 400px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     position: relative;
 }
@@ -1275,7 +1275,7 @@ body {
     text-align: center;
     font-size: 14px;
     color: #666;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
 
 .login-form {
@@ -1354,7 +1354,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     font-family: 'LINESeedJP_OTF', sans-serif;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     transition: background 0.2s;
 }
 
@@ -1365,7 +1365,7 @@ body {
 .divider {
     text-align: center;
     position: relative;
-    margin: 20px 0;
+    margin: 16px 0;
 }
 
 .divider::before {
@@ -1399,7 +1399,7 @@ body {
     justify-content: center;
     gap: 10px;
     font-family: 'LINESeedJP_OTF', sans-serif;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     transition: background 0.2s;
 }
 
