@@ -663,6 +663,16 @@ function renderReviewsTab(toilet, reviews) {
             '<p>まだレビューがありません</p>' +
             '<p class="detail-reviews-empty-sub">最初のレビューを書いてみませんか？</p>' +
         '</div>';
+    } else if (!isLoggedIn) {
+        // 비로그인: 리뷰 텍스트만 블러 처리
+        html += '<div id="reviewsList" class="detail-reviews-list">';
+        for (var r = 0; r < reviews.length; r++) {
+            html += renderBlurredReviewCard(reviews[r]);
+        }
+        html += '</div>';
+        html += '<div class="review-login-nudge">' +
+            '<button onclick="openLoginModal()"><i class="fas fa-lock"></i> ログインしてレビューを確認</button>' +
+        '</div>';
     } else {
         html += '<div id="reviewsList" class="detail-reviews-list">';
         for (var r = 0; r < reviews.length; r++) {
@@ -942,6 +952,36 @@ function renderReviewCard(review) {
                 '<i class="fas fa-flag"></i> 通報' +
             '</button>' +
         '</div>' +
+    '</div>';
+}
+
+// ========== 블러 리뷰 카드 (비로그인) ==========
+function renderBlurredReviewCard(review) {
+    var scoreNum = parseInt(review.cleanScore) || 0;
+
+    var dateStr = '';
+    if (review.createdAt) {
+        var d = new Date(review.createdAt);
+        if (!isNaN(d.getTime())) {
+            dateStr = d.getFullYear() + '.' +
+                String(d.getMonth() + 1).padStart(2, '0') + '.' +
+                String(d.getDate()).padStart(2, '0');
+        }
+    }
+
+    var iconSrc = review.iconUrl || '/img/default.png';
+
+    return '<div class="review-card">' +
+        '<div class="review-card-header">' +
+            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar blurred-content" onerror="this.src=\'/img/default.png\'">' +
+            '<div class="review-author-info">' +
+                '<span class="review-nickname blurred-content">' + escapeHtml(review.nickname || '匿名') + '</span>' +
+                '<span class="review-date blurred-content">' + dateStr + '</span>' +
+            '</div>' +
+            '<div class="review-card-stars blurred-content">' + generateStars(scoreNum) + '</div>' +
+        '</div>' +
+        (review.content ? '<div class="review-content blurred-content">' + escapeHtml(review.content) + '</div>' : '') +
+        (review.tags ? '<div class="review-tags blurred-content">' + escapeHtml(review.tags) + '</div>' : '') +
     '</div>';
 }
 
