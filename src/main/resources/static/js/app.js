@@ -990,11 +990,7 @@ function renderBlurredReviewCard(review) {
                 '<span class="review-nickname blurred-content">' + escapeHtml(review.nickname || '匿名') + '</span>' +
                 '<span class="review-date blurred-content">' + dateStr + '</span>' +
             '</div>' +
-<<<<<<< Updated upstream
             '<div class="review-card-stars blurred-content">' + generateStars(scoreNum) + '</div>' +
-=======
-            '<div class="review-card-stars">' + generateStars(scoreNum) + '</div>' +
->>>>>>> Stashed changes
         '</div>' +
         (review.content ? '<div class="review-content blurred-content">' + escapeHtml(review.content) + '</div>' : '') +
         (review.tags ? '<div class="review-tags blurred-content">' + escapeHtml(review.tags) + '</div>' : '') +
