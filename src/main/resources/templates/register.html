@@ -4,35 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>会員登録 - トイレマップ</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
     <link rel="stylesheet" th:href="@{/css/register.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="register-body">
 
-<div class="register-container">
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
 
-    <!-- 왼쪽: 비주얼 영역 -->
-    <div class="register-visual">
-        <div class="visual-content">
-            <i class="fas fa-restroom visual-icon"></i>
-            <h1>トイレマップ</h1>
-            <p>韓国旅行をもっと快適に。<br>近くのトイレをすぐ見つけよう。</p>
-        </div>
-        <div class="visual-decoration">
-            <div class="circle circle-1"></div>
-            <div class="circle circle-2"></div>
-            <div class="circle circle-3"></div>
-        </div>
-    </div>
+<main class="register-main">
+    <div class="register-card">
 
-    <!-- 오른쪽: 폼 영역 -->
-    <div class="register-form-area">
-        <div class="form-header">
-            <a href="/" class="back-link">
-                <i class="fas fa-arrow-left"></i> 戻る
-            </a>
+        <div class="register-card-header">
+            <div class="register-card-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
             <h2>会員登録</h2>
             <p>アカウントを作成して、すべての機能をご利用ください。</p>
         </div>
@@ -160,11 +147,12 @@
 
         </form>
     </div>
+</main>
 
-</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
+<script th:src="@{/js/header.js(v=1)}"></script>
 <script>
-// 비밀번호 보기/숨기기 토글
 function togglePassword(inputId, btn) {
     const input = document.getElementById(inputId);
     const icon = btn.querySelector('i');
@@ -177,7 +165,6 @@ function togglePassword(inputId, btn) {
     }
 }
 
-// 비밀번호 일치 확인 (실시간)
 document.getElementById('passwordConfirmInput').addEventListener('input', function() {
     const pw = document.getElementById('passwordInput').value;
     const msg = document.getElementById('passwordMsg');
@@ -192,19 +179,16 @@ document.getElementById('passwordConfirmInput').addEventListener('input', functi
     }
 });
 
-// username 중복 체크 (실시간)
 let usernameTimeout;
 document.getElementById('usernameInput').addEventListener('input', function() {
     clearTimeout(usernameTimeout);
     const msg = document.getElementById('usernameMsg');
     const value = this.value.trim();
-
     if (value.length < 4) {
         msg.textContent = '4文字以上で入力してください。';
         msg.className = 'field-message error';
         return;
     }
-
     usernameTimeout = setTimeout(() => {
         fetch(`/api/check-username?username=${encodeURIComponent(value)}`)
             .then(res => res.json())
@@ -220,15 +204,12 @@ document.getElementById('usernameInput').addEventListener('input', function() {
     }, 500);
 });
 
-// 닉네임 중복 체크 (실시간)
 let nicknameTimeout;
 document.getElementById('nicknameInput').addEventListener('input', function() {
     clearTimeout(nicknameTimeout);
     const msg = document.getElementById('nicknameMsg');
     const value = this.value.trim();
-
     if (!value) { msg.textContent = ''; return; }
-
     nicknameTimeout = setTimeout(() => {
         fetch(`/api/check-nickname?nickname=${encodeURIComponent(value)}`)
             .then(res => res.json())
@@ -244,15 +225,12 @@ document.getElementById('nicknameInput').addEventListener('input', function() {
     }, 500);
 });
 
-// 이메일 중복 체크 (실시간)
 let emailTimeout;
 document.getElementById('emailInput').addEventListener('input', function() {
     clearTimeout(emailTimeout);
     const msg = document.getElementById('emailMsg');
     const value = this.value.trim();
-
     if (!value || !value.includes('@')) { msg.textContent = ''; return; }
-
     emailTimeout = setTimeout(() => {
         fetch(`/api/check-email?email=${encodeURIComponent(value)}`)
             .then(res => res.json())
