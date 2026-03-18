@@ -387,15 +387,15 @@
         <p class="modal-subtitle">アカウントにログインしてください</p>
 
         <form class="login-form" th:action="@{/login}" method="post"
-              onsubmit="sessionStorage.setItem('justLoggedIn','1')">
+              onsubmit="return validateLoginForm()">
             <div class="form-group">
                 <label>ID</label>
-                <input type="text" name="username" placeholder="IDを入力">
+                <input type="text" name="username" placeholder="IDを入力" id="loginUsername">
             </div>
 
             <div class="form-group">
                 <label>パスワード</label>
-                <input type="password" name="password" placeholder="········">
+                <input type="password" name="password" placeholder="········" id="loginPassword">
             </div>
 
             <div class="form-options">
@@ -584,6 +584,21 @@
     });
 
     // ドロップダウン・トーストはheader.jsで管理
+
+    function validateLoginForm() {
+        var username = document.getElementById('loginUsername').value.trim();
+        var password = document.getElementById('loginPassword').value.trim();
+        if (!username) {
+            showToast('IDを入力してください', 'error');
+            return false;
+        }
+        if (!password) {
+            showToast('パスワードを入力してください', 'error');
+            return false;
+        }
+        sessionStorage.setItem('justLoggedIn', '1');
+        return true;
+    }
 </script>
 
 <script>
