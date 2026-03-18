@@ -219,7 +219,13 @@ function showToast(msg, type) {
         msg = '会員登録が完了しました！';
     } else if (toastType === 'loginError') {
         sessionStorage.removeItem('justLoggedIn');
-        msg = 'IDまたはパスワードが正しくありません';
+        // URL 파라미터로 SUSPENDED 여부 구분
+        // SecurityConfig의 loginFailureHandler가 DisabledException 시 ?error=suspended 로 리다이렉트
+        if (window.location.search.includes('error=suspended')) {
+            msg = 'アカウントが一時停止されています。管理者にお問い合わせください。';
+        } else {
+            msg = 'IDまたはパスワードが正しくありません';
+        }
         type = 'error';
     } else if (sessionStorage.getItem('justLoggedIn')) {
         sessionStorage.removeItem('justLoggedIn');

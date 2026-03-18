@@ -4,11 +4,13 @@ import com.jsl26tp.jsl26tp.auth.service.CustomOAuth2UserService;
 import com.jsl26tp.jsl26tp.auth.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +29,26 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 로그인 실패 핸들러
+     * - DisabledException: 일시정지(SUSPENDED) 회원 → /login?error=suspended 로 리다이렉트
+     *   → header.js에서 URL 파라미터를 읽어 "アカウントが一時停止されています" 메시지 표시
+     * - 그 외 (잘못된 ID/PW 등) → /login?error=true 로 리다이렉트
+     *   → header.js에서 "IDまたはパスワードが正しくありません" 메시지 표시
+     */
+    @Bean
+    public AuthenticationFailureHandler loginFailureHandler() {
+        return (request, response, exception) -> {
+            if (exception instanceof DisabledException) {
+                // CustomUserDetails.isEnabled() == false → SUSPENDED 상태
+                response.sendRedirect("/login?error=suspended");
+            } else {
+                // 일반 로그인 실패 (잘못된 아이디/비밀번호 등)
+                response.sendRedirect("/login?error=true");
+            }
+        };
     }
 
     @Bean
@@ -71,7 +93,9 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error=true")
+                // failureUrl 대신 커스텀 핸들러 사용:
+                // SUSPENDED → ?error=suspended, 그 외 → ?error=true
+                .failureHandler(loginFailureHandler())
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
