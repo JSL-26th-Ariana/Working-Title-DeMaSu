@@ -646,8 +646,7 @@ function renderReviewsTab(toilet, reviews) {
 
     var html = '';
 
-    // 리뷰 탭 헤더: 작성 버튼 + 정렬
-    html += '<div class="review-tab-header">';
+    // 리뷰 작성 버튼
     if (isLoggedIn) {
         html += '<a href="/review/write?toiletId=' + toilet.id + '" class="btn-write-review">' +
             '<i class="fas fa-pen"></i> レビューを書く</a>';
@@ -656,6 +655,11 @@ function renderReviewsTab(toilet, reviews) {
             '<i class="fas fa-pen"></i> レビューを書く</button>';
     }
 
+    // 리뷰 목록 헤더: 건수 + 정렬
+    html += '<div class="review-list-header">';
+    html += '<span class="review-count">レビュー' +
+        (reviews && reviews.length > 0 ? ' ' + reviews.length + '件' : '') +
+        '</span>';
     if (reviews && reviews.length > 1) {
         html += '<select class="review-sort-select" onchange="sortReviews(this.value)">' +
             '<option value="latest">最新順</option>' +
@@ -664,11 +668,6 @@ function renderReviewsTab(toilet, reviews) {
         '</select>';
     }
     html += '</div>';
-
-    // 리뷰 목록
-    html += '<div class="detail-section-title">レビュー' +
-        (reviews && reviews.length > 0 ? ' (' + reviews.length + '件)' : '') +
-        '</div>';
 
     if (!reviews || reviews.length === 0) {
         html += '<div class="detail-reviews-empty">' +
