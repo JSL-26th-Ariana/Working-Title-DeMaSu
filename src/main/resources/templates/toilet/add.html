@@ -24,7 +24,7 @@
             gap: 6px;
             color: #00C896;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 13px;ㅎㅓ
             padding: 24px 24px 0;
             font-weight: 500;
         }
@@ -363,16 +363,24 @@
         <div class="two-col">
             <div class="form-group">
                 <label>緯度</label>
-                <input type="number" name="latitude" step="0.0000001" placeholder="37.5662952" id="latInput">
+                <input type="text" name="latitude" placeholder="地図をクリックしてください" id="latInput" readonly
+                       style="background:#F0FAF7; cursor:default;">
             </div>
             <div class="form-group">
                 <label>経度</label>
-                <input type="number" name="longitude" step="0.0000001" placeholder="126.9779451" id="lngInput">
+                <input type="text" name="longitude" placeholder="地図をクリックしてください" id="lngInput" readonly
+                       style="background:#F0FAF7; cursor:default;">
             </div>
         </div>
 
+        <!-- 지도로 위치 선택 -->
+        <div style="margin-bottom:16px;">
+            <p style="font-size:13px; color:#888; margin-bottom:8px;">📍 地図をクリックして位置を指定してください</p>
+            <div id="pickMap" style="width:100%; height:300px; border-radius:12px; border:1.5px solid #E8E8E8;"></div>
+        </div>
+
         <!-- 현재 위치 가져오기 -->
-        <button type="button" onclick="getLocation()" style="
+        <button type="button" onclick="getMyLocation()" style="
             display: flex; align-items: center; gap: 6px;
             background: transparent; border: 1.5px solid #00C896;
             color: #00C896; padding: 8px 16px; border-radius: 8px;
@@ -561,7 +569,6 @@
     // 설비 체크박스 토글
     function toggleFacility(label) {
         const checkbox = label.querySelector('input[type="checkbox"]');
-        // onclick이 label 클릭 전에 실행되므로 반전 처리
         setTimeout(() => {
             label.classList.toggle('checked', checkbox.checked);
         }, 0);
@@ -581,20 +588,73 @@
             label.classList.toggle('selected', checkbox.checked);
         }, 0);
     }
+</script>
 
-    // 현재 위치 가져오기
-    function getLocation() {
+<!-- Naver Maps API -->
+<script th:src="'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=' + ${naverMapsClientId} + '&language=ja'"></script>
+<script>
+    var pickMap, pickMarker;
+
+    // 지도 초기화
+    function initPickMap(lat, lng) {
+        var center = new naver.maps.LatLng(lat, lng);
+        pickMap = new naver.maps.Map('pickMap', {
+            center: center,
+            zoom: 15,
+            zoomControl: true,
+            zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER }
+        });
+
+        pickMarker = new naver.maps.Marker({
+            position: center,
+            map: pickMap,
+            icon: {
+                content: '<div style="font-size:28px;">📍</div>',
+                anchor: new naver.maps.Point(14, 28)
+            },
+            visible: false
+        });
+
+        // 지도 클릭 → 좌표 자동 입력
+        naver.maps.Event.addListener(pickMap, 'click', function(e) {
+            var lat = e.coord.lat();
+            var lng = e.coord.lng();
+            document.getElementById('latInput').value = lat.toFixed(7);
+            document.getElementById('lngInput').value = lng.toFixed(7);
+            pickMarker.setPosition(e.coord);
+            pickMarker.setVisible(true);
+        });
+    }
+
+    // 현재 위치 가져오기 → 지도 이동 + 마커 + input 채우기
+    function getMyLocation() {
         if (!navigator.geolocation) {
             alert('このブラウザは位置情報に対応していません');
             return;
         }
         navigator.geolocation.getCurrentPosition(
-            pos => {
-                document.getElementById('latInput').value = pos.coords.latitude.toFixed(7);
-                document.getElementById('lngInput').value = pos.coords.longitude.toFixed(7);
+            function(pos) {
+                var lat = pos.coords.latitude;
+                var lng = pos.coords.longitude;
+                document.getElementById('latInput').value = lat.toFixed(7);
+                document.getElementById('lngInput').value = lng.toFixed(7);
+                var coord = new naver.maps.LatLng(lat, lng);
+                pickMap.setCenter(coord);
+                pickMarker.setPosition(coord);
+                pickMarker.setVisible(true);
             },
-            () => alert('位置情報の取得に失敗しました')
+            function() { alert('位置情報の取得に失敗しました'); }
         );
+    }
+
+    // 페이지 로드 시 GPS로 초기화, 실패 시 서울 기본값
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(pos) { initPickMap(pos.coords.latitude, pos.coords.longitude); },
+            function() { initPickMap(37.5665, 126.9780); }
+        );
+    } else {
+        initPickMap(37.5665, 126.9780);
     }
 </script>
 

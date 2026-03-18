@@ -408,6 +408,15 @@
                        th:disabled="${editRequest.status != 'PENDING'}">
             </div>
 
+            <!-- 지도로 위치 선택/확인 -->
+            <div class="form-row">
+                <label class="form-label">地図</label>
+                <div style="flex:1;">
+                    <p th:if="${editRequest.status == 'PENDING'}" style="font-size:12px; color:#888; margin-bottom:6px;">📍 地図をクリックして位置を変更できます</p>
+                    <div id="adminPickMap" style="width:100%; height:280px; border-radius:10px; border:1.5px solid #E0E0E0;"></div>
+                </div>
+            </div>
+
             <!-- 24시간 여부 -->
             <div class="form-row">
                 <label class="form-label">24時間</label>
@@ -493,6 +502,9 @@
 
 <!-- Footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<!-- Naver Maps API -->
+<script th:src="'https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=' + ${naverMapsClientId} + '&language=ja'"></script>
 
 <!--
     Thymeleaf 인라인 JS: 서버 데이터를 JS 변수로 안전하게 전달
@@ -606,6 +618,43 @@
         })
         .catch(err => alert('エラーが発生しました: ' + err.message));
     }
+
+    /* ── 관리자 지도: 기존 좌표에 마커 표시 + 클릭으로 좌표 수정 ── */
+    (function() {
+        var latVal = parseFloat(document.getElementById('f-latitude').value);
+        var lngVal = parseFloat(document.getElementById('f-longitude').value);
+        var lat = isNaN(latVal) ? 37.5665 : latVal;
+        var lng = isNaN(lngVal) ? 126.9780 : lngVal;
+        var center = new naver.maps.LatLng(lat, lng);
+        var isPending = !document.getElementById('f-latitude').disabled;
+
+        var adminMap = new naver.maps.Map('adminPickMap', {
+            center: center,
+            zoom: 16,
+            zoomControl: true,
+            zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER }
+        });
+
+        var adminMarker = new naver.maps.Marker({
+            position: center,
+            map: adminMap,
+            icon: {
+                content: '<div style="font-size:28px;">📍</div>',
+                anchor: new naver.maps.Point(14, 28)
+            }
+        });
+
+        // PENDING 상태일 때만 클릭으로 좌표 수정 가능
+        if (isPending) {
+            naver.maps.Event.addListener(adminMap, 'click', function(e) {
+                var clickLat = e.coord.lat();
+                var clickLng = e.coord.lng();
+                document.getElementById('f-latitude').value = clickLat.toFixed(7);
+                document.getElementById('f-longitude').value = clickLng.toFixed(7);
+                adminMarker.setPosition(e.coord);
+            });
+        }
+    })();
 </script>
 
 </body>
