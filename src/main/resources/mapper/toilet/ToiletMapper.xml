@@ -54,13 +54,20 @@
         LIMIT 50
     </select>
 
-    <!-- 키워드 검색 (이름, 주소) -->
+    <!-- 키워드 검색 (이름, 주소) - 공백 구분 AND 검색 지원 -->
     <select id="findByKeyword" resultType="Toilet">
         SELECT * FROM toilets
         WHERE status = 'APPROVED'
           AND deleted_at IS NULL
-          AND (name LIKE CONCAT('%', #{keyword}, '%')
-               OR address LIKE CONCAT('%', #{keyword}, '%'))
+          AND (
+              (name LIKE CONCAT('%', #{keyword}, '%') OR address LIKE CONCAT('%', #{keyword}, '%'))
+              OR
+              <![CDATA[
+              (address LIKE CONCAT('%', SUBSTRING_INDEX(#{keyword}, ' ', 1), '%')
+               AND (name LIKE CONCAT('%', SUBSTRING_INDEX(#{keyword}, ' ', -1), '%')
+                    OR address LIKE CONCAT('%', SUBSTRING_INDEX(#{keyword}, ' ', -1), '%')))
+              ]]>
+          )
         ORDER BY name
         LIMIT 50
     </select>

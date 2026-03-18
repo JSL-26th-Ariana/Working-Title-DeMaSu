@@ -313,8 +313,28 @@
         <!-- Search Box in Sidebar -->
         <div class="sidebar-search">
             <div class="sidebar-search-box">
+                <select id="regionSelect" class="region-select">
+                    <option value="">📍 全地域</option>
+                    <option value="서울">ソウル</option>
+                    <option value="부산">釜山</option>
+                    <option value="대구">大邱</option>
+                    <option value="인천">仁川</option>
+                    <option value="광주">光州</option>
+                    <option value="대전">大田</option>
+                    <option value="울산">蔚山</option>
+                    <option value="세종">世宗</option>
+                    <option value="경기">京畿</option>
+                    <option value="강원">江原</option>
+                    <option value="충북">忠北</option>
+                    <option value="충남">忠南</option>
+                    <option value="전북">全北</option>
+                    <option value="전남">全南</option>
+                    <option value="경북">慶北</option>
+                    <option value="경남">慶南</option>
+                    <option value="제주">済州</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="建物名やキーワードで検索">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="地域や建物名で検索">
             </div>
             <div class="sidebar-filters">
                 <button class="filter-tag active" data-filter="all">すべて</button>
