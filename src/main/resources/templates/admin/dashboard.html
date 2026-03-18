@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理者ダッシュボード - デマス</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
+    <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,82 +19,6 @@
             flex-direction: column;
         }
 
-        /* ── Header ── */
-        .header {
-            background: white;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            color: #1A1A1A;
-            text-decoration: none;
-        }
-        .logo-icon {
-            width: 32px; height: 32px;
-            background: #62a897;
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .admin-menu {
-            position: relative;
-        }
-        .admin-menu-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'LINESeedJP_OTF', sans-serif;
-            line-height: 1.6;
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-            padding: 6px 12px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-        .admin-menu-btn:hover { background: #F5F5F5; }
-        .admin-avatar {
-            width: 32px; height: 32px;
-            background: #E8F5F1;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .admin-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: calc(100% + 8px);
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-            min-width: 160px;
-            overflow: hidden;
-            z-index: 200;
-        }
-        .admin-dropdown.open { display: block; }
-        .admin-dropdown a {
-            display: block;
-            padding: 12px 16px;
-            font-size: 14px;
-            color: #333;
-            text-decoration: none;
-            transition: background 0.15s;
-        }
-        .admin-dropdown a:hover { background: #F5F5F5; }
-        .admin-dropdown a.logout { color: #E53E3E; }
 
         /* ── Hero Banner ── */
         .hero {
@@ -394,37 +320,7 @@
 </head>
 <body>
 
-<!-- ── Header ── -->
-<header class="header">
-    <a href="/" class="logo">
-        <div class="logo-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-        </div>
-        トイレマップ
-    </a>
-
-    <div class="admin-menu">
-        <button class="admin-menu-btn" onclick="toggleAdminMenu(event)">
-            <div class="admin-avatar">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00C896" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-            </div>
-            管理者
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
-                <path d="m6 9 6 6 6-6"></path>
-            </svg>
-        </button>
-        <div class="admin-dropdown" id="adminDropdown">
-            <a href="/">マップに戻る</a>
-            <a href="/logout" class="logout">ログアウト</a>
-        </div>
-    </div>
-</header>
+<div th:replace="~{fragments/header :: headerAndToast}"></div>
 
 <!-- ── Hero Banner + Tabs ── -->
 <div class="hero">
@@ -659,15 +555,6 @@
         else if (name === 'inquiries')       loadInquiries(0);
         else if (name === 'editRequests')    loadEditRequests(0); // 수정 제안 탭
     }
-
-    // ── Admin dropdown ──
-    function toggleAdminMenu(e) {
-        e.stopPropagation();
-        document.getElementById('adminDropdown').classList.toggle('open');
-    }
-    document.addEventListener('click', function () {
-        document.getElementById('adminDropdown').classList.remove('open');
-    });
 
     // ── User List ──
     let userCurrentPage = 0;
@@ -1103,5 +990,6 @@
     // ── Init ──
     loadUsers(0, '');
 </script>
+<script th:src="@{/js/header.js(v=1)}"></script>
 </body>
 </html>

@@ -527,12 +527,12 @@
         if (!splash) return;
 
         // 이미 본 경우 즉시 제거
-        if (localStorage.getItem('splashShown')) {
+        if (sessionStorage.getItem('splashShown')) {
             splash.remove();
             return;
         }
 
-        localStorage.setItem('splashShown', '1');
+        sessionStorage.setItem('splashShown', '1');
         // 타이핑 효과 시작
         setTimeout(function () {
             var tagline = document.getElementById('splashTagline');
@@ -543,8 +543,8 @@
             setTimeout(function () {
                 splash.remove();
                 // 위치 동의 팝업도 최초 1회만
-                if (!localStorage.getItem('locationAsked')) {
-                    localStorage.setItem('locationAsked', '1');
+                if (!sessionStorage.getItem('locationAsked')) {
+                    sessionStorage.setItem('locationAsked', '1');
                     document.getElementById('location-modal').classList.add('show');
                 }
             }, 750);

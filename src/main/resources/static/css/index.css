@@ -709,9 +709,14 @@ body {
     font-size: 13px;
     color: #666;
     margin-bottom: 6px;
+    margin-top: 4px;
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.detail-phone {
+    margin-top: 12px;
 }
 
 .detail-address i { color: #FF6B6B; }
