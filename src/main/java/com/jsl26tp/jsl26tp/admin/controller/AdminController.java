@@ -304,13 +304,15 @@ public class AdminController {
 
     /**
      * 수정 제안 목록 조회 API (페이징)
-     * GET /api/admin/edit-requests?page=0
+     * GET /api/admin/edit-requests?page=0&status=PENDING
+     * status: PENDING / APPROVED / REJECTED / 빈 문자열(전체)
      */
     @GetMapping("/api/admin/edit-requests")
     @ResponseBody
     public ApiResponse<AdminPageResponse<ToiletEditRequest>> getEditRequestList(
+            @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "0") int page) {
-        return ApiResponse.ok(adminService.getEditRequestList(page));
+        return ApiResponse.ok(adminService.getEditRequestList(status, page));
     }
 
     /**
