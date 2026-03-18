@@ -60,6 +60,13 @@ public class AdminController {
         return "admin/reports";
     }
 
+    /** 신고 상세 페이지 → templates/admin/report-detail.html */
+    @GetMapping("/admin/reports/{id}")
+    public String reportDetailPage(@PathVariable Long id, Model model) {
+        model.addAttribute("report", adminService.getReportById(id));
+        return "admin/report-detail";
+    }
+
     /** 화장실 승인 페이지 → templates/admin/toilets.html */
     @GetMapping("/admin/toilets")
     public String toiletsPage() {
@@ -304,13 +311,15 @@ public class AdminController {
 
     /**
      * 수정 제안 목록 조회 API (페이징)
-     * GET /api/admin/edit-requests?page=0
+     * GET /api/admin/edit-requests?page=0&status=PENDING
+     * status: PENDING / APPROVED / REJECTED / 빈 문자열(전체)
      */
     @GetMapping("/api/admin/edit-requests")
     @ResponseBody
     public ApiResponse<AdminPageResponse<ToiletEditRequest>> getEditRequestList(
+            @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "0") int page) {
-        return ApiResponse.ok(adminService.getEditRequestList(page));
+        return ApiResponse.ok(adminService.getEditRequestList(status, page));
     }
 
     /**

@@ -335,6 +335,28 @@
         .coming-soon h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #CCC; }
         .coming-soon p { font-size: 13px; }
 
+        /* ── Status Filter Buttons ── */
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 5px 14px;
+            border: 1.5px solid #E0E0E0;
+            border-radius: 20px;
+            background: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'LINESeedJP_OTF', sans-serif;
+            color: #666;
+            transition: all 0.15s;
+        }
+        .filter-btn:hover { border-color: #00C896; color: #00C896; }
+        .filter-btn.active { background: #00C896; border-color: #00C896; color: white; }
+
         /* ── Approve Button (통보/화장실 승인용) ── */
         .btn-approve {
             padding: 5px 12px;
@@ -492,6 +514,13 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title">通報一覧</span>
+                <!-- 상태 필터: 기본값 PENDING (처리 대기 우선) -->
+                <div class="filter-row">
+                    <button class="filter-btn active" id="reportFilter-PENDING"   onclick="setReportFilter('PENDING')">処理待ち</button>
+                    <button class="filter-btn"         id="reportFilter-PROCESSED" onclick="setReportFilter('PROCESSED')">処理済み</button>
+                    <button class="filter-btn"         id="reportFilter-DISMISSED" onclick="setReportFilter('DISMISSED')">却下済み</button>
+                    <button class="filter-btn"         id="reportFilter-"          onclick="setReportFilter('')">全て</button>
+                </div>
             </div>
             <table>
                 <thead>
@@ -519,6 +548,13 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title">トイレ承認一覧</span>
+                <!-- 상태 필터: 기본값 PENDING (처리 대기 우선) -->
+                <div class="filter-row">
+                    <button class="filter-btn active" id="toiletFilter-PENDING"  onclick="setToiletFilter('PENDING')">処理待ち</button>
+                    <button class="filter-btn"         id="toiletFilter-APPROVED" onclick="setToiletFilter('APPROVED')">承認済み</button>
+                    <button class="filter-btn"         id="toiletFilter-REJECTED" onclick="setToiletFilter('REJECTED')">却下済み</button>
+                    <button class="filter-btn"         id="toiletFilter-"         onclick="setToiletFilter('')">全て</button>
+                </div>
             </div>
             <table>
                 <thead>
@@ -545,6 +581,13 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title">修正提案一覧</span>
+                <!-- 상태 필터: 기본값 PENDING -->
+                <div class="filter-row">
+                    <button class="filter-btn active" id="editRequestFilter-PENDING"  onclick="setEditRequestFilter('PENDING')">処理待ち</button>
+                    <button class="filter-btn"         id="editRequestFilter-APPROVED" onclick="setEditRequestFilter('APPROVED')">承認済み</button>
+                    <button class="filter-btn"         id="editRequestFilter-REJECTED" onclick="setEditRequestFilter('REJECTED')">却下済み</button>
+                    <button class="filter-btn"         id="editRequestFilter-"         onclick="setEditRequestFilter('')">全て</button>
+                </div>
             </div>
             <table>
                 <thead>
@@ -571,6 +614,12 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title">お問い合わせ一覧</span>
+                <!-- 상태 필터: 기본값 WAITING (미답변 우선) -->
+                <div class="filter-row">
+                    <button class="filter-btn active" id="inquiryFilter-WAITING"  onclick="setInquiryFilter('WAITING')">未回答</button>
+                    <button class="filter-btn"         id="inquiryFilter-ANSWERED" onclick="setInquiryFilter('ANSWERED')">回答済み</button>
+                    <button class="filter-btn"         id="inquiryFilter-"         onclick="setInquiryFilter('')">全て</button>
+                </div>
             </div>
             <table>
                 <thead>
@@ -750,13 +799,28 @@
     // ── 通報管理 ──
     // =====================================================================
     let reportCurrentPage = 0;
+    let reportCurrentStatus = 'PENDING'; // 기본값: 처리 대기
+
+    // 필터 버튼 클릭 시 호출: active 버튼 교체 + 1페이지부터 다시 로드
+    function setReportFilter(status) {
+        reportCurrentStatus = status;
+        ['PENDING', 'PROCESSED', 'DISMISSED', ''].forEach(s => {
+            const btn = document.getElementById('reportFilter-' + s);
+            if (btn) btn.classList.toggle('active', s === status);
+        });
+        loadReports(0);
+    }
 
     function loadReports(page) {
         reportCurrentPage = page;
         const tbody = document.getElementById('reportTableBody');
         tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">読み込み中...</div></td></tr>';
 
-        fetch('/api/admin/reports?' + new URLSearchParams({ page }))
+        // status가 있으면 쿼리 파라미터에 포함
+        const params = new URLSearchParams({ page });
+        if (reportCurrentStatus) params.set('status', reportCurrentStatus);
+
+        fetch('/api/admin/reports?' + params)
             .then(r => r.json())
             .then(res => {
                 if (!res.data || res.data.content.length === 0) {
@@ -784,9 +848,8 @@
 
             const date = r.createdAt ? r.createdAt.substring(0, 10) : '-';
             const targetType = r.targetType === 'REVIEW' ? 'レビュー' : 'トイレ';
-            // PENDING일 때만 버튼 활성화
-            const disabled = r.status !== 'PENDING' ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : '';
 
+            // 詳細ボタン → /admin/reports/{id} 상세 페이지로 이동
             return `<tr>
                 <td class="td-id">${r.id}</td>
                 <td class="td-username">${r.reporterNickname || '-'}</td>
@@ -795,12 +858,7 @@
                 <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.reason || '-'}</td>
                 <td>${statusBadge}</td>
                 <td>${date}</td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn-approve" onclick="resolveReport(${r.id})" ${disabled}>承認</button>
-                        <button class="btn-delete" onclick="dismissReport(${r.id})" ${disabled}>却下</button>
-                    </div>
-                </td>
+                <td><a href="/admin/reports/${r.id}" class="btn-detail">詳細</a></td>
             </tr>`;
         }).join('');
     }
@@ -827,13 +885,28 @@
     // ── トイレ承認 ──
     // =====================================================================
     let toiletCurrentPage = 0;
+    let toiletCurrentStatus = 'PENDING'; // 기본값: 처리 대기
+
+    // 필터 버튼 클릭 시 호출: active 버튼 교체 + 1페이지부터 다시 로드
+    function setToiletFilter(status) {
+        toiletCurrentStatus = status;
+        ['PENDING', 'APPROVED', 'REJECTED', ''].forEach(s => {
+            const btn = document.getElementById('toiletFilter-' + s);
+            if (btn) btn.classList.toggle('active', s === status);
+        });
+        loadToilets(0);
+    }
 
     function loadToilets(page) {
         toiletCurrentPage = page;
         const tbody = document.getElementById('toiletTableBody');
         tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
 
-        fetch('/api/admin/toilets?' + new URLSearchParams({ page }))
+        // status가 있으면 쿼리 파라미터에 포함
+        const params = new URLSearchParams({ page });
+        if (toiletCurrentStatus) params.set('status', toiletCurrentStatus);
+
+        fetch('/api/admin/toilets?' + params)
             .then(r => r.json())
             .then(res => {
                 if (!res.data || res.data.content.length === 0) {
@@ -896,13 +969,28 @@
     // ── お問い合わせ ──
     // =====================================================================
     let inquiryCurrentPage = 0;
+    let inquiryCurrentStatus = 'WAITING'; // 기본값: 미답변 우선
+
+    // 필터 버튼 클릭 시 호출: active 버튼 교체 + 1페이지부터 다시 로드
+    function setInquiryFilter(status) {
+        inquiryCurrentStatus = status;
+        ['WAITING', 'ANSWERED', ''].forEach(s => {
+            const btn = document.getElementById('inquiryFilter-' + s);
+            if (btn) btn.classList.toggle('active', s === status);
+        });
+        loadInquiries(0);
+    }
 
     function loadInquiries(page) {
         inquiryCurrentPage = page;
         const tbody = document.getElementById('inquiryTableBody');
         tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
 
-        fetch('/api/admin/inquiries?' + new URLSearchParams({ page }))
+        // status가 있으면 쿼리 파라미터에 포함
+        const params = new URLSearchParams({ page });
+        if (inquiryCurrentStatus) params.set('status', inquiryCurrentStatus);
+
+        fetch('/api/admin/inquiries?' + params)
             .then(r => r.json())
             .then(res => {
                 if (!res.data || res.data.content.length === 0) {
@@ -943,16 +1031,31 @@
 
     // =====================================================================
     // ── 修正提案 ──
-    // GET /api/admin/edit-requests?page=0
+    // GET /api/admin/edit-requests?page=0&status=PENDING
     // =====================================================================
     let editRequestCurrentPage = 0;
+    let editRequestCurrentStatus = 'PENDING'; // 기본값: 처리 대기
+
+    // 필터 버튼 클릭 시 호출: active 버튼 교체 + 1페이지부터 다시 로드
+    function setEditRequestFilter(status) {
+        editRequestCurrentStatus = status;
+        ['PENDING', 'APPROVED', 'REJECTED', ''].forEach(s => {
+            const btn = document.getElementById('editRequestFilter-' + s);
+            if (btn) btn.classList.toggle('active', s === status);
+        });
+        loadEditRequests(0);
+    }
 
     function loadEditRequests(page) {
         editRequestCurrentPage = page;
         const tbody = document.getElementById('editRequestTableBody');
         tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state">読み込み中...</div></td></tr>';
 
-        fetch('/api/admin/edit-requests?' + new URLSearchParams({ page }))
+        // status가 있으면 쿼리 파라미터에 포함
+        const params = new URLSearchParams({ page });
+        if (editRequestCurrentStatus) params.set('status', editRequestCurrentStatus);
+
+        fetch('/api/admin/edit-requests?' + params)
             .then(r => r.json())
             .then(res => {
                 if (!res.data || res.data.content.length === 0) {
