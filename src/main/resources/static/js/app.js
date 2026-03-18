@@ -11,7 +11,7 @@ var highlightedMarker = null; // 상세보기 중 강조된 마커
 var currentInfoWindow = null; // 현재 열려있는 인포윈도우
 var currentLat = 37.5665;  // 현재 위도 (기본값: 서울)
 var currentLng = 126.9780; // 현재 경도
-var currentFilter = 'all'; // 현재 필터
+var activeFilters = []; // 현재 활성화된 필터 목록 (복수 선택 지원)
 var myLocationMarker = null; // 내 위치 마커
 var SEARCH_RADIUS = 800;     // 검색 반경 (800m 고정)
 var currentPage = 1;         // current page for pagination
@@ -36,41 +36,18 @@ function initMap() {
 
     map = new naver.maps.Map('map', mapOptions);
 
-    // 현재 위치로 자동 이동 + 주변 화장실 로딩
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                currentLat = position.coords.latitude;
-                currentLng = position.coords.longitude;
-                var locPosition = new naver.maps.LatLng(currentLat, currentLng);
-
-                // 내 위치 마커 표시
-                showMyLocationMarker(currentLat, currentLng);
-
-                if (sharedToiletId) {
-                    // 공유 링크: 해당 화장실로 이동 + 상세보기
-                    openSharedToilet(sharedToiletId);
-                } else {
-                    map.setCenter(locPosition);
-                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-                }
-            },
-            function(error) {
-                console.log('位置情報の取得に失敗:', error);
-                if (sharedToiletId) {
-                    openSharedToilet(sharedToiletId);
-                } else {
-                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-                }
-            }
-        );
-    } else {
-        if (sharedToiletId) {
+    // 공유 링크이거나 이미 위치 동의한 경우 바로 위치 가져오기
+    if (sharedToiletId) {
+        moveToMyLocation(function() {
             openSharedToilet(sharedToiletId);
-        } else {
-            loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-        }
+        });
+    } else if (sessionStorage.getItem('locationAllowed')) {
+        moveToMyLocation(null);
+    } else if (sessionStorage.getItem('locationAsked')) {
+        // 이전에 "後で設定する" 선택한 경우 → 기본 위치로 로딩
+        loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
     }
+    // 그 외(최초 방문)는 모달에서 선택할 때까지 대기
 
     // 지도 이동 완료 시 화장실 다시 로딩 (상세보기 중엔 무시)
     naver.maps.Event.addListener(map, 'idle', function() {
@@ -79,12 +56,47 @@ function initMap() {
         currentLat = center.lat();
         currentLng = center.lng();
         var radius = SEARCH_RADIUS;
-        if (currentFilter === 'all') {
+        // 활성 필터가 없으면 전체 로드, 있으면 필터 적용
+        if (activeFilters.length === 0) {
             loadNearbyToilets(currentLat, currentLng, radius);
         } else {
-            loadFilteredToilets(currentLat, currentLng, radius, currentFilter);
+            loadFilteredToilets(currentLat, currentLng, radius, activeFilters);
         }
     });
+}
+
+// ========== 현재 위치로 이동 ==========
+function moveToMyLocation(callback) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                currentLat = position.coords.latitude;
+                currentLng = position.coords.longitude;
+                var locPosition = new naver.maps.LatLng(currentLat, currentLng);
+                showMyLocationMarker(currentLat, currentLng);
+                map.setCenter(locPosition);
+                if (callback) {
+                    callback();
+                } else {
+                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+                }
+            },
+            function(error) {
+                console.log('位置情報の取得に失敗:', error);
+                if (callback) {
+                    callback();
+                } else {
+                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+                }
+            }
+        );
+    } else {
+        if (callback) {
+            callback();
+        } else {
+            loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+        }
+    }
 }
 
 // ========== 공유 링크로 화장실 상세보기 열기 ==========
@@ -241,13 +253,14 @@ function loadNearbyToilets(lat, lng, radius) {
         });
 }
 
-// ========== 필터 검색 ==========
-function loadFilteredToilets(lat, lng, radius, filter) {
+// ========== 필터 검색 (복수 필터 배열 지원) ==========
+function loadFilteredToilets(lat, lng, radius, filters) {
     var url = '/api/toilets/filter?lat=' + lat + '&lng=' + lng + '&radius=' + radius;
-    if (filter === 'is24hours') url += '&is24hours=1';
-    if (filter === 'isWheelchair') url += '&isWheelchair=1';
-    if (filter === 'hasDiaper') url += '&hasDiaper=1';
-    if (filter === 'hasPaper') url += '&hasPaper=1';
+    // filters 배열에 포함된 항목만 파라미터로 추가
+    if (filters.indexOf('is24hours') !== -1)   url += '&is24hours=1';
+    if (filters.indexOf('isWheelchair') !== -1) url += '&isWheelchair=1';
+    if (filters.indexOf('hasDiaper') !== -1)   url += '&hasDiaper=1';
+    if (filters.indexOf('hasPaper') !== -1)    url += '&hasPaper=1';
 
     fetch(url)
         .then(function(response) { return response.json(); })
@@ -633,8 +646,7 @@ function renderReviewsTab(toilet, reviews) {
 
     var html = '';
 
-    // 리뷰 탭 헤더: 작성 버튼 + 정렬
-    html += '<div class="review-tab-header">';
+    // 리뷰 작성 버튼
     if (isLoggedIn) {
         html += '<a href="/review/write?toiletId=' + toilet.id + '" class="btn-write-review">' +
             '<i class="fas fa-pen"></i> レビューを書く</a>';
@@ -643,6 +655,11 @@ function renderReviewsTab(toilet, reviews) {
             '<i class="fas fa-pen"></i> レビューを書く</button>';
     }
 
+    // 리뷰 목록 헤더: 건수 + 정렬
+    html += '<div class="review-list-header">';
+    html += '<span class="review-count">レビュー' +
+        (reviews && reviews.length > 0 ? ' ' + reviews.length + '件' : '') +
+        '</span>';
     if (reviews && reviews.length > 1) {
         html += '<select class="review-sort-select" onchange="sortReviews(this.value)">' +
             '<option value="latest">最新順</option>' +
@@ -652,16 +669,21 @@ function renderReviewsTab(toilet, reviews) {
     }
     html += '</div>';
 
-    // 리뷰 목록
-    html += '<div class="detail-section-title">レビュー' +
-        (reviews && reviews.length > 0 ? ' (' + reviews.length + '件)' : '') +
-        '</div>';
-
     if (!reviews || reviews.length === 0) {
         html += '<div class="detail-reviews-empty">' +
             '<i class="fas fa-comment-slash"></i>' +
             '<p>まだレビューがありません</p>' +
             '<p class="detail-reviews-empty-sub">最初のレビューを書いてみませんか？</p>' +
+        '</div>';
+    } else if (!isLoggedIn) {
+        // 비로그인: 리뷰 텍스트만 블러 처리
+        html += '<div id="reviewsList" class="detail-reviews-list">';
+        for (var r = 0; r < reviews.length; r++) {
+            html += renderBlurredReviewCard(reviews[r]);
+        }
+        html += '</div>';
+        html += '<div class="review-login-nudge">' +
+            '<button onclick="openLoginModal()"><i class="fas fa-lock"></i> ログインしてレビューを確認</button>' +
         '</div>';
     } else {
         html += '<div id="reviewsList" class="detail-reviews-list">';
@@ -945,6 +967,36 @@ function renderReviewCard(review) {
     '</div>';
 }
 
+// ========== 블러 리뷰 카드 (비로그인) ==========
+function renderBlurredReviewCard(review) {
+    var scoreNum = parseInt(review.cleanScore) || 0;
+
+    var dateStr = '';
+    if (review.createdAt) {
+        var d = new Date(review.createdAt);
+        if (!isNaN(d.getTime())) {
+            dateStr = d.getFullYear() + '.' +
+                String(d.getMonth() + 1).padStart(2, '0') + '.' +
+                String(d.getDate()).padStart(2, '0');
+        }
+    }
+
+    var iconSrc = review.iconUrl || '/img/default.png';
+
+    return '<div class="review-card">' +
+        '<div class="review-card-header">' +
+            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar blurred-content" onerror="this.src=\'/img/default.png\'">' +
+            '<div class="review-author-info">' +
+                '<span class="review-nickname blurred-content">' + escapeHtml(review.nickname || '匿名') + '</span>' +
+                '<span class="review-date blurred-content">' + dateStr + '</span>' +
+            '</div>' +
+            '<div class="review-card-stars blurred-content">' + generateStars(scoreNum) + '</div>' +
+        '</div>' +
+        (review.content ? '<div class="review-content blurred-content">' + escapeHtml(review.content) + '</div>' : '') +
+        (review.tags ? '<div class="review-tags blurred-content">' + escapeHtml(review.tags) + '</div>' : '') +
+    '</div>';
+}
+
 // ========== HTML 이스케이프 (XSS 방지) ==========
 function escapeHtml(text) {
     if (!text) return '';
@@ -978,10 +1030,10 @@ function backToList() {
     // 검색바, 필터 다시 보이기
     var searchEl = document.querySelector('.sidebar-search');
     if (searchEl) searchEl.style.display = '';
-    if (currentFilter === 'all') {
+    if (activeFilters.length === 0) {
         loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
     } else {
-        loadFilteredToilets(currentLat, currentLng, SEARCH_RADIUS, currentFilter);
+        loadFilteredToilets(currentLat, currentLng, SEARCH_RADIUS, activeFilters);
     }
 }
 
@@ -1013,22 +1065,44 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// ========== 필터 태그 ==========
+// ========== 필터 태그 (복수 선택 지원) ==========
 document.querySelectorAll('.filter-tag').forEach(function(tag) {
     tag.addEventListener('click', function() {
         if (isDetailView) return; // 상세보기 중엔 필터 무시
-        document.querySelectorAll('.filter-tag').forEach(function(t) {
-            t.classList.remove('active');
-        });
-        this.classList.add('active');
 
-        currentFilter = this.dataset.filter;
+        var filter = this.dataset.filter;
         var radius = SEARCH_RADIUS;
 
-        if (currentFilter === 'all') {
+        if (filter === 'all') {
+            // すべて 클릭 시: 모든 필터 해제, すべて만 active
+            activeFilters = [];
+            document.querySelectorAll('.filter-tag').forEach(function(t) {
+                t.classList.remove('active');
+            });
+            document.querySelector('.filter-tag[data-filter="all"]').classList.add('active');
             loadNearbyToilets(currentLat, currentLng, radius);
         } else {
-            loadFilteredToilets(currentLat, currentLng, radius, currentFilter);
+            // 다른 태그 클릭 시: すべて 해제 + 해당 태그 토글
+            document.querySelector('.filter-tag[data-filter="all"]').classList.remove('active');
+
+            var idx = activeFilters.indexOf(filter);
+            if (idx === -1) {
+                // 선택 안 된 태그 → 추가
+                activeFilters.push(filter);
+                this.classList.add('active');
+            } else {
+                // 이미 선택된 태그 → 해제
+                activeFilters.splice(idx, 1);
+                this.classList.remove('active');
+            }
+
+            // 모든 필터 해제되면 すべて로 돌아가기
+            if (activeFilters.length === 0) {
+                document.querySelector('.filter-tag[data-filter="all"]').classList.add('active');
+                loadNearbyToilets(currentLat, currentLng, radius);
+            } else {
+                loadFilteredToilets(currentLat, currentLng, radius, activeFilters);
+            }
         }
     });
 });

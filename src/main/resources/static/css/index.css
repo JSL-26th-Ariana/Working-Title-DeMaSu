@@ -1761,22 +1761,41 @@ body {
 /* ============================================
    Review Tab - Sort & Report
    ============================================ */
-.review-tab-header {
+.review-list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin: 16px 0 12px;
+}
+
+.review-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    font-family: 'LINESeedJP_OTF', sans-serif;
 }
 
 .review-sort-select {
-    padding: 6px 10px;
+    padding: 6px 12px;
     border: 1px solid #E0E0E0;
-    border-radius: 6px;
+    border-radius: 20px;
     font-size: 12px;
     font-family: 'LINESeedJP_OTF', sans-serif;
-    color: #333;
-    background: white;
+    color: #666;
+    background: #F8F8F8;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    transition: all 0.2s;
+}
+
+.review-sort-select:hover {
+    border-color: #00C896;
+    background-color: #F0FBF7;
 }
 
 .review-sort-select:focus {
@@ -2007,4 +2026,38 @@ body {
 
 .edit-form-label .required {
     color: #E53E3E;
+}
+
+/* ========== 리뷰 블러 (비로그인 시) ========== */
+.blurred-content {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+}
+
+.review-login-nudge {
+    text-align: center;
+    padding: 16px 0 8px;
+}
+
+.review-login-nudge button {
+    background: none;
+    border: 1px solid #00C896;
+    color: #00C896;
+    padding: 10px 24px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.review-login-nudge button:hover {
+    background: #00C896;
+    color: white;
 }
