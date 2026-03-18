@@ -287,16 +287,25 @@ public class AdminService {
     // =====================================================================
 
     /**
-     * 수정 제안 목록 조회 (페이징)
+     * 수정 제안 목록 조회 (페이징 + 상태 필터)
      * - ToiletEditRequestMapper.findAllRequests() 전체 목록을 가져온 뒤 페이징 처리
-     * - PENDING 우선 노출을 위해 DB 쿼리가 ORDER BY created_at DESC 정렬함
+     * - status가 비어있으면 전체, 값이 있으면 해당 상태만 필터링
      *
-     * @param page 현재 페이지 번호 (0-based)
+     * @param status 필터 상태 (PENDING/APPROVED/REJECTED/빈 문자열=전체)
+     * @param page   현재 페이지 번호 (0-based)
      * @return AdminPageResponse — content/number/totalPages 필드로 dashboard.html JS와 매핑
      */
-    public AdminPageResponse<ToiletEditRequest> getEditRequestList(int page) {
-        // 전체 목록 조회 후 서버 사이드 페이징 (editRequestMapper에 LIMIT/OFFSET 파라미터 없음)
+    public AdminPageResponse<ToiletEditRequest> getEditRequestList(String status, int page) {
+        // 전체 목록 조회 후 상태 필터링
         List<ToiletEditRequest> all = editRequestMapper.findAllRequests();
+
+        // status가 비어있지 않으면 해당 상태만 필터링
+        if (status != null && !status.isBlank()) {
+            all = all.stream()
+                    .filter(r -> status.equals(r.getStatus()))
+                    .collect(java.util.stream.Collectors.toList());
+        }
+
         int totalCount = all.size();
         int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
 
