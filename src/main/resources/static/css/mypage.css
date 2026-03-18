@@ -1260,3 +1260,30 @@ body.mypage {
 .mp-btn-primary:hover {
   background: #00B385;
 }
+
+.mp-review-hidden {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    background: #fff5f5;
+    border: 1.5px dashed #ffb3b3;
+    border-radius: 12px;
+    color: #999;
+}
+
+.mp-hidden-icon {
+    font-size: 28px;
+}
+
+.mp-hidden-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e53e3e;
+    margin-bottom: 4px;
+}
+
+.mp-hidden-date {
+    font-size: 12px;
+    color: #aaa;
+}
