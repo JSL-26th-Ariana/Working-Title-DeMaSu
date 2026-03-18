@@ -38,6 +38,7 @@ body {
     font-size: 28px;
     font-weight: 800;
     color: #1A1A1A;
+    letter-spacing: 0.05em;
     margin-bottom: 10px;
 }
 .page-subtitle {
