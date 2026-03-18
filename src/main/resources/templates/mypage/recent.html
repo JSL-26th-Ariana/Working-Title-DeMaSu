@@ -34,7 +34,7 @@
                         border-radius:8px; padding:6px 14px; cursor:pointer; transition:all 0.2s;"
                         onmouseover="this.style.background='#00B385';"
                         onmouseout="this.style.background='#00C896';">
-                    全て削除
+                    すべて削除
                 </button>
             </div>
 
@@ -107,7 +107,7 @@
     }
 
     async function deleteAll() {
-        if (!confirm('全ての履歴を削除しますか？')) return;
+        if (!confirm('すべての履歴を削除しますか？')) return;
         try {
             const res = await fetch('/mypage/recent', { method: 'DELETE' });
             const data = await res.json();
