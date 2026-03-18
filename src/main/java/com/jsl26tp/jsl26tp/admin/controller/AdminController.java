@@ -60,6 +60,13 @@ public class AdminController {
         return "admin/reports";
     }
 
+    /** 신고 상세 페이지 → templates/admin/report-detail.html */
+    @GetMapping("/admin/reports/{id}")
+    public String reportDetailPage(@PathVariable Long id, Model model) {
+        model.addAttribute("report", adminService.getReportById(id));
+        return "admin/report-detail";
+    }
+
     /** 화장실 승인 페이지 → templates/admin/toilets.html */
     @GetMapping("/admin/toilets")
     public String toiletsPage() {

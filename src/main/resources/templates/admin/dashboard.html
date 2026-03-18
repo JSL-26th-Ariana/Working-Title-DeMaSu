@@ -514,6 +514,13 @@
         <div class="card">
             <div class="card-header">
                 <span class="card-title">通報一覧</span>
+                <!-- 상태 필터: 기본값 PENDING (처리 대기 우선) -->
+                <div class="filter-row">
+                    <button class="filter-btn active" id="reportFilter-PENDING"   onclick="setReportFilter('PENDING')">処理待ち</button>
+                    <button class="filter-btn"         id="reportFilter-PROCESSED" onclick="setReportFilter('PROCESSED')">処理済み</button>
+                    <button class="filter-btn"         id="reportFilter-DISMISSED" onclick="setReportFilter('DISMISSED')">却下済み</button>
+                    <button class="filter-btn"         id="reportFilter-"          onclick="setReportFilter('')">全て</button>
+                </div>
             </div>
             <table>
                 <thead>
@@ -792,13 +799,28 @@
     // ── 通報管理 ──
     // =====================================================================
     let reportCurrentPage = 0;
+    let reportCurrentStatus = 'PENDING'; // 기본값: 처리 대기
+
+    // 필터 버튼 클릭 시 호출: active 버튼 교체 + 1페이지부터 다시 로드
+    function setReportFilter(status) {
+        reportCurrentStatus = status;
+        ['PENDING', 'PROCESSED', 'DISMISSED', ''].forEach(s => {
+            const btn = document.getElementById('reportFilter-' + s);
+            if (btn) btn.classList.toggle('active', s === status);
+        });
+        loadReports(0);
+    }
 
     function loadReports(page) {
         reportCurrentPage = page;
         const tbody = document.getElementById('reportTableBody');
         tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">読み込み中...</div></td></tr>';
 
-        fetch('/api/admin/reports?' + new URLSearchParams({ page }))
+        // status가 있으면 쿼리 파라미터에 포함
+        const params = new URLSearchParams({ page });
+        if (reportCurrentStatus) params.set('status', reportCurrentStatus);
+
+        fetch('/api/admin/reports?' + params)
             .then(r => r.json())
             .then(res => {
                 if (!res.data || res.data.content.length === 0) {
@@ -826,9 +848,8 @@
 
             const date = r.createdAt ? r.createdAt.substring(0, 10) : '-';
             const targetType = r.targetType === 'REVIEW' ? 'レビュー' : 'トイレ';
-            // PENDING일 때만 버튼 활성화
-            const disabled = r.status !== 'PENDING' ? 'disabled style="opacity:0.35;cursor:not-allowed;"' : '';
 
+            // 詳細ボタン → /admin/reports/{id} 상세 페이지로 이동
             return `<tr>
                 <td class="td-id">${r.id}</td>
                 <td class="td-username">${r.reporterNickname || '-'}</td>
@@ -837,12 +858,7 @@
                 <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.reason || '-'}</td>
                 <td>${statusBadge}</td>
                 <td>${date}</td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn-approve" onclick="resolveReport(${r.id})" ${disabled}>承認</button>
-                        <button class="btn-delete" onclick="dismissReport(${r.id})" ${disabled}>却下</button>
-                    </div>
-                </td>
+                <td><a href="/admin/reports/${r.id}" class="btn-detail">詳細</a></td>
             </tr>`;
         }).join('');
     }

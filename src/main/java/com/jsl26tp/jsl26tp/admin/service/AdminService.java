@@ -30,6 +30,7 @@ public class AdminService {
     // ToiletEditRequestMapper: 다른 팀원 파일 수정 없이 주입만 해서 사용
     private final ToiletEditRequestMapper editRequestMapper;
 
+
     /** 페이지당 표시 건수 (모든 목록 공통) */
     private static final int PAGE_SIZE = 10;
 
@@ -129,6 +130,11 @@ public class AdminService {
         AdminReport report = adminMapper.findReportById(id);
         if (report == null) {
             throw new BusinessException(ErrorCode.BAD_REQUEST);
+        }
+        // REVIEW 타입이면 review_images 테이블에서 이미지 URL 목록 조회
+        if ("REVIEW".equals(report.getTargetType()) && report.getTargetId() != null) {
+            List<String> imageUrls = adminMapper.findReviewImageUrls(report.getTargetId());
+            report.setTargetImageUrls(imageUrls);
         }
         return report;
     }
