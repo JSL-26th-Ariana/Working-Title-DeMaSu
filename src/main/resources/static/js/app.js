@@ -945,11 +945,11 @@ function renderReviewCard(review) {
     }
 
     // 프로필 아이콘
-    var iconSrc = review.iconUrl || '/img/default.png';
+    var iconSrc = review.iconUrl || '/img/default.svg';
 
     return '<div class="review-card">' +
         '<div class="review-card-header">' +
-            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar" onerror="this.src=\'/img/default.png\'">' +
+            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar" onerror="this.src=\'/img/default.svg\'">' +
             '<div class="review-author-info">' +
                 '<span class="review-nickname">' + escapeHtml(review.nickname || '匿名') + '</span>' +
                 '<span class="review-date">' + dateStr + '</span>' +
@@ -981,11 +981,11 @@ function renderBlurredReviewCard(review) {
         }
     }
 
-    var iconSrc = review.iconUrl || '/img/default.png';
+    var iconSrc = review.iconUrl || '/img/default.svg';
 
     return '<div class="review-card">' +
         '<div class="review-card-header">' +
-            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar blurred-content" onerror="this.src=\'/img/default.png\'">' +
+            '<img src="' + iconSrc + '" alt="avatar" class="review-avatar blurred-content" onerror="this.src=\'/img/default.svg\'">' +
             '<div class="review-author-info">' +
                 '<span class="review-nickname blurred-content">' + escapeHtml(review.nickname || '匿名') + '</span>' +
                 '<span class="review-date blurred-content">' + dateStr + '</span>' +
