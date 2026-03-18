@@ -84,6 +84,8 @@ public class AdminController {
     @GetMapping("/admin/toilets/{id}")
     public String toiletDetailPage(@PathVariable Long id, Model model) {
         model.addAttribute("toilet", adminService.getToiletById(id));
+        // 네이버 지도 표시를 위해 클라이언트 ID 전달
+        model.addAttribute("naverMapsClientId", naverMapsClientId);
         return "admin/toilet-detail";
     }
 
