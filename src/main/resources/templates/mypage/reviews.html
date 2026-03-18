@@ -42,7 +42,19 @@
 
             <div th:each="review : ${reviews}" class="mp-review-card">
 
+                <!-- 신고로 숨겨진 리뷰 -->
+                <div th:if="${review.status == 'HIDDEN'}" class="mp-review-hidden">
+                    <span class="mp-hidden-icon">🚫</span>
+                    <div class="mp-hidden-text">
+                        <p class="mp-hidden-title">通報により非表示となったレビューです</p>
+                        <p class="mp-hidden-date">
+                            📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}"></span>
+                        </p>
+                    </div>
+                </div>
+
                 <!-- 카드 헤더 -->
+                <th:block th:if="${review.status != 'HIDDEN'}">
                 <div class="mp-review-header">
                     <div class="mp-review-toilet-name">
                         🚻
@@ -87,6 +99,7 @@
                         </a>
                     </div>
                 </div>
+                </th:block>
 
             </div>
 
