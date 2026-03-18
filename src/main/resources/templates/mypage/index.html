@@ -37,12 +37,12 @@
                 <h2 class="mp-profile-nickname" th:text="${user.nickname}">ニックネーム</h2>
                 <p class="mp-profile-email" th:text="${user.email}">email@example.com</p>
                 <p class="mp-profile-join">
-                    <span>📅</span>
+
                     <span th:text="'登録日: ' + ${#temporals.format(user.createdAt, 'yyyy.MM.dd')}">登録日: 2026.01.01</span>
                 </p>
             </div>
             <a th:href="@{/mypage/edit}" class="mp-btn-edit">
-                ✏️ プロフィール編集
+                プロフィール編集
             </a>
         </section>
 
