@@ -745,6 +745,24 @@ body {
 .detail-yes { color: #00C896; font-size: 14px; }
 .detail-no { color: #CCC; font-size: 14px; }
 
+.detail-quick-facilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.quick-facility {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    color: #333;
+    background: #F5FFFE;
+    border: 1px solid rgba(0, 200, 150, 0.2);
+    border-radius: 20px;
+    padding: 4px 10px;
+}
+
 .detail-count {
     font-size: 13px;
     color: #333;
@@ -910,6 +928,23 @@ body {
     line-height: 1.6;
     margin-bottom: 8px;
     word-break: break-word;
+}
+
+/* Review Tags */
+.review-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 8px;
+}
+.review-tag {
+    font-size: 11px;
+    color: #2ECDC0;
+    background: rgba(46, 205, 192, 0.1);
+    border: 1px solid rgba(46, 205, 192, 0.25);
+    border-radius: 20px;
+    padding: 2px 9px;
+    font-weight: 500;
 }
 
 /* Review Images */

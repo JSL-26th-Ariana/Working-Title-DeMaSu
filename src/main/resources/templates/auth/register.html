@@ -1,105 +1,240 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>会員登録 - デマス</title>
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/register.css">
     <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-<!-- Header + Toast (共通フラグメント) -->
+<body class="register-body">
+
 <div th:replace="~{fragments/header :: headerAndToast}"></div>
 
-<!-- Main Content -->
-<main class="main-content">
-    <div class="signup-card">
-        <div class="card-icon">
-            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+<main class="register-main">
+    <div class="register-card">
+
+        <div class="register-card-header">
+            <h2>会員登録</h2>
+            <p>アカウントを作成して、すべての機能をご利用ください。</p>
         </div>
-        <h1 class="card-title">会員登録</h1>
-        <p class="card-subtitle">アカウントを作成して、サービスを始めましょう</p>
 
-        <form>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>ユーザーID <span class="required">*</span></label>
-                    <input type="text" placeholder="ユーザーIDを入力">
-                    <div class="hint-text">重複確認</div>
+        <!-- 에러 메시지 -->
+        <div class="error-message" th:if="${error}" style="display:flex;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/register}" method="post" class="register-form" id="registerForm">
+
+            <!-- ID -->
+            <div class="form-group">
+                <label>ユーザーID <span class="required">*</span></label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" th:value="${user?.username}"
+                           placeholder="英数字で入力" required minlength="4" maxlength="50"
+                           id="usernameInput">
                 </div>
-                <div class="form-group">
-                    <label>ニックネーム <span class="required">*</span></label>
-                    <input type="text" placeholder="ニックネームを入力">
-                    <div class="hint-text">重複確認</div>
+                <span class="field-message" id="usernameMsg"></span>
+            </div>
+
+            <!-- パスワード -->
+            <div class="form-group">
+                <label>パスワード <span class="required">*</span></label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="8文字以上"
+                           required minlength="8" id="passwordInput">
+                    <button type="button" class="toggle-pw" onclick="togglePassword('passwordInput', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>パスワード <span class="required">*</span></label>
-                    <input type="password" placeholder="8文字以上">
+            <!-- パスワード確認 -->
+            <div class="form-group">
+                <label>パスワード確認 <span class="required">*</span></label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="passwordConfirm" placeholder="パスワードを再入力"
+                           required id="passwordConfirmInput">
                 </div>
-                <div class="form-group">
-                    <label>パスワード確認 <span class="required">*</span></label>
-                    <input type="password" placeholder="パスワードを再入力">
-                </div>
+                <span class="field-message" id="passwordMsg"></span>
             </div>
 
+            <!-- ニックネーム -->
+            <div class="form-group">
+                <label>ニックネーム <span class="required">*</span></label>
+                <div class="input-group">
+                    <i class="fas fa-smile"></i>
+                    <input type="text" name="nickname" th:value="${user?.nickname}"
+                           placeholder="ニックネームを入力" required maxlength="50"
+                           id="nicknameInput">
+                </div>
+                <span class="field-message" id="nicknameMsg"></span>
+            </div>
+
+            <!-- メールアドレス -->
             <div class="form-group">
                 <label>メールアドレス <span class="required">*</span></label>
-                <input type="email" placeholder="example@email.com">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" th:value="${user?.email}"
+                           placeholder="example@email.com" required
+                           id="emailInput">
+                </div>
+                <span class="field-message" id="emailMsg"></span>
             </div>
 
+            <!-- 電話番号 -->
+            <div class="form-group">
+                <label>電話番号</label>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" name="phone" th:value="${user?.phone}"
+                           placeholder="080-1234-5678">
+                </div>
+            </div>
+
+            <!-- 性別 + 生年月日 -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>電話番号</label>
-                    <input type="tel" placeholder="080-1234-5678">
+                    <label>性別</label>
+                    <div class="input-group">
+                        <i class="fas fa-venus-mars"></i>
+                        <select name="gender">
+                            <option value="">選択</option>
+                            <option value="MALE" th:selected="${user?.gender == 'MALE'}">男性</option>
+                            <option value="FEMALE" th:selected="${user?.gender == 'FEMALE'}">女性</option>
+                            <option value="OTHER" th:selected="${user?.gender == 'OTHER'}">その他</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>性別</label>
-                    <select>
-                        <option>選択してください</option>
-                        <option>男性</option>
-                        <option>女性</option>
-                        <option>その他</option>
-                    </select>
+                    <label>生年月日</label>
+                    <div class="input-group">
+                        <i class="fas fa-calendar"></i>
+                        <input type="date" name="birthdate" th:value="${user?.birthdate}">
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>生年月日</label>
-                <input type="date" placeholder="-/-/-">
-            </div>
-
-
-            <button type="submit" class="submit-btn">会員登録</button>
-
-            <div class="divider">または</div>
-
-            <button type="button" class="google-btn" onclick="window.location.href='/oauth2/authorization/google'">
-                <svg width="18" height="18" viewBox="0 0 18 18">
-                    <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-                    <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
-                    <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z"/>
-                    <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
-                </svg>
-                Googleで登録
+            <!-- 회원가입 버튼 -->
+            <button type="submit" class="btn-submit btn-register" id="submitBtn">
+                <i class="fas fa-user-plus"></i> 会員登録
             </button>
 
-            <div class="login-link">
-                すでにアカウントをお持ちの方はこちら <a href="/login">ログイン</a>
+            <!-- 로그인 링크 -->
+            <div class="login-redirect">
+                <span>すでにアカウントをお持ちですか？</span>
+                <a href="/">ログイン</a>
             </div>
+
         </form>
     </div>
 </main>
 
-<!-- Footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
-<!-- 共通ヘッダーJS -->
+
 <script src="/js/header.js"></script>
+<script>
+function togglePassword(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+
+document.getElementById('passwordConfirmInput').addEventListener('input', function() {
+    const pw = document.getElementById('passwordInput').value;
+    const msg = document.getElementById('passwordMsg');
+    if (this.value && this.value !== pw) {
+        msg.textContent = 'パスワードが一致しません。';
+        msg.className = 'field-message error';
+    } else if (this.value && this.value === pw) {
+        msg.textContent = 'パスワードが一致します。';
+        msg.className = 'field-message success';
+    } else {
+        msg.textContent = '';
+    }
+});
+
+let usernameTimeout;
+document.getElementById('usernameInput').addEventListener('input', function() {
+    clearTimeout(usernameTimeout);
+    const msg = document.getElementById('usernameMsg');
+    const value = this.value.trim();
+    if (value.length < 4) {
+        msg.textContent = '4文字以上で入力してください。';
+        msg.className = 'field-message error';
+        return;
+    }
+    usernameTimeout = setTimeout(() => {
+        fetch(`/api/check-username?username=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.success && response.data) {
+                    msg.textContent = '使用可能なIDです。';
+                    msg.className = 'field-message success';
+                } else {
+                    msg.textContent = 'すでに使用されているIDです。';
+                    msg.className = 'field-message error';
+                }
+            });
+    }, 500);
+});
+
+let nicknameTimeout;
+document.getElementById('nicknameInput').addEventListener('input', function() {
+    clearTimeout(nicknameTimeout);
+    const msg = document.getElementById('nicknameMsg');
+    const value = this.value.trim();
+    if (!value) { msg.textContent = ''; return; }
+    nicknameTimeout = setTimeout(() => {
+        fetch(`/api/check-nickname?nickname=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.success && response.data) {
+                    msg.textContent = '使用可能なニックネームです。';
+                    msg.className = 'field-message success';
+                } else {
+                    msg.textContent = 'すでに使用されているニックネームです。';
+                    msg.className = 'field-message error';
+                }
+            });
+    }, 500);
+});
+
+let emailTimeout;
+document.getElementById('emailInput').addEventListener('input', function() {
+    clearTimeout(emailTimeout);
+    const msg = document.getElementById('emailMsg');
+    const value = this.value.trim();
+    if (!value || !value.includes('@')) { msg.textContent = ''; return; }
+    emailTimeout = setTimeout(() => {
+        fetch(`/api/check-email?email=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.success && response.data) {
+                    msg.textContent = '使用可能なメールアドレスです。';
+                    msg.className = 'field-message success';
+                } else {
+                    msg.textContent = 'すでに使用されているメールアドレスです。';
+                    msg.className = 'field-message error';
+                }
+            });
+    }, 500);
+});
+</script>
+
 </body>
 </html>

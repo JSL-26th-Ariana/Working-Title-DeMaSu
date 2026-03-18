@@ -1,393 +1,231 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
+/* ========================================
+   会員登録ページ
+======================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'LINESeedJP_OTF', sans-serif;
-    background: linear-gradient(135deg, #E8F5F1 0%, #D4EDE5 100%);
+body.register-body {
+    background: #F7FFFE;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    overflow-y: auto;
 }
 
-/* Header */
-.header {
-    background: white;
-    padding: 16px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 20px;
-    font-weight: 700;
-    color: #00C896;
-}
-
-.logo-icon {
-    width: 32px;
-    height: 32px;
-    background: #00C896;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 18px;
-}
-
-.header-buttons {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.login-btn {
-    background: transparent;
-    border: none;
-    color: #00C896;
-    font-size: 14px;
-    cursor: pointer;
-    padding: 8px 16px;
-    font-weight: 500;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.signup-btn {
-    background: #00C896;
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-}
-
-/* Main Content */
-.main-content {
-    flex: 1;
+/* ── メインエリア ── */
+.register-main {
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
+    align-items: flex-start;
+    padding: 40px 20px 60px;
+    min-height: calc(100vh - 140px);
 }
 
-.signup-card {
+/* ── カード ── */
+.register-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 48px;
     width: 100%;
-    max-width: 520px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    max-width: 540px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
 }
 
-.card-icon {
-    width: 56px;
-    height: 56px;
-    background: #00C896;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 24px;
-}
-
-.card-icon svg {
-    width: 28px;
-    height: 28px;
-    stroke: white;
-    fill: none;
-}
-
-.card-title {
+/* ── カードヘッダー ── */
+.register-card-header {
     text-align: center;
-    font-size: 24px;
-    font-weight: 700;
-    color: #1A1A1A;
-    margin-bottom: 8px;
-}
-
-.card-subtitle {
-    text-align: center;
-    font-size: 14px;
-    color: #666;
     margin-bottom: 32px;
 }
 
-/* Form */
+
+.register-card-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1B1D1F;
+    margin-bottom: 6px;
+}
+
+.register-card-header p {
+    font-size: 13px;
+    color: #6B7684;
+}
+
+/* ── フォーム ── */
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-bottom: 20px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
     display: block;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 8px;
+    font-size: 13px;
+    color: #3A4553;
+    margin-bottom: 6px;
     font-weight: 500;
 }
 
 .required {
     color: #FF4444;
-    margin-left: 4px;
+    margin-left: 2px;
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #E0E0E0;
-    border-radius: 6px;
-    font-size: 14px;
-    font-family: 'LINESeedJP_OTF', sans-serif;
-    transition: border-color 0.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #00C896;
-}
-
-.form-group input::placeholder {
-    color: #999;
-}
-
-.hint-text {
-    font-size: 12px;
-    color: #00C896;
-    margin-top: 6px;
-}
-
-.checkbox-group {
+.input-group {
     display: flex;
     align-items: center;
-    margin: 24px 0;
+    gap: 10px;
+    padding: 11px 14px;
+    background: #F8FAFB;
+    border-radius: 8px;
+    border: 1.5px solid #EEF2F5;
+    transition: all 0.2s;
 }
 
-.checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
+.input-group:focus-within {
+    border-color: #2ECDC0;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(46, 205, 192, 0.1);
+}
+
+.input-group i {
+    color: #C5CCD3;
+    font-size: 14px;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.input-group input,
+.input-group select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    color: #1B1D1F;
+    font-family: inherit;
+}
+
+.input-group select {
     cursor: pointer;
 }
 
-.checkbox-group label {
+.input-group input::placeholder {
+    color: #C5CCD3;
+}
+
+/* ── パスワード表示トグル ── */
+.toggle-pw {
+    background: none;
+    border: none;
+    color: #C5CCD3;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-pw:hover {
+    color: #8E99A4;
+}
+
+/* ── バリデーションメッセージ ── */
+.field-message {
+    display: block;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.field-message.success { color: #2ECDC0; }
+.field-message.error   { color: #FF4444; }
+
+/* ── エラーメッセージ ── */
+.error-message {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #FFF5F5;
+    color: #FF6B6B;
+    border-radius: 8px;
     font-size: 13px;
-    color: #333;
-    cursor: pointer;
-    margin: 0;
+    margin-bottom: 16px;
 }
 
-.submit-btn {
+/* ── チェックボックス ── */
+.checkbox-group {
+    margin: 8px 0 20px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #3A4553;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #2ECDC0;
+    cursor: pointer;
+}
+
+/* ── 登録ボタン ── */
+.btn-submit.btn-register {
     width: 100%;
     padding: 14px;
-    background: #00C896;
+    background: #2ECDC0;
     color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 500;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    margin-bottom: 20px;
-    transition: background 0.2s;
-}
-
-.submit-btn:hover {
-    background: #00B385;
-}
-
-.divider {
-    text-align: center;
-    color: #999;
-    font-size: 13px;
-    margin: 20px 0;
-}
-
-.google-btn {
-    width: 100%;
-    padding: 12px;
-    background: white;
-    border: 1px solid #E0E0E0;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 20px;
-    transition: background 0.2s;
-}
-
-.google-btn:hover {
-    background: #F8F8F8;
-}
-
-.login-link {
-    text-align: center;
-    font-size: 13px;
-    color: #666;
-}
-
-.login-link a {
-    color: #00C896;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-/* Footer */
-.footer {
-    background: linear-gradient(135deg, #E8F5F1 0%, #D4EDE5 100%);
-    padding: 48px 32px 32px;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 48px;
-    margin-bottom: 32px;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.footer-logo-icon {
-    width: 40px;
-    height: 40px;
-    background: #00C896;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-    flex-shrink: 0;
-}
-
-.footer-brand-text h3 {
-    font-size: 18px;
-    color: #00C896;
-    margin-bottom: 8px;
-}
-
-.footer-brand-text p {
-    font-size: 13px;
-    color: #555;
-    line-height: 1.6;
-}
-
-.social-icons {
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.social-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.social-icon:hover {
-    transform: translateY(-2px);
-}
-
-.social-icon.twitter {
-    background: #000;
-    color: white;
-}
-
-.social-icon.facebook {
-    background: #1877F2;
-    color: white;
-}
-
-.social-icon.instagram {
-    background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF);
-    color: white;
-}
-
-.social-icon.line {
-    background: #00B900;
-    color: white;
-}
-
-.footer-section h4 {
-    font-size: 14px;
-    color: #333;
     margin-bottom: 16px;
-    font-weight: 700;
 }
 
-.footer-section ul {
-    list-style: none;
+.btn-submit.btn-register:hover {
+    background: #22A89E;
+    box-shadow: 0 4px 15px rgba(46, 205, 192, 0.4);
+    transform: translateY(-1px);
 }
 
-.footer-section ul li {
-    margin-bottom: 12px;
-}
-
-.footer-section ul li a {
-    color: #555;
-    text-decoration: none;
-    font-size: 13px;
-    transition: color 0.2s;
-}
-
-.footer-section ul li a:hover {
-    color: #00C896;
-}
-
-.footer-bottom {
+/* ── ログインリンク ── */
+.login-redirect {
     text-align: center;
-    padding-top: 24px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    font-size: 12px;
-    color: #666;
+    font-size: 13px;
+    color: #6B7684;
 }
 
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 32px;
+.login-redirect a {
+    color: #2ECDC0;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.login-redirect a:hover {
+    text-decoration: underline;
+}
+
+/* ── レスポンシブ ── */
+@media (max-width: 600px) {
+    .register-card {
+        padding: 32px 20px;
     }
 
     .form-row {
         grid-template-columns: 1fr;
-    }
-
-    .signup-card {
-        padding: 32px 24px;
+        gap: 0;
     }
 }
