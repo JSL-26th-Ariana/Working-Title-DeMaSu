@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会員登録 - トイレマップ</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <title>会員登録 - デマス</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/register.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="register-body">
@@ -17,9 +18,6 @@
     <div class="register-card">
 
         <div class="register-card-header">
-            <div class="register-card-icon">
-                <i class="fas fa-user-plus"></i>
-            </div>
             <h2>会員登録</h2>
             <p>アカウントを作成して、すべての機能をご利用ください。</p>
         </div>
@@ -30,7 +28,7 @@
             <span th:text="${error}"></span>
         </div>
 
-        <form th:action="@{/register}" method="post" class="register-form" id="registerForm" novalidate>
+        <form th:action="@{/register}" method="post" class="register-form" id="registerForm">
 
             <!-- ID -->
             <div class="form-group">
@@ -38,7 +36,7 @@
                 <div class="input-group">
                     <i class="fas fa-user"></i>
                     <input type="text" name="username" th:value="${user?.username}"
-                           placeholder="英数字で入力"
+                           placeholder="英数字で入力" required minlength="4" maxlength="50"
                            id="usernameInput">
                 </div>
                 <span class="field-message" id="usernameMsg"></span>
@@ -50,7 +48,7 @@
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
                     <input type="password" name="password" placeholder="8文字以上"
-                           id="passwordInput">
+                           required minlength="8" id="passwordInput">
                     <button type="button" class="toggle-pw" onclick="togglePassword('passwordInput', this)">
                         <i class="fas fa-eye"></i>
                     </button>
@@ -62,7 +60,11 @@
                 <label>パスワード確認 <span class="required">*</span></label>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="passwordConfirm" placeholder="パスワードを再入力" id="passwordConfirmInput">
+                    <input type="password" name="passwordConfirm" placeholder="パスワードを再入力"
+                           required id="passwordConfirmInput">
+                    <button type="button" class="toggle-pw" onclick="togglePassword('passwordConfirmInput', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
                 <span class="field-message" id="passwordMsg"></span>
             </div>
@@ -73,7 +75,7 @@
                 <div class="input-group">
                     <i class="fas fa-smile"></i>
                     <input type="text" name="nickname" th:value="${user?.nickname}"
-                           placeholder="ニックネームを入力"
+                           placeholder="ニックネームを入力" required maxlength="50"
                            id="nicknameInput">
                 </div>
                 <span class="field-message" id="nicknameMsg"></span>
@@ -85,7 +87,7 @@
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
                     <input type="email" name="email" th:value="${user?.email}"
-                           placeholder="example@email.com"
+                           placeholder="example@email.com" required
                            id="emailInput">
                 </div>
                 <span class="field-message" id="emailMsg"></span>
@@ -101,7 +103,7 @@
                 </div>
             </div>
 
-            <!-- 性別 + 生年月日 (横並び) -->
+            <!-- 性別 + 生年月日 -->
             <div class="form-row">
                 <div class="form-group">
                     <label>性別</label>
@@ -141,159 +143,100 @@
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<script th:src="@{/js/header.js(v=1)}"></script>
+<script src="/js/header.js"></script>
 <script>
-    function togglePassword(inputId, btn) {
-        const input = document.getElementById(inputId);
-        const icon = btn.querySelector('i');
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
-        }
+function togglePassword(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
     }
+}
 
-    // 아이디
-    let usernameTimeout;
-    document.getElementById('usernameInput').addEventListener('input', function() {
-        clearTimeout(usernameTimeout);
-        const msg = document.getElementById('usernameMsg');
-        const value = this.value.trim();
-        if (value.length < 4) {
-            msg.textContent = '4文字以上で入力してください。';
-            msg.className = 'field-message error';
-            return;
-        }
-        usernameTimeout = setTimeout(() => {
-            fetch(`/api/check-username?username=${encodeURIComponent(value)}`)
-                .then(res => res.json())
-                .then(response => {
-                    if (response.success && response.data) {
-                        msg.textContent = '使用可能なIDです。';
-                        msg.className = 'field-message success';
-                    } else {
-                        msg.textContent = 'すでに使用されているIDです。';
-                        msg.className = 'field-message error';
-                    }
-                });
-        }, 500);
-    });
+document.getElementById('passwordConfirmInput').addEventListener('input', function() {
+    const pw = document.getElementById('passwordInput').value;
+    const msg = document.getElementById('passwordMsg');
+    if (this.value && this.value !== pw) {
+        msg.textContent = 'パスワードが一致しません。';
+        msg.className = 'field-message error';
+    } else if (this.value && this.value === pw) {
+        msg.textContent = 'パスワードが一致します。';
+        msg.className = 'field-message success';
+    } else {
+        msg.textContent = '';
+    }
+});
 
-    // 패스워드
-    document.getElementById('passwordInput').addEventListener('input', function() {
-        const msg = document.getElementById('passwordMsg');
-        if (this.value && this.value.length < 8) {
-            msg.textContent = '8文字以上で入力してください。';
-            msg.className = 'field-message error';
-        } else {
-            msg.textContent = '';
-        }
-    });
+let usernameTimeout;
+document.getElementById('usernameInput').addEventListener('input', function() {
+    clearTimeout(usernameTimeout);
+    const msg = document.getElementById('usernameMsg');
+    const value = this.value.trim();
+    if (value.length < 4) {
+        msg.textContent = '4文字以上で入力してください。';
+        msg.className = 'field-message error';
+        return;
+    }
+    usernameTimeout = setTimeout(() => {
+        fetch(`/api/check-username?username=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.success && response.data) {
+                    msg.textContent = '使用可能なIDです。';
+                    msg.className = 'field-message success';
+                } else {
+                    msg.textContent = 'すでに使用されているIDです。';
+                    msg.className = 'field-message error';
+                }
+            });
+    }, 500);
+});
 
-    // 패스워드 확인
-    document.getElementById('passwordConfirmInput').addEventListener('input', function() {
-        const pw = document.getElementById('passwordInput').value;
-        const msg = document.getElementById('passwordMsg');
-        if (this.value && this.value !== pw) {
-            msg.textContent = 'パスワードが一致しません。';
-            msg.className = 'field-message error';
-        } else if (this.value && this.value === pw) {
-            msg.textContent = 'パスワードが一致します。';
-            msg.className = 'field-message success';
-        } else {
-            msg.textContent = '';
-        }
-    });
+let nicknameTimeout;
+document.getElementById('nicknameInput').addEventListener('input', function() {
+    clearTimeout(nicknameTimeout);
+    const msg = document.getElementById('nicknameMsg');
+    const value = this.value.trim();
+    if (!value) { msg.textContent = ''; return; }
+    nicknameTimeout = setTimeout(() => {
+        fetch(`/api/check-nickname?nickname=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.success && response.data) {
+                    msg.textContent = '使用可能なニックネームです。';
+                    msg.className = 'field-message success';
+                } else {
+                    msg.textContent = 'すでに使用されているニックネームです。';
+                    msg.className = 'field-message error';
+                }
+            });
+    }, 500);
+});
 
-    // 닉네임
-    let nicknameTimeout;
-    document.getElementById('nicknameInput').addEventListener('input', function() {
-        clearTimeout(nicknameTimeout);
-        const msg = document.getElementById('nicknameMsg');
-        const value = this.value.trim();
-        if (!value) { msg.textContent = ''; return; }
-        nicknameTimeout = setTimeout(() => {
-            fetch(`/api/check-nickname?nickname=${encodeURIComponent(value)}`)
-                .then(res => res.json())
-                .then(response => {
-                    if (response.success && response.data) {
-                        msg.textContent = '使用可能なニックネームです。';
-                        msg.className = 'field-message success';
-                    } else {
-                        msg.textContent = 'すでに使用されているニックネームです。';
-                        msg.className = 'field-message error';
-                    }
-                });
-        }, 500);
-    });
-
-    // 이메일
-    let emailTimeout;
-    document.getElementById('emailInput').addEventListener('input', function() {
-        clearTimeout(emailTimeout);
-        const msg = document.getElementById('emailMsg');
-        const value = this.value.trim();
-        if (!value || !value.includes('@')) { msg.textContent = ''; return; }
-        emailTimeout = setTimeout(() => {
-            fetch(`/api/check-email?email=${encodeURIComponent(value)}`)
-                .then(res => res.json())
-                .then(response => {
-                    if (response.success && response.data) {
-                        msg.textContent = '使用可能なメールアドレスです。';
-                        msg.className = 'field-message success';
-                    } else {
-                        msg.textContent = 'すでに使用されているメールアドレスです。';
-                        msg.className = 'field-message error';
-                    }
-                });
-        }, 500);
-    });
-
-    // submit 최종 검증
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-        let valid = true;
-
-        const username = document.getElementById('usernameInput').value.trim();
-        const usernameMsg = document.getElementById('usernameMsg');
-        if (!username || username.length < 4) {
-            usernameMsg.textContent = '4文字以上で入力してください。';
-            usernameMsg.className = 'field-message error';
-            valid = false;
-        }
-
-        const pw = document.getElementById('passwordInput').value;
-        const pwConfirm = document.getElementById('passwordConfirmInput').value;
-        const passwordMsg = document.getElementById('passwordMsg');
-        if (!pw || pw.length < 8) {
-            passwordMsg.textContent = '8文字以上で入力してください。';
-            passwordMsg.className = 'field-message error';
-            valid = false;
-        } else if (pw !== pwConfirm) {
-            passwordMsg.textContent = 'パスワードが一致しません。';
-            passwordMsg.className = 'field-message error';
-            valid = false;
-        }
-
-        const nickname = document.getElementById('nicknameInput').value.trim();
-        const nicknameMsg = document.getElementById('nicknameMsg');
-        if (!nickname) {
-            nicknameMsg.textContent = 'ニックネームを入力してください。';
-            nicknameMsg.className = 'field-message error';
-            valid = false;
-        }
-
-        const email = document.getElementById('emailInput').value.trim();
-        const emailMsg = document.getElementById('emailMsg');
-        if (!email || !email.includes('@')) {
-            emailMsg.textContent = 'メールアドレスを正しく入力してください。';
-            emailMsg.className = 'field-message error';
-            valid = false;
-        }
-
-        if (!valid) e.preventDefault();
-    });
+let emailTimeout;
+document.getElementById('emailInput').addEventListener('input', function() {
+    clearTimeout(emailTimeout);
+    const msg = document.getElementById('emailMsg');
+    const value = this.value.trim();
+    if (!value || !value.includes('@')) { msg.textContent = ''; return; }
+    emailTimeout = setTimeout(() => {
+        fetch(`/api/check-email?email=${encodeURIComponent(value)}`)
+            .then(res => res.json())
+            .then(response => {
+                if (response.success && response.data) {
+                    msg.textContent = '使用可能なメールアドレスです。';
+                    msg.className = 'field-message success';
+                } else {
+                    msg.textContent = 'すでに使用されているメールアドレスです。';
+                    msg.className = 'field-message error';
+                }
+            });
+    }, 500);
+});
 </script>
 
 </body>

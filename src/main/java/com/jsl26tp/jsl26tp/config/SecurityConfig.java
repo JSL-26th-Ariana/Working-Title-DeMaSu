@@ -48,6 +48,8 @@ public class SecurityConfig {
                     "/review/api/toilet/*",      // 화장실별 리뷰 목록 (비회원도 조회 가능)
                     "/api/check-*",         // 중복 체크 API (회원가입 시 사용)
                     "/api/line/webhook",    // LINE 챗봇 Webhook
+                    "/api/users/verify-identity",  // 비밀번호 찾기: 본인 확인 (비회원 접근 허용)
+                    "/api/users/reset-password",   // 비밀번호 찾기: 새 비밀번호 변경 (비회원 접근 허용)
                     "/error",               // 에러 페이지 (리다이렉트 루프 방지)
                     "/oauth2/**",           // Google OAuth2 인증
                     "/login/oauth2/**",     // OAuth2 콜백

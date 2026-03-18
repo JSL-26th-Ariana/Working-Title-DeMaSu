@@ -82,17 +82,17 @@
                 <!-- 카드 푸터 -->
                 <div class="mp-review-footer">
                     <span class="mp-review-date">
-                        📅 <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
+                        <span th:text="${#temporals.format(review.createdAt, 'yyyy.MM.dd')}">2024.01.01</span>
                     </span>
                     <div class="mp-review-actions" style="display: flex; gap: 8px;">
                         <a th:href="@{/review/edit/{id}(id=${review.id})}" class="mp-btn-edit">
-                            ✏️ 修正
+                             修正
                         </a>
                         <button type="button" class="btn-delete"
                                 th:data-id="${review.id}"
                                 th:data-toilet-id="${review.toiletId}"
                                 style="padding: 6px 12px; font-size: 13px; border-radius: 8px;">
-                            🗑️ 削除
+                            削除
                         </button>
                         <a th:href="@{/(toiletId=${review.toiletId})}" class="mp-btn-link">
                             詳細を見る →

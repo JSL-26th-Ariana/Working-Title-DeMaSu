@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>トイレマップ - デマス</title>
+    <title>デマス ~なんか出る気がする~</title>
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
-    <link rel="stylesheet" href="/css/index.css?v=5">
+    <link rel="stylesheet" href="/css/index.css?v=6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <style>
@@ -387,15 +387,15 @@
         <p class="modal-subtitle">アカウントにログインしてください</p>
 
         <form class="login-form" th:action="@{/login}" method="post"
-              onsubmit="sessionStorage.setItem('justLoggedIn','1')">
+              onsubmit="return validateLoginForm()">
             <div class="form-group">
                 <label>ID</label>
-                <input type="text" name="username" placeholder="IDを入力">
+                <input type="text" name="username" placeholder="IDを入力" id="loginUsername">
             </div>
 
             <div class="form-group">
                 <label>パスワード</label>
-                <input type="password" name="password" placeholder="········">
+                <input type="password" name="password" placeholder="········" id="loginPassword">
             </div>
 
             <div class="form-options">
@@ -403,7 +403,7 @@
                     <input type="checkbox" name="remember-me">
                     <span>ログイン状態を保持</span>
                 </label>
-                <a href="#" class="forgot-link">パスワードを忘れた</a>
+                <a href="#" class="forgot-link" onclick="showForgotStep(); return false;">パスワードを忘れた</a>
             </div>
 
             <button type="submit" class="login-btn-submit">ログイン</button>
@@ -426,6 +426,51 @@
                 アカウントをお持ちでないですか？ <a href="/register">会員登録</a>
             </p>
         </form>
+
+        <!-- ── 비밀번호 찾기 2단계: 본인 확인 (ID + 이메일 입력) ── -->
+        <!-- showForgotStep() 호출 시 표시, 기본 hidden -->
+        <div id="forgotStep2" style="display:none; width:100%;">
+            <h1 class="modal-title">パスワードを忘れた</h1>
+            <p class="modal-subtitle">IDとメールアドレスを入力してください</p>
+            <div class="login-form">
+                <div class="form-group">
+                    <label>ID</label>
+                    <input id="forgot-username" type="text" placeholder="IDを入力" style="width:100%; padding:12px; border:1.5px solid #E0E0E0; border-radius:10px; font-size:14px; outline:none;">
+                </div>
+                <div class="form-group">
+                    <label>メールアドレス</label>
+                    <input id="forgot-email" type="email" placeholder="登録したメールアドレス" style="width:100%; padding:12px; border:1.5px solid #E0E0E0; border-radius:10px; font-size:14px; outline:none;">
+                </div>
+                <!-- 에러 메시지 표시 영역 -->
+                <p id="forgot-error" style="color:#E53E3E; font-size:13px; margin-top:4px; display:none;"></p>
+                <button type="button" class="login-btn-submit" onclick="verifyIdentity()" style="margin-top:8px;">確認</button>
+                <!-- 로그인 화면으로 돌아가기 -->
+                <p class="signup-link" style="margin-top:16px;">
+                    <a href="#" onclick="showLoginStep(); return false;">← ログインに戻る</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- ── 비밀번호 찾기 3단계: 새 비밀번호 입력 ── -->
+        <!-- verifyIdentity() 성공 시 표시 -->
+        <div id="forgotStep3" style="display:none; width:100%;">
+            <h1 class="modal-title">新しいパスワード</h1>
+            <p class="modal-subtitle">新しいパスワードを入力してください（8文字以上）</p>
+            <div class="login-form">
+                <div class="form-group">
+                    <label>新しいパスワード</label>
+                    <input id="forgot-newpw" type="password" placeholder="8文字以上" style="width:100%; padding:12px; border:1.5px solid #E0E0E0; border-radius:10px; font-size:14px; outline:none;">
+                </div>
+                <div class="form-group">
+                    <label>パスワード確認</label>
+                    <input id="forgot-newpw-confirm" type="password" placeholder="パスワードを再入力" style="width:100%; padding:12px; border:1.5px solid #E0E0E0; border-radius:10px; font-size:14px; outline:none;">
+                </div>
+                <!-- 에러 메시지 표시 영역 -->
+                <p id="forgot-reset-error" style="color:#E53E3E; font-size:13px; margin-top:4px; display:none;"></p>
+                <button type="button" class="login-btn-submit" onclick="resetPassword()" style="margin-top:8px;">変更する</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -515,7 +560,7 @@
     });
 </script>
 <!-- App JS -->
-<script th:src="@{/js/app.js(v=17)}"></script>
+<script th:src="@{/js/app.js(v=18)}"></script>
 <!-- 共通ヘッダーJS -->
 <script th:src="@{/js/header.js(v=1)}"></script>
 <script>
@@ -527,6 +572,8 @@
 
     function closeLoginModal() {
         document.getElementById('loginModal').style.display = 'none';
+        // 모달 닫을 때 비밀번호 찾기 단계 초기화 → 다음에 열면 항상 로그인 폼부터 표시
+        if (typeof showLoginStep === 'function') showLoginStep();
     }
 
     // 모달 배경 클릭시 닫기
@@ -537,6 +584,21 @@
     });
 
     // ドロップダウン・トーストはheader.jsで管理
+
+    function validateLoginForm() {
+        var username = document.getElementById('loginUsername').value.trim();
+        var password = document.getElementById('loginPassword').value.trim();
+        if (!username) {
+            showToast('IDを入力してください', 'error');
+            return false;
+        }
+        if (!password) {
+            showToast('パスワードを入力してください', 'error');
+            return false;
+        }
+        sessionStorage.setItem('justLoggedIn', '1');
+        return true;
+    }
 </script>
 
 <script>
@@ -572,11 +634,10 @@
 
     function allowLocation() {
         dismissLocationModal();
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (pos) { /* app.js가 지도 중심 이동 처리 */ },
-                function (err) { console.warn('位置情報が拒否されました:', err); }
-            );
+        sessionStorage.setItem('locationAllowed', '1');
+        // app.js의 moveToMyLocation 호출 → 현재 위치로 이동 + 주변 화장실 로딩
+        if (typeof moveToMyLocation === 'function') {
+            moveToMyLocation(null);
         }
     }
 
@@ -589,6 +650,10 @@
             modal.style.opacity = '';
             modal.style.transition = '';
         }, 250);
+        // "後で設定する" → 기본 위치(서울)로 주변 화장실 로딩
+        if (!sessionStorage.getItem('locationAllowed') && typeof loadNearbyToilets === 'function') {
+            loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+        }
     }
 </script>
 </body>

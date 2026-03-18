@@ -3,7 +3,6 @@
 ======================================== */
 
 body.register-body {
-    background: #F7FFFE;
     min-height: 100vh;
     overflow-y: auto;
 }
@@ -15,6 +14,7 @@ body.register-body {
     align-items: flex-start;
     padding: 40px 20px 60px;
     min-height: calc(100vh - 140px);
+    background: #f7f7f8;
 }
 
 /* ── カード ── */
@@ -24,7 +24,7 @@ body.register-body {
     padding: 48px;
     width: 100%;
     max-width: 540px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* ── カードヘッダー ── */
@@ -33,17 +33,32 @@ body.register-body {
     margin-bottom: 32px;
 }
 
+.register-card-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(0, 200, 150, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.register-card-icon i {
+    color: #00C896;
+    font-size: 22px;
+}
 
 .register-card-header h2 {
     font-size: 22px;
     font-weight: 700;
-    color: #1B1D1F;
+    color: #111827;
     margin-bottom: 6px;
 }
 
 .register-card-header p {
     font-size: 13px;
-    color: #6B7684;
+    color: #9ca3af;
 }
 
 /* ── フォーム ── */
@@ -60,9 +75,9 @@ body.register-body {
 .form-group label {
     display: block;
     font-size: 13px;
-    color: #3A4553;
+    color: #374151;
     margin-bottom: 6px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .required {
@@ -82,9 +97,9 @@ body.register-body {
 }
 
 .input-group:focus-within {
-    border-color: #2ECDC0;
+    border-color: #00C896;
     background: white;
-    box-shadow: 0 0 0 3px rgba(46, 205, 192, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.1);
 }
 
 .input-group i {
@@ -137,7 +152,7 @@ body.register-body {
     margin-top: 4px;
 }
 
-.field-message.success { color: #2ECDC0; }
+.field-message.success { color: #00C896; }
 .field-message.error   { color: #FF4444; }
 
 /* ── エラーメッセージ ── */
@@ -170,22 +185,22 @@ body.register-body {
 .checkbox-label input[type="checkbox"] {
     width: 16px;
     height: 16px;
-    accent-color: #2ECDC0;
+    accent-color: #00C896;
     cursor: pointer;
 }
 
 /* ── 登録ボタン ── */
 .btn-submit.btn-register {
     width: 100%;
-    padding: 14px;
-    background: #2ECDC0;
+    padding: 16px;
+    background: linear-gradient(135deg, #00C896, #00A87A);
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 15px;
+    border-radius: 12px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s;
+    transition: all 0.2s;
     font-family: inherit;
     display: flex;
     align-items: center;
@@ -195,8 +210,8 @@ body.register-body {
 }
 
 .btn-submit.btn-register:hover {
-    background: #22A89E;
-    box-shadow: 0 4px 15px rgba(46, 205, 192, 0.4);
+    opacity: 0.9;
+    box-shadow: 0 6px 24px rgba(0, 200, 150, 0.35);
     transform: translateY(-1px);
 }
 
@@ -208,7 +223,7 @@ body.register-body {
 }
 
 .login-redirect a {
-    color: #2ECDC0;
+    color: #00C896;
     font-weight: 600;
     text-decoration: none;
     margin-left: 4px;
