@@ -2,9 +2,16 @@
    会員登録ページ
 ======================================== */
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body.register-body {
     min-height: 100vh;
     overflow-y: auto;
+    background: #f7f7f8;
 }
 
 /* ── メインエリア ── */
@@ -14,7 +21,6 @@ body.register-body {
     align-items: flex-start;
     padding: 40px 20px 60px;
     min-height: calc(100vh - 140px);
-    background: #f7f7f8;
 }
 
 /* ── カード ── */
