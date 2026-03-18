@@ -6,8 +6,10 @@ import com.jsl26tp.jsl26tp.toilet.service.ToiletService;
 import com.jsl26tp.jsl26tp.toilet.domain.Toilet;
 import com.jsl26tp.jsl26tp.toilet.domain.ToiletTag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +21,15 @@ public class ToiletController {
 
     private final ToiletService toiletService;
 
+    @Value("${naver.maps.client-id}")
+    private String naverMapsClientId;
+
     // ========== 페이지 렌더링 ==========
 
     // 화장실 추가 폼 (GET /toilet/add)
     @GetMapping("/toilet/add")
-    public String addForm() {
+    public String addForm(Model model) {
+        model.addAttribute("naverMapsClientId", naverMapsClientId);
         return "toilet/add";
     }
 
