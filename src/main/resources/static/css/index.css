@@ -38,14 +38,15 @@ body {
 }
 
 .logo-icon {
-    width: 36px;
-    height: 36px;
-    background: #00C896;
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #00A87A, #00C896);
+    border-radius: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
+    box-shadow: 0 3px 10px rgba(0, 200, 150, 0.4);
 }
 
 .header-buttons {
