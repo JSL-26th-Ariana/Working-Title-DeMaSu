@@ -494,6 +494,25 @@
     window.__isLoggedIn = [[${#authorization.expression('isAuthenticated()')}]];
     // トーストの種類を判定
     window._toastType = /*[[${logoutSuccess != null ? 'logout' : (registerSuccess != null ? 'register' : (loginError != null ? 'loginError' : ''))}]]*/ '';
+    window.addEventListener('load', function() {
+        // Thymeleaf에서 넘겨준 targetId (화장실 PK)
+        const targetId = [[${targetId}]];
+
+        if (targetId) {
+            console.log("대상 화장실 ID 감지:", targetId);
+
+            if (typeof openSharedToilet === 'function') {
+                openSharedToilet(targetId);
+
+                setTimeout(function() {
+                    if (typeof viewToiletDetail === 'function') {
+                        console.log("상세창 강제 호출 시작!");
+                        viewToiletDetail(targetId);
+                    }
+                }, 500);
+            }
+        }
+    });
 </script>
 <!-- App JS -->
 <script th:src="@{/js/app.js(v=17)}"></script>
