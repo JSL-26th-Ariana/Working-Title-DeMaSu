@@ -33,6 +33,14 @@ public class ToiletController {
         return "toilet/add";
     }
 
+    // 화장실 상세 페이지 화면 (GET /toilet/{id})
+    // ToiletController.java의 페이지 렌더링 구역
+    @GetMapping("/toilet/{id}")
+    public String viewDetailInMain(@PathVariable Long id) {
+        // 상세 페이지 HTML을 찾는 게 아니라, 메인 페이지(/)로 보내면서 ID를 파라미터로 넘김
+        return "redirect:/?id=" + id;
+    }
+
     // 화장실 추가 처리 (POST /toilet/add)
     @PostMapping("/toilet/add")
     public String addToilet(
