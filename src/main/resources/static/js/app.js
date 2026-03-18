@@ -909,6 +909,19 @@ function renderReviewCard(review) {
         imagesHtml += '</div>';
     }
 
+    // 태그
+    var tagsHtml = '';
+    if (review.tags) {
+        var tagList = review.tags.split(',').map(function(t) { return t.trim(); }).filter(function(t) { return t; });
+        if (tagList.length > 0) {
+            tagsHtml = '<div class="review-tags">';
+            for (var t = 0; t < tagList.length; t++) {
+                tagsHtml += '<span class="review-tag">' + escapeHtml(tagList[t]) + '</span>';
+            }
+            tagsHtml += '</div>';
+        }
+    }
+
     // 프로필 아이콘
     var iconSrc = review.iconUrl || '/img/default.png';
 
@@ -922,6 +935,7 @@ function renderReviewCard(review) {
             '<div class="review-card-stars">' + generateStars(scoreNum) + '</div>' +
         '</div>' +
         (review.content ? '<div class="review-content">' + escapeHtml(review.content) + '</div>' : '') +
+        tagsHtml +
         imagesHtml +
         '<div class="review-card-footer">' +
             '<button class="review-report-btn" onclick="reportReview(' + review.id + ')" title="通報">' +

@@ -65,6 +65,7 @@ function showToast(msg, type) {
     var toastType = window._toastType || '';
 
     if (toastType === 'logout') {
+        localStorage.removeItem('splashShown');
         msg = 'ログアウトしました';
     } else if (toastType === 'register') {
         msg = '会員登録が完了しました！';

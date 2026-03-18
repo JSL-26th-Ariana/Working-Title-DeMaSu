@@ -35,7 +35,7 @@
 }
 
 body {
-    font-family: 'LINESeedJP_OTF', 'Zen Maru Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'LINESeedJP_OTF', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--gray-900);
     background: var(--bg);
     overflow: hidden;
