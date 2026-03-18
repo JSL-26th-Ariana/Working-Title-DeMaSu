@@ -76,7 +76,7 @@
         COALESCE(AVG(r.clean_score), 0) AS avg_score,
         COUNT(r.id) AS review_count
         FROM toilets t
-        LEFT JOIN reviews r ON t.id = r.toilet_id AND r.deleted_at IS NULL
+        LEFT JOIN reviews r ON t.id = r.toilet_id AND r.deleted_at IS NULL AND r.status = 'ACTIVE'
         WHERE t.id = #{id}
         AND t.deleted_at IS NULL
         GROUP BY t.id
