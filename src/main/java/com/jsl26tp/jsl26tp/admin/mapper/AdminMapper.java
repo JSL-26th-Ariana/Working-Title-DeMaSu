@@ -81,6 +81,9 @@ public interface AdminMapper {
     /** 신고 상세 조회 (신고자 + 대상 콘텐츠 정보 포함) */
     AdminReport findReportById(@Param("id") Long id);
 
+    /** 신고된 리뷰의 이미지 URL 목록 조회 (상세 페이지용) */
+    List<String> findReviewImageUrls(@Param("reviewId") Long reviewId);
+
     /**
      * 신고 상태 변경 + 관리자 메모 + 처리일시 기록
      * - 승인: status="PROCESSED", processed_at=NOW()
