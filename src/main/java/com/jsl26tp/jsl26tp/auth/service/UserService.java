@@ -50,7 +50,7 @@ public class UserService {
             user.setSocialType("LOCAL");
         }
         if (user.getIconUrl() == null || user.getIconUrl().isEmpty()) {
-            user.setIconUrl("/img/default.png");
+            user.setIconUrl("/img/default.svg");
         }
         if (user.getStatus() == null) {
             user.setStatus("ACTIVE");
