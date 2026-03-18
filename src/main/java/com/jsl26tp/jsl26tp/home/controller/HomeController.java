@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -13,8 +14,9 @@ public class HomeController {
 
     // 메인 페이지 (지도)
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(@RequestParam(required = false) Long id, Model model) {
         model.addAttribute("naverMapsClientId", naverMapsClientId);
+        model.addAttribute("targetId", id);
         return "index";
     }
 
