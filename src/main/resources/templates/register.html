@@ -64,6 +64,9 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" name="passwordConfirm" placeholder="パスワードを再入力"
                            required id="passwordConfirmInput">
+                    <button type="button" class="toggle-pw" onclick="togglePassword('passwordConfirmInput', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
                 <span class="field-message" id="passwordMsg"></span>
             </div>

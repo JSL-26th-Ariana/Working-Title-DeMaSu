@@ -222,7 +222,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 9999;
+    z-index: 99999;
     white-space: nowrap;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
 }
