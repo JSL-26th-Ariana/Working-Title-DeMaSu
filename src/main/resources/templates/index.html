@@ -515,7 +515,7 @@
     });
 </script>
 <!-- App JS -->
-<script th:src="@{/js/app.js(v=17)}"></script>
+<script th:src="@{/js/app.js(v=18)}"></script>
 <!-- 共通ヘッダーJS -->
 <script th:src="@{/js/header.js(v=1)}"></script>
 <script>
@@ -572,11 +572,10 @@
 
     function allowLocation() {
         dismissLocationModal();
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (pos) { /* app.js가 지도 중심 이동 처리 */ },
-                function (err) { console.warn('位置情報が拒否されました:', err); }
-            );
+        sessionStorage.setItem('locationAllowed', '1');
+        // app.js의 moveToMyLocation 호출 → 현재 위치로 이동 + 주변 화장실 로딩
+        if (typeof moveToMyLocation === 'function') {
+            moveToMyLocation(null);
         }
     }
 
@@ -589,6 +588,10 @@
             modal.style.opacity = '';
             modal.style.transition = '';
         }, 250);
+        // "後で設定する" → 기본 위치(서울)로 주변 화장실 로딩
+        if (!sessionStorage.getItem('locationAllowed') && typeof loadNearbyToilets === 'function') {
+            loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+        }
     }
 </script>
 </body>

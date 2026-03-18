@@ -36,41 +36,18 @@ function initMap() {
 
     map = new naver.maps.Map('map', mapOptions);
 
-    // 현재 위치로 자동 이동 + 주변 화장실 로딩
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                currentLat = position.coords.latitude;
-                currentLng = position.coords.longitude;
-                var locPosition = new naver.maps.LatLng(currentLat, currentLng);
-
-                // 내 위치 마커 표시
-                showMyLocationMarker(currentLat, currentLng);
-
-                if (sharedToiletId) {
-                    // 공유 링크: 해당 화장실로 이동 + 상세보기
-                    openSharedToilet(sharedToiletId);
-                } else {
-                    map.setCenter(locPosition);
-                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-                }
-            },
-            function(error) {
-                console.log('位置情報の取得に失敗:', error);
-                if (sharedToiletId) {
-                    openSharedToilet(sharedToiletId);
-                } else {
-                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-                }
-            }
-        );
-    } else {
-        if (sharedToiletId) {
+    // 공유 링크이거나 이미 위치 동의한 경우 바로 위치 가져오기
+    if (sharedToiletId) {
+        moveToMyLocation(function() {
             openSharedToilet(sharedToiletId);
-        } else {
-            loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
-        }
+        });
+    } else if (sessionStorage.getItem('locationAllowed')) {
+        moveToMyLocation(null);
+    } else if (sessionStorage.getItem('locationAsked')) {
+        // 이전에 "後で設定する" 선택한 경우 → 기본 위치로 로딩
+        loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
     }
+    // 그 외(최초 방문)는 모달에서 선택할 때까지 대기
 
     // 지도 이동 완료 시 화장실 다시 로딩 (상세보기 중엔 무시)
     naver.maps.Event.addListener(map, 'idle', function() {
@@ -86,6 +63,40 @@ function initMap() {
             loadFilteredToilets(currentLat, currentLng, radius, activeFilters);
         }
     });
+}
+
+// ========== 현재 위치로 이동 ==========
+function moveToMyLocation(callback) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                currentLat = position.coords.latitude;
+                currentLng = position.coords.longitude;
+                var locPosition = new naver.maps.LatLng(currentLat, currentLng);
+                showMyLocationMarker(currentLat, currentLng);
+                map.setCenter(locPosition);
+                if (callback) {
+                    callback();
+                } else {
+                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+                }
+            },
+            function(error) {
+                console.log('位置情報の取得に失敗:', error);
+                if (callback) {
+                    callback();
+                } else {
+                    loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+                }
+            }
+        );
+    } else {
+        if (callback) {
+            callback();
+        } else {
+            loadNearbyToilets(currentLat, currentLng, SEARCH_RADIUS);
+        }
+    }
 }
 
 // ========== 공유 링크로 화장실 상세보기 열기 ==========
