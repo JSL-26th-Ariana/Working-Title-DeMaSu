@@ -43,12 +43,17 @@ public class UserController {
         User user = userService.findByUsername(userDetails.getUsername());
         updateData.setId(user.getId());
 
-        // 이미지 업로드 처리
-        String imageUrl = userService.saveProfileImage(profileImage);
-        if (imageUrl != null) {
-            updateData.setIconUrl(imageUrl);
+        // 프리셋 아이콘 선택 확인 (hidden input에서 전달)
+        if (updateData.getIconUrl() != null && updateData.getIconUrl().startsWith("/images/profiles/")) {
+            // 프리셋 아이콘 선택됨 → 그대로 사용
         } else {
-            updateData.setIconUrl(user.getIconUrl());
+            // 기존 방식: 파일 업로드 처리
+            String imageUrl = userService.saveProfileImage(profileImage);
+            if (imageUrl != null) {
+                updateData.setIconUrl(imageUrl);
+            } else {
+                updateData.setIconUrl(user.getIconUrl());
+            }
         }
 
         try {
