@@ -7,6 +7,7 @@ import com.jsl26tp.jsl26tp.config.CustomUserDetails;
 import com.jsl26tp.jsl26tp.toilet.domain.ToiletEditRequest;
 import com.jsl26tp.jsl26tp.admin.domain.ToiletUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,9 @@ import java.util.Map;
 public class AdminController {
 
     private final AdminService adminService;
+
+    @Value("${naver.maps.client-id}")
+    private String naverMapsClientId;
 
     // =====================================================================
     // 페이지 이동 (Thymeleaf 렌더링)
@@ -306,6 +310,7 @@ public class AdminController {
             model.addAttribute("toilet", null);
             model.addAttribute("toiletDeleted", true);
         }
+        model.addAttribute("naverMapsClientId", naverMapsClientId);
         return "admin/edit-request-detail";
     }
 
