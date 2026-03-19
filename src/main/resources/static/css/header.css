@@ -29,10 +29,10 @@
 }
 
 .logo-icon {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     background: linear-gradient(135deg, #00A87A, #00C896);
-    border-radius: 11px;
+    border-radius: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
