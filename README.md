@@ -52,7 +52,7 @@
     <td align="center">
       <a href="https://github.com/anghi-kor">
         <img src="https://github.com/anghi-kor.png" width="120" /><br />
-        <b>チャン・ヒエ</b>
+        <b>ジャンヒエ</b>
       </a>
     </td>
   </tr>
