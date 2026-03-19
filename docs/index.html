@@ -455,51 +455,8 @@
 
     <!-- ERD -->
     <div class="dtab-content active" id="dtab-erd">
-      <div class="erd-box">
-<pre>
-<span class="g">┌─────────────────┐</span>      <span class="g">┌─────────────────┐</span>      <span class="g">┌─────────────────┐</span>
-<span class="g">│</span> <span class="y">users</span>           <span class="g">│</span>      <span class="g">│</span> <span class="y">toilets</span>         <span class="g">│</span>      <span class="g">│</span> <span class="y">toilet_tags</span>     <span class="g">│</span>
-<span class="g">│─────────────────│</span>      <span class="g">│─────────────────│</span>      <span class="g">│─────────────────│</span>
-<span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span> 1    <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
-<span class="g">│</span>    email         <span class="g">│</span>──── <span class="g">│</span>    name          <span class="g">│</span> 1    <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>
-<span class="g">│</span>    password      <span class="g">│</span>     <span class="g">│</span>    address       <span class="g">│</span>────  <span class="g">│</span>    tag_name       <span class="g">│</span>
-<span class="g">│</span>    nickname      <span class="g">│</span>     <span class="g">│</span>    lat / lng     <span class="g">│</span>  N  <span class="g">└─────────────────┘</span>
-<span class="g">│</span>    profile_image <span class="g">│</span>     <span class="g">│</span>    source        <span class="g">│</span>
-<span class="g">│</span>    role          <span class="g">│</span>     <span class="g">│</span>    status        <span class="g">│</span>      <span class="g">┌─────────────────┐</span>
-<span class="g">│</span>    status        <span class="g">│</span>     <span class="g">│</span>    description   <span class="g">│</span>      <span class="g">│</span> <span class="y">recent_views</span>    <span class="g">│</span>
-<span class="g">│</span>    social_type   <span class="g">│</span>     <span class="g">│</span>    created_at    <span class="g">│</span>      <span class="g">│─────────────────│</span>
-<span class="g">│</span>    created_at    <span class="g">│</span>     <span class="g">└─────────────────┘</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
-<span class="g">└─────────────────┘</span>             │                  <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>
-         │                       │  1:N              <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>
-         │  1:N           <span class="g">┌──────┴──────────┐</span>      <span class="g">│</span>    viewed_at      <span class="g">│</span>
-         │                <span class="g">│</span> <span class="y">reviews</span>         <span class="g">│</span>      <span class="g">└─────────────────┘</span>
-  <span class="g">┌──────┴──────────────│─────────────────│</span>
-  <span class="g">│</span>                     <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>      <span class="g">┌─────────────────┐</span>
-  <span class="g">│</span>                     <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>      <span class="g">│</span> <span class="y">toilet_edit_     <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>      <span class="g">│</span>    requests      <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">│</span>    content        <span class="g">│</span>      <span class="g">│─────────────────│</span>
-  <span class="g">│</span>                     <span class="g">│</span>    rating         <span class="g">│</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">│</span>    is_hidden      <span class="g">│</span>      <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">└─────────────────┘</span>      <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>
-  <span class="g">│</span>                              │ 1:N              <span class="g">│</span>    status         <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">┌────────┴────────┐</span>      <span class="g">│</span>    created_at     <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">│</span> <span class="y">review_images</span>   <span class="g">│</span>      <span class="g">└─────────────────┘</span>
-  <span class="g">│</span>                     <span class="g">│─────────────────│</span>
-  <span class="g">│</span>                     <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>      <span class="g">┌─────────────────┐</span>
-  <span class="g">│</span>                     <span class="g">│</span> <span class="b">FK</span> review_id      <span class="g">│</span>      <span class="g">│</span> <span class="y">reports</span>         <span class="g">│</span>
-  <span class="g">│</span>                     <span class="g">│</span>    image_url      <span class="g">│</span>      <span class="g">│─────────────────│</span>
-  <span class="g">│</span>                     <span class="g">└─────────────────┘</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
-  <span class="g">│</span>                                               <span class="g">│</span> <span class="b">FK</span> review_id      <span class="g">│</span>
-  <span class="g">│</span>  1:N                                          <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>
-  <span class="g">└────────────────────────────────────────────────│</span>    reason         <span class="g">│</span>
-                                                  <span class="g">│</span>    status         <span class="g">│</span>
-  <span class="g">┌──────────────────────────────────────────┐</span>    <span class="g">└─────────────────┘</span>
-  <span class="g">│</span> <span class="y">inquiries</span>                                <span class="g">│</span>
-  <span class="g">│──────────────────────────────────────────│</span>
-  <span class="g">│</span> <span class="b">PK</span> id  │ <span class="b">FK</span> user_id  │ title  │ content  <span class="g">│</span>
-  <span class="g">│</span> answer │ status     │ created_at          <span class="g">│</span>
-  <span class="g">└──────────────────────────────────────────┘</span>
-</pre>
+      <div style="background:#f8fafc; border-radius:var(--radius); padding:32px; text-align:center; border:1px solid var(--border);">
+        <img src="./screenshots/erd.png" alt="ER図" style="max-width:100%; border-radius:8px; box-shadow:0 8px 32px rgba(0,0,0,0.12);" />
       </div>
     </div>
 
