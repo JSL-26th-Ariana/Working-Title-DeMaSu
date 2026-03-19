@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <style>
-    /* ===== Variables ===== */
     :root {
       --green:       #2DB87C;
       --green-dark:  #1a9960;
@@ -20,340 +19,269 @@
       --shadow:      0 4px 24px rgba(0,0,0,0.08);
       --radius:      12px;
     }
-
-    /* ===== Reset ===== */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      color: var(--dark);
-      background: var(--white);
-      line-height: 1.7;
-    }
+    body { font-family: 'Noto Sans JP', sans-serif; color: var(--dark); background: var(--white); line-height: 1.7; }
     a { text-decoration: none; color: inherit; }
-
-    /* ===== Layout ===== */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
     .section     { padding: 100px 0; }
     .section-bg  { background: var(--light); }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+    .section-title { font-size: 36px; font-weight: 700; line-height: 1.3; margin-bottom: 16px; }
+    .section-desc  { font-size: 15px; color: var(--gray); max-width: 600px; line-height: 1.9; }
 
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--green); margin-bottom: 12px;
-    }
-    .section-title {
-      font-size: 36px; font-weight: 700; line-height: 1.3; margin-bottom: 16px;
-    }
-    .section-desc {
-      font-size: 15px; color: var(--gray); max-width: 560px; line-height: 1.9;
-    }
-
-    /* ===== Nav ===== */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-      height: 64px;
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center;
-      transition: box-shadow 0.3s;
-    }
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; height: 64px; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; transition: box-shadow 0.3s; }
     nav .container { width: 100%; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 18px; font-weight: 700; color: var(--green);
-    }
-    .nav-logo .emoji { font-size: 22px; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { font-size: 13px; font-weight: 500; color: var(--dark); transition: color .2s; }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; color: var(--green); }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { font-size: 12px; font-weight: 500; color: var(--dark); transition: color .2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--green); }
-    .nav-gh {
-      font-size: 13px; font-weight: 600;
-      background: var(--dark); color: white;
-      padding: 8px 18px; border-radius: 6px;
-      transition: background .2s;
-    }
+    .nav-gh { font-size: 13px; font-weight: 600; background: var(--dark); color: white; padding: 8px 18px; border-radius: 6px; transition: background .2s; }
     .nav-gh:hover { background: var(--green); }
 
-    /* ===== Hero ===== */
-    #hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      padding-top: 64px;
-    }
-    #hero .container {
-      display: flex; align-items: center;
-      gap: 80px; padding-top: 60px; padding-bottom: 60px;
-    }
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; align-items: center; padding-top: 64px; }
+    #hero .container { display: flex; align-items: center; gap: 80px; padding-top: 60px; padding-bottom: 60px; }
     .hero-left { flex: 1; }
-    .hero-badge {
-      display: inline-block;
-      background: var(--green-light); color: var(--green);
-      font-size: 12px; font-weight: 600;
-      padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
-    }
-    .hero-title {
-      font-size: 72px; font-weight: 900; line-height: 1;
-      margin-bottom: 6px; color: var(--dark);
-    }
-    .hero-tagline {
-      font-size: 26px; font-weight: 300; color: var(--green);
-      margin-bottom: 24px;
-    }
-    .hero-desc {
-      font-size: 15px; color: var(--gray); line-height: 1.9;
-      max-width: 480px; margin-bottom: 40px;
-    }
+    .hero-badge { display: inline-block; background: var(--green-light); color: var(--green); font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+    .hero-title { font-size: 72px; font-weight: 900; line-height: 1; margin-bottom: 6px; color: var(--dark); }
+    .hero-tagline { font-size: 26px; font-weight: 300; color: var(--green); margin-bottom: 24px; }
+    .hero-desc { font-size: 15px; color: var(--gray); line-height: 1.9; max-width: 480px; margin-bottom: 40px; }
     .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-    .btn-green {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--green); color: white;
-      padding: 13px 26px; border-radius: 8px;
-      font-size: 14px; font-weight: 600;
-      transition: all .2s;
-    }
+    .btn-green { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; padding: 13px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all .2s; }
     .btn-green:hover { background: var(--green-dark); transform: translateY(-2px); }
-    .btn-line {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 2px solid var(--border); color: var(--dark);
-      padding: 13px 26px; border-radius: 8px;
-      font-size: 14px; font-weight: 600;
-      transition: all .2s;
-    }
+    .btn-line { display: inline-flex; align-items: center; gap: 8px; border: 2px solid var(--border); color: var(--dark); padding: 13px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all .2s; }
     .btn-line:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
-
     .hero-right { flex: 1; display: flex; justify-content: center; }
-    .hero-mockup {
-      width: 100%; max-width: 500px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
-    }
-    /* ★ スクリーンショットを <img> タグに変えてください */
-    .hero-mockup-placeholder {
-      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
-      height: 380px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 16px;
-      color: white;
-    }
+    .hero-mockup { width: 100%; max-width: 460px; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.14); }
+    .hero-mockup img { width: 100%; display: block; }
+    .hero-mockup-placeholder { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); height: 360px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: white; }
     .hero-mockup-placeholder .big  { font-size: 72px; }
     .hero-mockup-placeholder .name { font-size: 30px; font-weight: 700; }
     .hero-mockup-placeholder .sub  { font-size: 15px; opacity: .8; }
 
-    /* ===== About ===== */
+    /* ABOUT */
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
     .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
-    .stat-card {
-      background: white; border-radius: var(--radius);
-      padding: 28px; box-shadow: var(--shadow);
-    }
+    .stat-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
     .stat-num   { font-size: 38px; font-weight: 900; color: var(--green); margin-bottom: 4px; }
     .stat-label { font-size: 13px; color: var(--gray); }
 
-    /* ===== Features ===== */
-    .features-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 22px; margin-top: 56px;
-    }
-    .feature-card {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 30px; transition: all .3s;
-    }
-    .feature-card:hover {
-      border-color: var(--green);
-      box-shadow: 0 8px 32px rgba(45,184,124,.12);
-      transform: translateY(-4px);
-    }
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
+    .feature-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; transition: all .3s; }
+    .feature-card:hover { border-color: var(--green); box-shadow: 0 8px 32px rgba(45,184,124,.12); transform: translateY(-4px); }
     .feature-icon  { font-size: 30px; margin-bottom: 14px; }
     .feature-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
     .feature-desc  { font-size: 13px; color: var(--gray); line-height: 1.75; }
     .feature-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-    .chip {
-      font-size: 11px; font-weight: 500;
-      background: var(--green-light); color: var(--green);
-      padding: 3px 10px; border-radius: 20px;
-    }
+    .chip { font-size: 11px; font-weight: 500; background: var(--green-light); color: var(--green); padding: 3px 10px; border-radius: 20px; }
 
-    /* ===== Stack ===== */
+    /* STACK */
     .stack-grid { display: grid; gap: 20px; margin-top: 56px; }
-    .stack-card {
-      background: white; border-radius: var(--radius);
-      padding: 28px 32px; box-shadow: var(--shadow);
-    }
-    .stack-cat {
-      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--gray);
-      margin-bottom: 18px; padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
+    .stack-card { background: white; border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow); }
+    .stack-cat { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
     .badges { display: flex; flex-wrap: wrap; gap: 10px; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: 8px;
-      font-size: 13px; font-weight: 600;
-    }
-    .b-spring   { background:#6DB33F1a; color:#4a8a2a; }
-    .b-java     { background:#ED81161a; color:#b55e00; }
-    .b-mybatis  { background:#DC38201a; color:#a02015; }
-    .b-mysql    { background:#4479A11a; color:#2d5870; }
-    .b-thyml    { background:#005F0F1a; color:#005F0F; }
-    .b-boot     { background:#7952B31a; color:#5a3d8a; }
-    .b-js       { background:#F7DF1E25; color:#7a6b00; }
-    .b-naver    { background:#03C75A1a; color:#028a3e; }
-    .b-oauth    { background:#4285F41a; color:#1a5fb4; }
-    .b-git      { background:#F050281a; color:#b83010; }
-    .b-notion   { background:#0000001a; color:#333; }
-    .b-idea     { background:#FF42001a; color:#cc3300; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+    .b-spring  { background:#6DB33F1a; color:#4a8a2a; }
+    .b-java    { background:#ED81161a; color:#b55e00; }
+    .b-mybatis { background:#DC38201a; color:#a02015; }
+    .b-mysql   { background:#4479A11a; color:#2d5870; }
+    .b-thyml   { background:#005F0F1a; color:#005F0F; }
+    .b-boot    { background:#7952B31a; color:#5a3d8a; }
+    .b-js      { background:#F7DF1E25; color:#7a6b00; }
+    .b-naver   { background:#03C75A1a; color:#028a3e; }
+    .b-oauth   { background:#4285F41a; color:#1a5fb4; }
+    .b-git     { background:#F050281a; color:#b83010; }
+    .b-notion  { background:#0000001a; color:#333; }
+    .b-idea    { background:#FF42001a; color:#cc3300; }
 
-    /* ===== Architecture ===== */
-    .arch-box {
-      background: var(--dark); color: #c9d1d9;
-      border-radius: var(--radius); padding: 40px;
-      margin-top: 56px; font-family: 'Courier New', monospace;
-      font-size: 13px; line-height: 2; overflow-x: auto;
-    }
+    /* ERD & DESIGN */
+    .design-tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--border); margin-top: 48px; }
+    .dtab { padding: 12px 28px; font-size: 14px; font-weight: 600; color: var(--gray); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
+    .dtab.active { color: var(--green); border-bottom-color: var(--green); }
+    .dtab-content { display: none; padding: 40px 0 0; }
+    .dtab-content.active { display: block; }
+
+    .erd-box { background: var(--dark); border-radius: var(--radius); padding: 36px; overflow-x: auto; }
+    .erd-box pre { color: #c9d1d9; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.9; }
+    .erd-box .g { color: var(--green); }
+    .erd-box .y { color: #f0c060; }
+    .erd-box .b { color: #79b8ff; }
+
+    .usecase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .usecase-card { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); border-top: 3px solid var(--green); }
+    .usecase-actor { font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 12px; letter-spacing: 1px; }
+    .usecase-list { list-style: none; }
+    .usecase-list li { font-size: 13px; color: var(--gray); padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .usecase-list li:last-child { border-bottom: none; }
+    .usecase-list li::before { content: '→'; color: var(--green); font-weight: 700; }
+
+    /* REQUIREMENTS */
+    .req-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 48px; margin-bottom: 28px; }
+    .rtab { padding: 8px 20px; font-size: 12px; font-weight: 600; border-radius: 20px; border: 2px solid var(--border); color: var(--gray); cursor: pointer; transition: all .2s; }
+    .rtab.active { background: var(--green); border-color: var(--green); color: white; }
+    .rtab-content { display: none; }
+    .rtab-content.active { display: block; }
+    .req-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .req-table th { background: var(--dark); color: white; padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; }
+    .req-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+    .req-table tr:hover td { background: var(--light); }
+    .st-done   { background: #d4edda; color: #155724; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+    .st-wip    { background: #fff3cd; color: #856404; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+    .req-id    { font-family: monospace; font-size: 12px; color: var(--green); font-weight: 700; white-space: nowrap; }
+
+    /* DB TABLES */
+    .db-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+    .db-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+    .db-name { font-size: 14px; font-weight: 700; color: var(--green); margin-bottom: 16px; font-family: monospace; padding: 6px 12px; background: var(--green-light); border-radius: 6px; display: inline-block; }
+    .db-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .db-table th { color: var(--gray); font-size: 11px; font-weight: 700; padding: 6px 10px; text-align: left; border-bottom: 2px solid var(--border); letter-spacing: .5px; }
+    .db-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); color: var(--dark); }
+    .db-table .pk { color: #d4a017; font-weight: 700; }
+    .db-table .fk { color: #1a5fb4; }
+    .db-table .type { color: var(--gray); font-family: monospace; font-size: 11px; }
+
+    /* URL DESIGN */
+    .url-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 40px; }
+    .url-table th { background: var(--dark); color: white; padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; }
+    .url-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    .url-table tr:hover td { background: var(--light); }
+    .method { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px; font-family: monospace; white-space: nowrap; }
+    .m-get    { background: #d1ecf1; color: #0c5460; }
+    .m-post   { background: #d4edda; color: #155724; }
+    .m-put    { background: #fff3cd; color: #856404; }
+    .m-delete { background: #f8d7da; color: #721c24; }
+    .url-path { font-family: monospace; font-size: 12px; }
+    .url-auth { font-size: 11px; color: var(--gray); }
+
+    /* SCREENSHOTS */
+    .ss-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+    .ss-card { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .ss-img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
+    .ss-placeholder { background: linear-gradient(135deg, var(--light) 0%, var(--border) 100%); aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--gray); }
+    .ss-placeholder .icon { font-size: 32px; opacity: .5; }
+    .ss-placeholder .label { font-size: 12px; font-weight: 600; opacity: .7; }
+    .ss-caption { padding: 14px; background: white; }
+    .ss-caption-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .ss-caption-desc  { font-size: 12px; color: var(--gray); line-height: 1.6; }
+
+    /* VIDEO */
+    .video-container { margin-top: 48px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--dark); }
+    .video-placeholder { height: 480px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: #c9d1d9; }
+    .video-placeholder .play { font-size: 64px; opacity: .6; }
+    .video-placeholder p { font-size: 14px; opacity: .6; }
+
+    /* ARCHITECTURE */
+    .arch-box { background: var(--dark); color: #c9d1d9; border-radius: var(--radius); padding: 40px; margin-top: 56px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 2; overflow-x: auto; }
     .arch-box .g { color: var(--green); font-weight: 700; }
     .arch-box .w { color: #fff; }
 
-    /* ===== Team ===== */
-    .team-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 22px; margin-top: 56px;
-    }
-    .team-card {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 32px; text-align: center; transition: all .3s;
-    }
-    .team-card:hover {
-      border-color: var(--green);
-      box-shadow: 0 8px 32px rgba(45,184,124,.12);
-      transform: translateY(-4px);
-    }
-    .team-avatar {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: var(--green-light);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 28px; margin: 0 auto 14px;
-    }
+    /* TEAM */
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
+    .team-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; text-align: center; transition: all .3s; }
+    .team-card:hover { border-color: var(--green); box-shadow: 0 8px 32px rgba(45,184,124,.12); transform: translateY(-4px); }
+    .team-avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px; }
     .team-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
     .team-role { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 10px; }
     .team-part { font-size: 13px; color: var(--gray); line-height: 1.7; margin-bottom: 18px; }
-    .team-gh {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--gray);
-      border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px;
-      transition: all .2s;
-    }
+    .team-gh { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray); border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; transition: all .2s; }
     .team-gh:hover { border-color: var(--green); color: var(--green); }
 
-    /* ===== Trouble ===== */
+    /* TROUBLE */
     .trouble-list { display: grid; gap: 22px; margin-top: 56px; }
-    .trouble-card {
-      background: white; border-radius: var(--radius);
-      padding: 36px; box-shadow: var(--shadow);
-      border-left: 4px solid var(--green);
-    }
+    .trouble-card { background: white; border-radius: var(--radius); padding: 36px; box-shadow: var(--shadow); border-left: 4px solid var(--green); }
     .trouble-num   { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 8px; }
     .trouble-title { font-size: 17px; font-weight: 700; margin-bottom: 18px; }
     .trouble-block { border-radius: 8px; padding: 16px 20px; font-size: 13px; line-height: 1.8; margin-bottom: 10px; }
     .trouble-block:last-child { margin-bottom: 0; }
-    .tb-problem    { background: #fff0f0; }
-    .tb-solution   { background: var(--green-light); }
-    .trouble-tag   { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 6px; }
-    .tt-p          { color: #c0392b; }
-    .tt-s          { color: var(--green); }
+    .tb-problem { background: #fff0f0; }
+    .tb-solution { background: var(--green-light); }
+    .trouble-tag { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 6px; }
+    .tt-p { color: #c0392b; }
+    .tt-s { color: var(--green); }
 
-    /* ===== Footer ===== */
-    footer {
-      background: var(--dark); color: #c9d1d9;
-      padding: 72px 40px; text-align: center;
-    }
+    /* FOOTER */
+    footer { background: var(--dark); color: #c9d1d9; padding: 72px 40px; text-align: center; }
     .footer-emoji { font-size: 48px; margin-bottom: 16px; }
     .footer-title { font-size: 26px; font-weight: 700; color: white; margin-bottom: 6px; }
     .footer-sub   { font-size: 14px; color: #888; margin-bottom: 32px; }
     .footer-btns  { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
-    .footer-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 13px; color: #c9d1d9;
-      border: 1px solid rgba(255,255,255,.15);
-      padding: 10px 20px; border-radius: 8px; transition: all .2s;
-    }
+    .footer-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #c9d1d9; border: 1px solid rgba(255,255,255,.15); padding: 10px 20px; border-radius: 8px; transition: all .2s; }
     .footer-btn:hover { background: var(--green); border-color: var(--green); color: white; }
-    .footer-copy  { font-size: 12px; color: #555; }
+    .footer-copy { font-size: 12px; color: #555; }
 
-    /* ===== Fade-in animation ===== */
+    /* ANIMATIONS */
     .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===== Responsive ===== */
+    /* RESPONSIVE */
     @media (max-width: 960px) {
-      #hero .container  { flex-direction: column; gap: 48px; }
-      .hero-title        { font-size: 52px; }
-      .about-grid        { grid-template-columns: 1fr; }
-      .features-grid     { grid-template-columns: 1fr 1fr; }
-      .team-grid         { grid-template-columns: 1fr 1fr; }
+      #hero .container { flex-direction: column; gap: 48px; }
+      .hero-title { font-size: 52px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .db-grid { grid-template-columns: 1fr; }
+      .usecase-grid { grid-template-columns: 1fr; }
+      .ss-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
-      .container         { padding: 0 20px; }
-      nav .container     { padding: 0 20px; }
-      .nav-links         { display: none; }
-      .section           { padding: 64px 0; }
-      .hero-title        { font-size: 40px; }
-      .section-title     { font-size: 28px; }
-      .features-grid     { grid-template-columns: 1fr; }
-      .team-grid         { grid-template-columns: 1fr; }
+      .container { padding: 0 20px; }
+      nav .container { padding: 0 20px; }
+      .nav-links { display: none; }
+      .section { padding: 64px 0; }
+      .hero-title { font-size: 40px; }
+      .section-title { font-size: 28px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .ss-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- ==================== NAV ==================== -->
+<!-- NAV -->
 <nav id="nav">
   <div class="container">
-    <a href="#" class="nav-logo">
-      <span class="emoji">🚻</span> デマス
-    </a>
+    <a href="#" class="nav-logo">🚻 デマス</a>
     <ul class="nav-links">
       <li><a href="#about">概要</a></li>
       <li><a href="#features">機能</a></li>
-      <li><a href="#stack">技術スタック</a></li>
+      <li><a href="#stack">技術</a></li>
+      <li><a href="#design">設計</a></li>
+      <li><a href="#requirements">要求</a></li>
+      <li><a href="#db">DB</a></li>
+      <li><a href="#urls">URL</a></li>
+      <li><a href="#screens">画面</a></li>
       <li><a href="#team">チーム</a></li>
-      <li><a href="#trouble">課題と解決</a></li>
     </ul>
-    <a href="https://github.com/JSL-26th-Ariana/Working-Title-DeMaSu" target="_blank" class="nav-gh">
-      🐙 GitHub
-    </a>
+    <a href="https://github.com/JSL-26th-Ariana/Working-Title-DeMaSu" target="_blank" class="nav-gh">🐙 GitHub</a>
   </div>
 </nav>
 
-<!-- ==================== HERO ==================== -->
+<!-- HERO -->
 <section id="hero">
   <div class="container">
     <div class="hero-left fade-up">
-      <div class="hero-badge">🇯🇵 日本語対応 トイレ案内サービス</div>
+      <div class="hero-badge">🇯🇵 日本語対応 韓国トイレマップサービス</div>
       <h1 class="hero-title">デマス</h1>
       <p class="hero-tagline">韓国のトイレが、すぐ見つかる。</p>
       <p class="hero-desc">
-        韓国を訪れる日本人旅行者のために開発した、
-        トイレマップサービスです。<br>
-        Naver Mapsで周辺トイレをリアルタイム検索、
-        清潔度レビューや設備タグで最適なトイレを素早く見つけられます。
+        韓国を訪れる旅行者のために開発した、トイレマップサービスです。<br>
+        Naver Maps APIで周辺トイレをリアルタイム表示、
+        清潔度レビューや設備タグで最適なトイレを素早く見つけられます。<br><br>
+        <strong>開発期間：2週間 / チーム：6名 / Spring Boot フルスタック</strong>
       </p>
       <div class="hero-btns">
-        <a href="https://github.com/JSL-26th-Ariana/Working-Title-DeMaSu" target="_blank" class="btn-green">
-          ⭐ GitHubで見る
-        </a>
+        <a href="https://github.com/JSL-26th-Ariana/Working-Title-DeMaSu" target="_blank" class="btn-green">⭐ GitHubで見る</a>
         <a href="#features" class="btn-line">🗺️ 機能を確認する</a>
       </div>
     </div>
-
     <div class="hero-right fade-up" style="transition-delay:.2s">
       <div class="hero-mockup">
-        <!--
-          ★ スクリーンショットを使う場合は下のコメントを外して img タグに変えてください
-          <img src="./screenshot.png" alt="デマス スクリーンショット" />
-        -->
+        <!-- ★ スクリーンショットがあれば: <img src="./screenshot.png" alt="デマス" /> -->
         <div class="hero-mockup-placeholder">
           <div class="big">🚻</div>
           <div class="name">デマス</div>
@@ -364,7 +292,7 @@
   </div>
 </section>
 
-<!-- ==================== ABOUT ==================== -->
+<!-- ABOUT -->
 <section id="about" class="section section-bg">
   <div class="container">
     <div class="about-grid">
@@ -374,9 +302,10 @@
         <p class="section-desc">
           「デマス」は<em>「どこのトイレ」</em>に由来するサービス名です。
           韓国旅行中に困りがちなトイレ探しの問題を解決するため、
-          日本語UIで使いやすさを追求しました。<br><br>
-          ユーザーによるレビュー・情報提供・修正提案を通じて
+          地図連携・レビュー・タグフィルタ機能を一体化しました。<br><br>
+          ユーザーによるレビュー投稿・トイレ情報提供・修正提案を通じて
           コミュニティ主導で情報が充実し続けるプラットフォームです。
+          管理者ダッシュボードで5タブ統合管理を実現しています。
         </p>
       </div>
       <div class="fade-up" style="transition-delay:.15s">
@@ -390,11 +319,11 @@
             <div class="stat-label">開発期間</div>
           </div>
           <div class="stat-card">
-            <div class="stat-num">15+</div>
-            <div class="stat-label">主要機能数</div>
+            <div class="stat-num">30+</div>
+            <div class="stat-label">機能要求数</div>
           </div>
           <div class="stat-card">
-            <div class="stat-num">10+</div>
+            <div class="stat-num">9</div>
             <div class="stat-label">DBテーブル数</div>
           </div>
         </div>
@@ -403,117 +332,76 @@
   </div>
 </section>
 
-<!-- ==================== FEATURES ==================== -->
+<!-- FEATURES -->
 <section id="features" class="section">
   <div class="container">
     <p class="section-label fade-up">FEATURES</p>
     <h2 class="section-title fade-up">主な機能</h2>
     <p class="section-desc fade-up">地図検索から管理者ダッシュボードまで、フルスタックで実装しました。</p>
-
     <div class="features-grid">
-
       <div class="feature-card fade-up">
         <div class="feature-icon">🗺️</div>
         <h3 class="feature-title">リアルタイム地図検索</h3>
         <p class="feature-desc">Naver Maps APIと現在地取得を組み合わせ、周辺トイレをリアルタイムで地図に表示。Haversine公式による精密な距離計算で最寄り一覧を提供。</p>
-        <div class="feature-chips">
-          <span class="chip">Naver Maps</span>
-          <span class="chip">Geolocation</span>
-          <span class="chip">Haversine</span>
-        </div>
+        <div class="feature-chips"><span class="chip">Naver Maps</span><span class="chip">Geolocation</span><span class="chip">Haversine</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.07s">
         <div class="feature-icon">🔍</div>
         <h3 class="feature-title">複数タグフィルタリング</h3>
         <p class="feature-desc">24時間・車椅子対応・おむつ交換台・清潔・多目的トイレなどのタグを複数同時選択してフィルタリング。キーワード・建物名検索にも対応。</p>
-        <div class="feature-chips">
-          <span class="chip">複数選択</span>
-          <span class="chip">キーワード検索</span>
-        </div>
+        <div class="feature-chips"><span class="chip">複数選択</span><span class="chip">キーワード検索</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.14s">
         <div class="feature-icon">👤</div>
         <h3 class="feature-title">会員認証</h3>
         <p class="feature-desc">一般ログイン・Google OAuth2ソーシャルログインをサポート。パスワード忘れ時のID＋メール認証による3ステップ再設定フローも実装。</p>
-        <div class="feature-chips">
-          <span class="chip">Spring Security</span>
-          <span class="chip">Google OAuth2</span>
-          <span class="chip">BCrypt</span>
-        </div>
+        <div class="feature-chips"><span class="chip">Spring Security</span><span class="chip">Google OAuth2</span><span class="chip">BCrypt</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.07s">
         <div class="feature-icon">⭐</div>
         <h3 class="feature-title">レビュー投稿・管理</h3>
-        <p class="feature-desc">清潔度評価・テキスト・画像アップロードに対応したレビュー機能。最新順／高評価順などの並び替えと、不正レビュー報告機能も搭載。</p>
-        <div class="feature-chips">
-          <span class="chip">画像アップロード</span>
-          <span class="chip">報告・非表示</span>
-        </div>
+        <p class="feature-desc">清潔度評価・テキスト・画像アップロードに対応したレビュー機能。最新順／高評価順の並び替えと不正レビュー報告機能も搭載。</p>
+        <div class="feature-chips"><span class="chip">画像アップロード</span><span class="chip">報告・非表示</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.14s">
         <div class="feature-icon">🚽</div>
-        <h3 class="feature-title">トイレ情報提供</h3>
-        <p class="feature-desc">ユーザーがトイレの新規登録・修正提案ができる機能。Naver地図クリックで座標を自動入力。管理者の承認後に地図へ反映されます。</p>
-        <div class="feature-chips">
-          <span class="chip">ユーザー投稿</span>
-          <span class="chip">管理者承認</span>
-        </div>
+        <h3 class="feature-title">トイレ情報提供・修正提案</h3>
+        <p class="feature-desc">ユーザーがトイレの新規登録・修正提案が可能。Naver地図クリックで座標を自動入力。管理者の承認後に地図へ反映されます。</p>
+        <div class="feature-chips"><span class="chip">ユーザー投稿</span><span class="chip">管理者承認</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.21s">
         <div class="feature-icon">🛡️</div>
         <h3 class="feature-title">管理者ダッシュボード</h3>
         <p class="feature-desc">会員・報告・トイレ承認・お問い合わせ・修正提案の5タブ統合管理画面。ステータスフィルタ・10件ページネーション・管理者アカウント保護を完備。</p>
-        <div class="feature-chips">
-          <span class="chip">5タブ管理</span>
-          <span class="chip">ROLE_ADMIN</span>
-        </div>
+        <div class="feature-chips"><span class="chip">5タブ管理</span><span class="chip">ROLE_ADMIN</span></div>
       </div>
-
       <div class="feature-card fade-up">
         <div class="feature-icon">💬</div>
         <h3 class="feature-title">お問い合わせ</h3>
         <p class="feature-desc">ユーザーからの問い合わせ送受信・一覧・詳細閲覧。管理者が回答を入力するとステータスがANSWEREDへ更新されます。</p>
-        <div class="feature-chips">
-          <span class="chip">WAITING / ANSWERED</span>
-        </div>
+        <div class="feature-chips"><span class="chip">WAITING / ANSWERED</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.07s">
         <div class="feature-icon">📋</div>
         <h3 class="feature-title">マイページ</h3>
         <p class="feature-desc">プロフィール編集・パスワード変更・アイコン選択・最近見たトイレ履歴・マイレビュー・マイ問い合わせ一覧をひとまとめに管理。</p>
-        <div class="feature-chips">
-          <span class="chip">画像アップロード</span>
-          <span class="chip">閲覧履歴</span>
-        </div>
+        <div class="feature-chips"><span class="chip">画像アップロード</span><span class="chip">閲覧履歴</span></div>
       </div>
-
       <div class="feature-card fade-up" style="transition-delay:.14s">
         <div class="feature-icon">🔒</div>
         <h3 class="feature-title">セキュリティ・権限管理</h3>
         <p class="feature-desc">ROLE_USER / ROLE_ADMINによる権限分離。停止・退会アカウントのログインエラーメッセージ個別表示。管理者アカウントの停止・削除を禁止。</p>
-        <div class="feature-chips">
-          <span class="chip">SUSPENDED</span>
-          <span class="chip">DELETED</span>
-          <span class="chip">アカウント保護</span>
-        </div>
+        <div class="feature-chips"><span class="chip">SUSPENDED</span><span class="chip">DELETED</span><span class="chip">アカウント保護</span></div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ==================== TECH STACK ==================== -->
+<!-- TECH STACK -->
 <section id="stack" class="section section-bg">
   <div class="container">
     <p class="section-label fade-up">TECH STACK</p>
     <h2 class="section-title fade-up">技術スタック</h2>
-
     <div class="stack-grid">
       <div class="stack-card fade-up">
         <div class="stack-cat">⚙️ Backend</div>
@@ -537,7 +425,7 @@
       <div class="stack-card fade-up" style="transition-delay:.16s">
         <div class="stack-cat">🗄️ Database</div>
         <div class="badges">
-          <span class="badge b-mysql">🐬 MySQL</span>
+          <span class="badge b-mysql">🐬 MySQL 8</span>
         </div>
       </div>
       <div class="stack-card fade-up" style="transition-delay:.24s">
@@ -552,13 +440,127 @@
   </div>
 </section>
 
-<!-- ==================== ARCHITECTURE ==================== -->
-<section id="architecture" class="section">
+<!-- DESIGN: ERD + USE CASE -->
+<section id="design" class="section">
   <div class="container">
-    <p class="section-label fade-up">ARCHITECTURE</p>
-    <h2 class="section-title fade-up">システム構成</h2>
+    <p class="section-label fade-up">DESIGN</p>
+    <h2 class="section-title fade-up">設計</h2>
+    <p class="section-desc fade-up">システムのER図とユースケース図です。</p>
 
-    <div class="arch-box fade-up">
+    <div class="design-tabs fade-up">
+      <div class="dtab active" onclick="switchDtab('erd')">📊 ER図</div>
+      <div class="dtab" onclick="switchDtab('usecase')">👥 ユースケース</div>
+      <div class="dtab" onclick="switchDtab('arch')">🏗 アーキテクチャ</div>
+    </div>
+
+    <!-- ERD -->
+    <div class="dtab-content active" id="dtab-erd">
+      <div class="erd-box">
+<pre>
+<span class="g">┌─────────────────┐</span>      <span class="g">┌─────────────────┐</span>      <span class="g">┌─────────────────┐</span>
+<span class="g">│</span> <span class="y">users</span>           <span class="g">│</span>      <span class="g">│</span> <span class="y">toilets</span>         <span class="g">│</span>      <span class="g">│</span> <span class="y">toilet_tags</span>     <span class="g">│</span>
+<span class="g">│─────────────────│</span>      <span class="g">│─────────────────│</span>      <span class="g">│─────────────────│</span>
+<span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span> 1    <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
+<span class="g">│</span>    email         <span class="g">│</span>──── <span class="g">│</span>    name          <span class="g">│</span> 1    <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>
+<span class="g">│</span>    password      <span class="g">│</span>     <span class="g">│</span>    address       <span class="g">│</span>────  <span class="g">│</span>    tag_name       <span class="g">│</span>
+<span class="g">│</span>    nickname      <span class="g">│</span>     <span class="g">│</span>    lat / lng     <span class="g">│</span>  N  <span class="g">└─────────────────┘</span>
+<span class="g">│</span>    profile_image <span class="g">│</span>     <span class="g">│</span>    source        <span class="g">│</span>
+<span class="g">│</span>    role          <span class="g">│</span>     <span class="g">│</span>    status        <span class="g">│</span>      <span class="g">┌─────────────────┐</span>
+<span class="g">│</span>    status        <span class="g">│</span>     <span class="g">│</span>    description   <span class="g">│</span>      <span class="g">│</span> <span class="y">recent_views</span>    <span class="g">│</span>
+<span class="g">│</span>    social_type   <span class="g">│</span>     <span class="g">│</span>    created_at    <span class="g">│</span>      <span class="g">│─────────────────│</span>
+<span class="g">│</span>    created_at    <span class="g">│</span>     <span class="g">└─────────────────┘</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
+<span class="g">└─────────────────┘</span>             │                  <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>
+         │                       │  1:N              <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>
+         │  1:N           <span class="g">┌──────┴──────────┐</span>      <span class="g">│</span>    viewed_at      <span class="g">│</span>
+         │                <span class="g">│</span> <span class="y">reviews</span>         <span class="g">│</span>      <span class="g">└─────────────────┘</span>
+  <span class="g">┌──────┴──────────────│─────────────────│</span>
+  <span class="g">│</span>                     <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>      <span class="g">┌─────────────────┐</span>
+  <span class="g">│</span>                     <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>      <span class="g">│</span> <span class="y">toilet_edit_     <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>      <span class="g">│</span>    requests      <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">│</span>    content        <span class="g">│</span>      <span class="g">│─────────────────│</span>
+  <span class="g">│</span>                     <span class="g">│</span>    rating         <span class="g">│</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">│</span>    is_hidden      <span class="g">│</span>      <span class="g">│</span> <span class="b">FK</span> toilet_id      <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">└─────────────────┘</span>      <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>
+  <span class="g">│</span>                              │ 1:N              <span class="g">│</span>    status         <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">┌────────┴────────┐</span>      <span class="g">│</span>    created_at     <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">│</span> <span class="y">review_images</span>   <span class="g">│</span>      <span class="g">└─────────────────┘</span>
+  <span class="g">│</span>                     <span class="g">│─────────────────│</span>
+  <span class="g">│</span>                     <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>      <span class="g">┌─────────────────┐</span>
+  <span class="g">│</span>                     <span class="g">│</span> <span class="b">FK</span> review_id      <span class="g">│</span>      <span class="g">│</span> <span class="y">reports</span>         <span class="g">│</span>
+  <span class="g">│</span>                     <span class="g">│</span>    image_url      <span class="g">│</span>      <span class="g">│─────────────────│</span>
+  <span class="g">│</span>                     <span class="g">└─────────────────┘</span>      <span class="g">│</span> <span class="b">PK</span> id            <span class="g">│</span>
+  <span class="g">│</span>                                               <span class="g">│</span> <span class="b">FK</span> review_id      <span class="g">│</span>
+  <span class="g">│</span>  1:N                                          <span class="g">│</span> <span class="b">FK</span> user_id        <span class="g">│</span>
+  <span class="g">└────────────────────────────────────────────────│</span>    reason         <span class="g">│</span>
+                                                  <span class="g">│</span>    status         <span class="g">│</span>
+  <span class="g">┌──────────────────────────────────────────┐</span>    <span class="g">└─────────────────┘</span>
+  <span class="g">│</span> <span class="y">inquiries</span>                                <span class="g">│</span>
+  <span class="g">│──────────────────────────────────────────│</span>
+  <span class="g">│</span> <span class="b">PK</span> id  │ <span class="b">FK</span> user_id  │ title  │ content  <span class="g">│</span>
+  <span class="g">│</span> answer │ status     │ created_at          <span class="g">│</span>
+  <span class="g">└──────────────────────────────────────────┘</span>
+</pre>
+      </div>
+    </div>
+
+    <!-- USE CASE -->
+    <div class="dtab-content" id="dtab-usecase">
+      <div class="usecase-grid">
+        <div class="usecase-card">
+          <div class="usecase-actor">👤 一般ユーザー（ROLE_USER）</div>
+          <ul class="usecase-list">
+            <li>周辺トイレを地図で検索・確認する</li>
+            <li>タグ・キーワードでトイレをフィルタリングする</li>
+            <li>トイレの詳細情報・レビューを閲覧する</li>
+            <li>レビューを投稿・削除する（画像付き）</li>
+            <li>不正レビューを報告する</li>
+            <li>新規トイレを提案登録する</li>
+            <li>既存トイレの修正提案を送る</li>
+            <li>お問い合わせを送信・確認する</li>
+            <li>マイページでプロフィールを編集する</li>
+            <li>最近見たトイレ履歴を確認する</li>
+            <li>パスワードをリセットする（メール認証）</li>
+            <li>Google OAuthでソーシャルログインする</li>
+          </ul>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-actor">🛡️ 管理者（ROLE_ADMIN）</div>
+          <ul class="usecase-list">
+            <li>管理者ダッシュボードにアクセスする</li>
+            <li>会員一覧・詳細を確認する</li>
+            <li>会員を停止・復元・削除する（管理者除く）</li>
+            <li>ユーザー提報トイレを承認・却下する</li>
+            <li>報告されたレビューを非表示・却下する</li>
+            <li>お問い合わせに回答する</li>
+            <li>修正提案を承認・却下する</li>
+            <li>各機能のページネーション・フィルタを操作する</li>
+          </ul>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-actor">🔓 未ログインユーザー（Guest）</div>
+          <ul class="usecase-list">
+            <li>トイレ地図・一覧を閲覧する</li>
+            <li>トイレ詳細・レビューを読む</li>
+            <li>会員登録・ログインページにアクセスする</li>
+            <li>Google OAuthログインを開始する</li>
+          </ul>
+        </div>
+        <div class="usecase-card">
+          <div class="usecase-actor">🔄 システム（自動処理）</div>
+          <ul class="usecase-list">
+            <li>公共データAPIからトイレ情報をインポートする</li>
+            <li>Haversine公式で距離を自動計算する</li>
+            <li>BCryptでパスワードを暗号化する</li>
+            <li>メール認証トークンを送信・検証する</li>
+            <li>最近見たトイレを自動記録する</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="dtab-content" id="dtab-arch">
+      <div class="arch-box">
 <pre>
   ┌────────────────────────────────────────────────────────────────┐
   │  <span class="w">ブラウザ  (Client)</span>                                              │
@@ -569,104 +571,576 @@
   ┌──────────────────────────▼─────────────────────────────────────┐
   │  <span class="w">Spring Boot 4.0.3  (MVC)</span>                                       │
   │                                                                  │
-  │  Controller  ──▶  Service  ──▶  Mapper (MyBatis)               │
+  │  Controller  ──▶  Service  ──▶  Mapper (MyBatis XML)           │
   │                                                                  │
   │  <span class="g">Spring Security</span> ／ CustomUserDetails ／ Google OAuth2          │
   │  AuthenticationFailureHandler (停止 / 退会 エラー分岐)           │
   └──────────────────────────────────┬─────────────────────────────┘
                                      │  SQL
   ┌──────────────────────────────────▼─────────────────────────────┐
-  │  <span class="w">MySQL</span>                                                           │
+  │  <span class="w">MySQL 8</span>                                                         │
   │  users ／ toilets ／ reviews ／ review_images                    │
   │  reports ／ inquiries ／ toilet_edit_requests                    │
   │  toilet_tags ／ recent_views                                     │
   └────────────────────────────────────────────────────────────────┘
 </pre>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FUNCTIONAL REQUIREMENTS -->
+<section id="requirements" class="section section-bg">
+  <div class="container">
+    <p class="section-label fade-up">REQUIREMENTS</p>
+    <h2 class="section-title fade-up">機能要求仕様</h2>
+    <p class="section-desc fade-up">画面別に整理した機能要求一覧です。</p>
+
+    <div class="req-tabs fade-up">
+      <div class="rtab active" onclick="switchRtab('scr001')">SCR-001 地図</div>
+      <div class="rtab" onclick="switchRtab('scr002')">SCR-002 認証</div>
+      <div class="rtab" onclick="switchRtab('scr003')">SCR-003 詳細</div>
+      <div class="rtab" onclick="switchRtab('scr004')">SCR-004 管理者</div>
+      <div class="rtab" onclick="switchRtab('scr005')">SCR-005 修正提案</div>
+      <div class="rtab" onclick="switchRtab('scr006')">SCR-006 レビュー</div>
+      <div class="rtab" onclick="switchRtab('scr007')">SCR-007 問い合わせ</div>
+      <div class="rtab" onclick="switchRtab('scr008')">SCR-008 マイページ</div>
+      <div class="rtab" onclick="switchRtab('scr009')">SCR-009 検索</div>
+      <div class="rtab" onclick="switchRtab('scr010')">SCR-010 トイレ提案</div>
+    </div>
+
+    <!-- SCR-001 -->
+    <div class="rtab-content active" id="rtab-scr001">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR001-1</td><td>現在地取得</td><td>Geolocation APIでユーザーの現在地を取得し、地図の中心に設定する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR001-2</td><td>周辺トイレ表示</td><td>現在地から2km以内のトイレをNaver Maps上にマーカーで表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR001-3</td><td>マーカークリック</td><td>マーカークリック時にトイレ名・距離・評価の吹き出しを表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR001-4</td><td>距離計算</td><td>Haversine公式を用いて現在地から各トイレまでの直線距離を計算する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR001-5</td><td>最寄りトイレ一覧</td><td>地図下部に距離順で最寄りトイレリストをスクロール表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR001-6</td><td>ナビゲーション連携</td><td>「ここへ行く」ボタンでNaver地図アプリのナビを起動するURLスキームを生成する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-002 -->
+    <div class="rtab-content" id="rtab-scr002">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR002-1</td><td>会員登録</td><td>メール・パスワード・ニックネームを入力して新規会員を登録する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR002-2</td><td>一般ログイン</td><td>メール・パスワードによる認証。BCryptで保存されたパスワードと照合する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR002-3</td><td>Googleログイン</td><td>Google OAuth2 ソーシャルログインを実装。初回ログイン時に自動会員登録する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR002-4</td><td>ログアウト</td><td>セッションを無効化してトップページへリダイレクトする</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR002-5</td><td>パスワードリセット</td><td>ID＋メール認証による3ステップのパスワード再設定フローを実装する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR002-6</td><td>エラーメッセージ分岐</td><td>停止アカウント・退会アカウント・パスワード不正それぞれに異なるメッセージを表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR002-7</td><td>デフォルトアイコン</td><td>プロフィール画像未設定の場合はdefault.svgをフォールバックとして表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-003 -->
+    <div class="rtab-content" id="rtab-scr003">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR003-1</td><td>トイレ詳細表示</td><td>トイレ名・住所・設備タグ・평균評価・レビュー件数を表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR003-2</td><td>設備タグ表示</td><td>車椅子・おむつ交換・24時間・多目的・清潔などのタグをアイコン付きで表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR003-3</td><td>レビュータブ</td><td>詳細ページ内のタブでレビュー一覧を表示。最新順・高評価順の切り替えが可能</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR003-4</td><td>地図表示</td><td>トイレの位置をNaver Maps小地図で表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR003-5</td><td>修正提案ボタン</td><td>ログインユーザーが修正提案ページへ遷移するボタンを表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR003-6</td><td>閲覧履歴記録</td><td>ログインユーザーが詳細ページを開いた際に recent_views へ自動記録する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-004 -->
+    <div class="rtab-content" id="rtab-scr004">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR004-1</td><td>管理者ダッシュボード表示</td><td>5タブ（会員・報告・トイレ承認・問い合わせ・修正提案）の統合管理画面を表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-2</td><td>会員一覧・フィルタ</td><td>全会員を一覧表示。ACTIVE/SUSPENDED/DELETED等のステータスでフィルタリングする</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-3</td><td>会員停止・復元</td><td>会員のステータスをSUSPENDED/ACTIVEに変更する。管理者アカウントは対象外</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-4</td><td>会員削除</td><td>会員をDELETEDに変更する。管理者アカウントは削除禁止</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-5</td><td>報告一覧表示</td><td>報告されたレビューをWAITING/ACCEPTED/REJECTEDでフィルタして一覧表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-6</td><td>報告承認・却下</td><td>報告を承認するとレビューをis_hidden=trueに。却下するとREJECTEDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-7</td><td>トイレ承認一覧</td><td>source='USER'のトイレのみをWAITING/APPROVED/REJECTEDでフィルタして表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-8</td><td>トイレ承認・却下</td><td>ユーザー提案トイレをAPPROVED/REJECTEDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-9</td><td>問い合わせ回答</td><td>管理者が問い合わせに回答テキストを入力し、ステータスをANSWEREDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-10</td><td>修正提案一覧</td><td>修正提案をWAITING/APPROVED/REJECTEDでフィルタして一覧表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-11</td><td>修正提案承認</td><td>修正提案を承認すると対象toiletsのデータを更新し、ステータスをAPPROVEDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-12</td><td>ページネーション</td><td>全タブで10件ずつページネーションを実装。AdminPageResponse&lt;T&gt;で統一する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-13</td><td>管理者アカウント保護</td><td>管理者自身のアカウントに停止・削除操作を行えないよう制御する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-005 -->
+    <div class="rtab-content" id="rtab-scr005">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR005-1</td><td>修正提案フォーム表示</td><td>対象トイレの現在情報を初期値として修正提案フォームを表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR005-2</td><td>変更内容入力</td><td>名前・住所・タグ・説明などの修正内容を入力できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR005-3</td><td>Naver地図連携</td><td>地図クリックで座標を自動入力できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR005-4</td><td>提案送信</td><td>toilet_edit_requestsにINSERTしステータスをWAITINGで登録する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR005-5</td><td>提案一覧（マイページ）</td><td>マイページから自分の修正提案一覧と承認ステータスを確認できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-006 -->
+    <div class="rtab-content" id="rtab-scr006">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR006-1</td><td>レビュー投稿</td><td>評価（1〜5）・テキスト・画像（複数）を含むレビューを投稿する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR006-2</td><td>画像アップロード</td><td>レビュー画像をサーバーに保存しreview_imagesに記録する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR006-3</td><td>レビュー削除</td><td>自分のレビューのみ削除可能。削除時に関連画像も削除する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR006-4</td><td>報告機能</td><td>不正レビューを理由付きで報告する。同一ユーザーの二重報告を防止する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR006-5</td><td>並び替え</td><td>最新順・高評価順・低評価順でレビューを並び替えて表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-007 -->
+    <div class="rtab-content" id="rtab-scr007">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR007-1</td><td>問い合わせ送信</td><td>タイトル・内容を入力してお問い合わせをWAITINGで送信する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR007-2</td><td>問い合わせ一覧</td><td>マイページから自分の問い合わせ一覧とステータスを確認できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR007-3</td><td>問い合わせ詳細</td><td>問い合わせ詳細と管理者の回答を確認できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR007-4</td><td>管理者回答</td><td>管理者が回答入力後にステータスをANSWEREDに更新する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR007-5</td><td>ステータス表示</td><td>WAITING/ANSWERED を色分けバッジで一覧表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-008 -->
+    <div class="rtab-content" id="rtab-scr008">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR008-1</td><td>プロフィール編集</td><td>ニックネーム・プロフィール画像を変更できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR008-2</td><td>パスワード変更</td><td>現在パスワードを確認後に新しいパスワードへ変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR008-3</td><td>アイコン選択</td><td>プリセットアイコンから選択できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR008-4</td><td>最近見たトイレ</td><td>recent_viewsから閲覧履歴を取得し一覧表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR008-5</td><td>マイレビュー</td><td>自分が投稿したレビュー一覧を表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR008-6</td><td>マイ問い合わせ</td><td>自分のお問い合わせ一覧を表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR008-7</td><td>会員退会</td><td>確認ダイアログ後にステータスをDELETEDに変更しセッションを無効化する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-009 -->
+    <div class="rtab-content" id="rtab-scr009">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR009-1</td><td>キーワード検索</td><td>トイレ名・住所・建物名のキーワード検索を実装する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR009-2</td><td>タグフィルタ</td><td>複数タグを同時選択してフィルタリングする（AND条件）</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR009-3</td><td>距離フィルタ</td><td>現在地から500m・1km・2km以内でフィルタリングする</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR009-4</td><td>検索結果一覧</td><td>検索条件に一致するトイレを距離順で一覧表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCR-010 -->
+    <div class="rtab-content" id="rtab-scr010">
+      <table class="req-table">
+        <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="req-id">FR-SCR010-1</td><td>新規トイレ登録フォーム</td><td>名前・住所・設備タグ・説明を入力する新規登録フォームを表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR010-2</td><td>地図クリック座標入力</td><td>Naver地図をクリックした位置のlat/lngを座標フィールドに自動入力する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR010-3</td><td>提案送信</td><td>source='USER', status='WAITING'でtoiletsにINSERTし管理者承認待ちとする</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR010-4</td><td>提案状況確認</td><td>マイページから自分の登録提案のステータスを確認できる</td><td><span class="st-done">✅ 完了</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- DB DESIGN -->
+<section id="db" class="section">
+  <div class="container">
+    <p class="section-label fade-up">DATABASE</p>
+    <h2 class="section-title fade-up">DBテーブル設計</h2>
+    <p class="section-desc fade-up">MySQL 8 を使用。9テーブルで構成されています。</p>
+    <div class="db-grid">
+
+      <div class="db-card fade-up">
+        <div class="db-name">users</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>ユーザーID</td></tr>
+            <tr><td>email</td><td class="type">VARCHAR UNIQUE</td><td>メールアドレス</td></tr>
+            <tr><td>password</td><td class="type">VARCHAR</td><td>BCryptハッシュ</td></tr>
+            <tr><td>nickname</td><td class="type">VARCHAR</td><td>ニックネーム</td></tr>
+            <tr><td>profile_image</td><td class="type">VARCHAR</td><td>プロフィール画像パス</td></tr>
+            <tr><td>role</td><td class="type">ENUM</td><td>ROLE_USER / ROLE_ADMIN</td></tr>
+            <tr><td>status</td><td class="type">ENUM</td><td>ACTIVE / SUSPENDED / DELETED</td></tr>
+            <tr><td>social_type</td><td class="type">VARCHAR</td><td>GOOGLE / null</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>登録日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up" style="transition-delay:.08s">
+        <div class="db-name">toilets</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>トイレID</td></tr>
+            <tr><td>name</td><td class="type">VARCHAR</td><td>トイレ名</td></tr>
+            <tr><td>address</td><td class="type">VARCHAR</td><td>住所</td></tr>
+            <tr><td>lat / lng</td><td class="type">DOUBLE</td><td>緯度・経度</td></tr>
+            <tr><td>source</td><td class="type">ENUM</td><td>PUBLIC_API / USER</td></tr>
+            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / APPROVED / REJECTED</td></tr>
+            <tr><td>description</td><td class="type">TEXT</td><td>説明</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>登録日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up" style="transition-delay:.16s">
+        <div class="db-name">reviews</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>レビューID</td></tr>
+            <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
+            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
+            <tr><td>content</td><td class="type">TEXT</td><td>レビュー本文</td></tr>
+            <tr><td>rating</td><td class="type">INT</td><td>評価（1〜5）</td></tr>
+            <tr><td>is_hidden</td><td class="type">BOOLEAN</td><td>非表示フラグ</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>投稿日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up" style="transition-delay:.24s">
+        <div class="db-name">review_images</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>画像ID</td></tr>
+            <tr><td class="fk">review_id</td><td class="type">BIGINT FK</td><td>reviews.id</td></tr>
+            <tr><td>image_url</td><td class="type">VARCHAR</td><td>画像保存パス</td></tr>
+          </tbody>
+        </table>
+        <br>
+        <div class="db-name">toilet_tags</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>タグID</td></tr>
+            <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
+            <tr><td>tag_name</td><td class="type">VARCHAR</td><td>タグ名（wheelchair等）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up">
+        <div class="db-name">reports</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>報告ID</td></tr>
+            <tr><td class="fk">review_id</td><td class="type">BIGINT FK</td><td>reviews.id</td></tr>
+            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
+            <tr><td>reason</td><td class="type">TEXT</td><td>報告理由</td></tr>
+            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / ACCEPTED / REJECTED</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>報告日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up" style="transition-delay:.08s">
+        <div class="db-name">inquiries</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>問い合わせID</td></tr>
+            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
+            <tr><td>title</td><td class="type">VARCHAR</td><td>タイトル</td></tr>
+            <tr><td>content</td><td class="type">TEXT</td><td>本文</td></tr>
+            <tr><td>answer</td><td class="type">TEXT</td><td>管理者回答</td></tr>
+            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / ANSWERED</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>送信日時</td></tr>
+            <tr><td>answered_at</td><td class="type">DATETIME</td><td>回答日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up" style="transition-delay:.16s">
+        <div class="db-name">toilet_edit_requests</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>修正提案ID</td></tr>
+            <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
+            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
+            <tr><td>new_name</td><td class="type">VARCHAR</td><td>提案名称</td></tr>
+            <tr><td>new_address</td><td class="type">VARCHAR</td><td>提案住所</td></tr>
+            <tr><td>new_description</td><td class="type">TEXT</td><td>提案説明</td></tr>
+            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / APPROVED / REJECTED</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>提案日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="db-card fade-up" style="transition-delay:.24s">
+        <div class="db-name">recent_views</div>
+        <table class="db-table">
+          <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+          <tbody>
+            <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>履歴ID</td></tr>
+            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
+            <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
+            <tr><td>viewed_at</td><td class="type">DATETIME</td><td>閲覧日時</td></tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ==================== TEAM ==================== -->
+<!-- URL DESIGN -->
+<section id="urls" class="section section-bg">
+  <div class="container">
+    <p class="section-label fade-up">URL DESIGN</p>
+    <h2 class="section-title fade-up">URL設計</h2>
+    <p class="section-desc fade-up">RESTful規則に基づくエンドポイント一覧です。</p>
+    <table class="url-table fade-up" style="margin-top:40px;">
+      <thead>
+        <tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/</td><td>地図メインページ</td><td class="url-auth">全員</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/login</td><td>ログインページ</td><td class="url-auth">未認証</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/login</td><td>ログイン処理</td><td class="url-auth">未認証</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/logout</td><td>ログアウト処理</td><td class="url-auth">認証済</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/register</td><td>会員登録ページ</td><td class="url-auth">未認証</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/register</td><td>会員登録処理</td><td class="url-auth">未認証</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/password-reset</td><td>パスワードリセット（Step1〜3）</td><td class="url-auth">全員</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/password-reset/verify</td><td>メール認証確認</td><td class="url-auth">全員</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/{id}</td><td>トイレ詳細ページ</td><td class="url-auth">全員</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/search</td><td>トイレ検索ページ</td><td class="url-auth">全員</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/new</td><td>新規トイレ提案ページ</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/toilets</td><td>新規トイレ提案送信</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/{id}/edit-request</td><td>修正提案フォームページ</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/toilets/{id}/edit-request</td><td>修正提案送信</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/reviews</td><td>レビュー投稿</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/reviews/{id}</td><td>レビュー削除</td><td class="url-auth">本人</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/reports</td><td>レビュー報告送信</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/inquiries</td><td>お問い合わせ一覧</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/inquiries</td><td>お問い合わせ送信</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/inquiries/{id}</td><td>お問い合わせ詳細</td><td class="url-auth">本人</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/my</td><td>マイページトップ</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/my/profile</td><td>プロフィール更新</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/my/password</td><td>パスワード変更</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/my</td><td>会員退会</td><td class="url-auth">ROLE_USER</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin</td><td>管理者ダッシュボード</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/members</td><td>会員管理タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/members/{id}/status</td><td>会員ステータス変更</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/admin/members/{id}</td><td>会員削除</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/reports</td><td>報告管理タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/reports/{id}/status</td><td>報告承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/toilets</td><td>トイレ承認タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/toilets/{id}/status</td><td>トイレ承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/inquiries</td><td>問い合わせタブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/admin/inquiries/{id}/answer</td><td>問い合わせ回答</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/edit-requests</td><td>修正提案タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/edit-requests/{id}/status</td><td>修正提案承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SCREENS / UI -->
+<section id="screens" class="section">
+  <div class="container">
+    <p class="section-label fade-up">UI / SCREENS</p>
+    <h2 class="section-title fade-up">画面説明 &amp; スクリーンショット</h2>
+    <p class="section-desc fade-up">
+      各画面の概要です。スクリーンショットは <code>docs/screenshots/</code> フォルダに画像を追加してください。
+    </p>
+
+    <div class="ss-grid">
+
+      <div class="ss-card fade-up">
+        <!-- <img class="ss-img" src="./screenshots/map.png" alt="地図メイン"> -->
+        <div class="ss-placeholder">
+          <div class="icon">🗺️</div>
+          <div class="label">map.png</div>
+        </div>
+        <div class="ss-caption">
+          <div class="ss-caption-title">地図メイン（SCR-001）</div>
+          <div class="ss-caption-desc">現在地中心にトイレマーカーをリアルタイム表示。距離順リストをスクロール閲覧できる。</div>
+        </div>
+      </div>
+
+      <div class="ss-card fade-up" style="transition-delay:.07s">
+        <!-- <img class="ss-img" src="./screenshots/login.png" alt="ログイン"> -->
+        <div class="ss-placeholder">
+          <div class="icon">🔐</div>
+          <div class="label">login.png</div>
+        </div>
+        <div class="ss-caption">
+          <div class="ss-caption-title">ログイン / 会員登録（SCR-002）</div>
+          <div class="ss-caption-desc">一般ログイン・Googleソーシャルログイン対応。状態別エラートースト表示。</div>
+        </div>
+      </div>
+
+      <div class="ss-card fade-up" style="transition-delay:.14s">
+        <!-- <img class="ss-img" src="./screenshots/detail.png" alt="トイレ詳細"> -->
+        <div class="ss-placeholder">
+          <div class="icon">🚽</div>
+          <div class="label">detail.png</div>
+        </div>
+        <div class="ss-caption">
+          <div class="ss-caption-title">トイレ詳細（SCR-003）</div>
+          <div class="ss-caption-desc">設備タグ・小地図・レビュータブを統合表示。修正提案ボタン付き。</div>
+        </div>
+      </div>
+
+      <div class="ss-card fade-up">
+        <!-- <img class="ss-img" src="./screenshots/admin.png" alt="管理者"> -->
+        <div class="ss-placeholder">
+          <div class="icon">🛡️</div>
+          <div class="label">admin.png</div>
+        </div>
+        <div class="ss-caption">
+          <div class="ss-caption-title">管理者ダッシュボード（SCR-004）</div>
+          <div class="ss-caption-desc">5タブ統合管理。会員・報告・トイレ承認・問い合わせ・修正提案をSPA風に切り替え。</div>
+        </div>
+      </div>
+
+      <div class="ss-card fade-up" style="transition-delay:.07s">
+        <!-- <img class="ss-img" src="./screenshots/mypage.png" alt="マイページ"> -->
+        <div class="ss-placeholder">
+          <div class="icon">📋</div>
+          <div class="label">mypage.png</div>
+        </div>
+        <div class="ss-caption">
+          <div class="ss-caption-title">マイページ（SCR-008）</div>
+          <div class="ss-caption-desc">プロフィール編集・最近見たトイレ・マイレビュー・マイ問い合わせを一元管理。</div>
+        </div>
+      </div>
+
+      <div class="ss-card fade-up" style="transition-delay:.14s">
+        <!-- <img class="ss-img" src="./screenshots/search.png" alt="検索"> -->
+        <div class="ss-placeholder">
+          <div class="icon">🔍</div>
+          <div class="label">search.png</div>
+        </div>
+        <div class="ss-caption">
+          <div class="ss-caption-title">検索・フィルタ（SCR-009）</div>
+          <div class="ss-caption-desc">キーワード・タグ複数選択・距離フィルタを組み合わせた高度な検索機能。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIDEO -->
+    <div style="margin-top:64px">
+      <p class="section-label fade-up">DEMO VIDEO</p>
+      <h3 class="section-title fade-up" style="font-size:26px">実装デモ動画</h3>
+      <div class="video-container fade-up">
+        <!--
+          ★ YouTube埋め込みの場合:
+          <iframe width="100%" height="480" src="https://www.youtube.com/embed/VIDEO_ID"
+            frameborder="0" allowfullscreen></iframe>
+
+          ★ ローカル動画ファイルの場合:
+          <video width="100%" controls>
+            <source src="./demo.mp4" type="video/mp4">
+          </video>
+        -->
+        <div class="video-placeholder">
+          <div class="play">▶️</div>
+          <p>デモ動画をここに埋め込んでください</p>
+          <p style="font-size:12px">YouTube URL または docs/demo.mp4 を追加</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TEAM -->
 <section id="team" class="section section-bg">
   <div class="container">
     <p class="section-label fade-up">TEAM</p>
     <h2 class="section-title fade-up">チームメンバー</h2>
     <p class="section-desc fade-up">6名のエンジニアが2週間で実装しました。</p>
-
-    <!-- ★ 役割・担当は後で正確に修正してください -->
     <div class="team-grid">
 
       <div class="team-card fade-up">
         <div class="team-avatar">👨‍💻</div>
         <div class="team-name">パク・ミンソン</div>
         <div class="team-role">チームリーダー</div>
-        <div class="team-part">地図・トイレ検索機能<br>Naver Maps API 連携</div>
-        <a href="https://github.com/thisisminseon" target="_blank" class="team-gh">
-          🐙 thisisminseon
-        </a>
+        <div class="team-part">地図メイン・トイレ検索<br>Naver Maps API 連携<br>Git管理</div>
+        <a href="https://github.com/thisisminseon" target="_blank" class="team-gh">🐙 thisisminseon</a>
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.08s">
         <div class="team-avatar">👨‍💻</div>
         <div class="team-name">ハン・スンヨン</div>
         <div class="team-role">フロントエンド</div>
-        <div class="team-part">UI / UX デザイン<br>フロントエンド実装</div>
-        <a href="https://github.com/aaaea1" target="_blank" class="team-gh">
-          🐙 aaaea1
-        </a>
+        <div class="team-part">トイレ詳細ページ<br>ナビゲーション<br>レビュータブ実装</div>
+        <a href="https://github.com/aaaea1" target="_blank" class="team-gh">🐙 aaaea1</a>
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.16s">
         <div class="team-avatar">👩‍💻</div>
         <div class="team-name">キム・イェウン</div>
         <div class="team-role">バックエンド</div>
-        <div class="team-part">管理者ページ全般<br>Spring Security 設計</div>
-        <a href="https://github.com/yeeun-021120" target="_blank" class="team-gh">
-          🐙 yeeun-021120
-        </a>
+        <div class="team-part">管理者ダッシュボード<br>報告管理・修正提案承認<br>Spring Security設計</div>
+        <a href="https://github.com/yeeun-021120" target="_blank" class="team-gh">🐙 yeeun-021120</a>
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.08s">
         <div class="team-avatar">👩‍💻</div>
         <div class="team-name">キム・ジュハ</div>
-        <div class="team-role">バックエンド</div>
-        <div class="team-part">レビュー・報告機能<br>画像アップロード実装</div>
-        <a href="https://github.com/minone64" target="_blank" class="team-gh">
-          🐙 minone64
-        </a>
+        <div class="team-role">フロントエンド / UI</div>
+        <div class="team-part">UI/UX設計<br>スプラッシュ・会員登録<br>ログインモーダル</div>
+        <a href="https://github.com/minone64" target="_blank" class="team-gh">🐙 minone64</a>
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.16s">
         <div class="team-avatar">👩‍💻</div>
         <div class="team-name">パク・ジユン</div>
         <div class="team-role">バックエンド</div>
-        <div class="team-part">会員認証・OAuth2<br>マイページ実装</div>
-        <a href="https://github.com/JiyoonOfficial" target="_blank" class="team-gh">
-          🐙 JiyoonOfficial
-        </a>
+        <div class="team-part">マイページ全般<br>最近見たトイレ<br>URL共有機能</div>
+        <a href="https://github.com/JiyoonOfficial" target="_blank" class="team-gh">🐙 JiyoonOfficial</a>
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.24s">
         <div class="team-avatar">👩‍💻</div>
         <div class="team-name">チャン・ヒエ</div>
         <div class="team-role">バックエンド</div>
-        <div class="team-part">お問い合わせ機能<br>DB 設計・データ管理</div>
-        <a href="https://github.com/anghi-kor" target="_blank" class="team-gh">
-          🐙 anghi-kor
-        </a>
+        <div class="team-part">トイレCRUD<br>管理者機能サポート<br>DB設計・データ管理</div>
+        <a href="https://github.com/anghi-kor" target="_blank" class="team-gh">🐙 anghi-kor</a>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ==================== TROUBLESHOOTING ==================== -->
+<!-- TROUBLESHOOTING -->
 <section id="trouble" class="section">
   <div class="container">
     <p class="section-label fade-up">TROUBLESHOOTING</p>
     <h2 class="section-title fade-up">技術的な課題と解決</h2>
     <p class="section-desc fade-up">開発中に直面した主な技術的課題と、その解決プロセスです。</p>
-
     <div class="trouble-list">
 
       <div class="trouble-card fade-up">
@@ -682,7 +1156,7 @@
           <div class="trouble-tag tt-s">🟢 SOLUTION</div>
           Admin 専用の <code>AdminPageResponse&lt;T&gt;</code> DTO を新規作成し、
           <code>content / number / totalPages / size / totalCount</code> フィールド名でフロントエンドの期待値に統一。
-          既存の共通コードを変更せず解決。
+          既存の共通コードを変更せずに解決。
         </div>
       </div>
 
@@ -735,7 +1209,7 @@
           <code>isAccountNonLocked()</code>（DELETED → false）を分離。
           カスタム <code>AuthenticationFailureHandler</code> で例外種別ごとに
           <code>?error=suspended</code> / <code>?error=deleted</code> パラメータを付与し、
-          フロントエンドで日本語トーストメッセージを種別表示。
+          フロントエンドで状態別トーストメッセージを表示。
         </div>
       </div>
 
@@ -743,16 +1217,14 @@
   </div>
 </section>
 
-<!-- ==================== FOOTER ==================== -->
+<!-- FOOTER -->
 <footer>
   <div style="max-width:800px; margin:0 auto;">
     <div class="footer-emoji">🚻</div>
     <div class="footer-title">デマス</div>
     <div class="footer-sub">韓国のトイレが、すぐ見つかる。</div>
     <div class="footer-btns">
-      <a href="https://github.com/JSL-26th-Ariana/Working-Title-DeMaSu" target="_blank" class="footer-btn">
-        🐙 GitHub Repository
-      </a>
+      <a href="https://github.com/JSL-26th-Ariana/Working-Title-DeMaSu" target="_blank" class="footer-btn">🐙 GitHub Repository</a>
     </div>
     <div class="footer-copy">
       © 2026 デマスチーム &nbsp;|&nbsp;
@@ -761,12 +1233,11 @@
   </div>
 </footer>
 
-<!-- ==================== SCRIPTS ==================== -->
 <script>
   // Scroll fade-in
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
   // Nav shadow on scroll
@@ -774,6 +1245,22 @@
     document.getElementById('nav').style.boxShadow =
       window.scrollY > 40 ? '0 4px 20px rgba(0,0,0,0.1)' : 'none';
   });
+
+  // Design tabs (ERD / usecase / arch)
+  function switchDtab(id) {
+    document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dtab-content').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById('dtab-' + id).classList.add('active');
+  }
+
+  // Requirements tabs
+  function switchRtab(id) {
+    document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.rtab-content').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById('rtab-' + id).classList.add('active');
+  }
 </script>
 </body>
 </html>
