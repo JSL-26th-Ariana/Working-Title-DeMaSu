@@ -182,7 +182,9 @@
     .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
     .team-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; text-align: center; transition: all .3s; }
     .team-card:hover { border-color: var(--green); box-shadow: 0 8px 32px rgba(45,184,124,.12); transform: translateY(-4px); }
-    .team-avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px; }
+    .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 14px; overflow: hidden; border: 3px solid var(--border); transition: border-color .3s; }
+    .team-card:hover .team-avatar { border-color: var(--green); }
+    .team-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .team-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
     .team-role { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 10px; }
     .team-part { font-size: 13px; color: var(--gray); line-height: 1.7; margin-bottom: 18px; }
@@ -1041,15 +1043,19 @@
     <div class="team-grid">
 
       <div class="team-card fade-up">
-        <div class="team-avatar">👨‍💻</div>
+        <div class="team-avatar">
+          <img src="https://github.com/thisisminseon.png" alt="パク・ミンソン" onerror="this.style.display='none';this.parentNode.textContent='👨‍💻'" />
+        </div>
         <div class="team-name">パク・ミンソン</div>
-        <div class="team-role">チームリーダー</div>
+        <div class="team-role">チームリーダー · バックエンド</div>
         <div class="team-part">地図メイン・トイレ検索<br>Naver Maps API 連携<br>Git管理</div>
         <a href="https://github.com/thisisminseon" target="_blank" class="team-gh">🐙 thisisminseon</a>
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.08s">
-        <div class="team-avatar">👨‍💻</div>
+        <div class="team-avatar">
+          <img src="https://github.com/aaaea1.png" alt="ハン・スンヨン" onerror="this.style.display='none';this.parentNode.textContent='👨‍💻'" />
+        </div>
         <div class="team-name">ハン・スンヨン</div>
         <div class="team-role">フロントエンド</div>
         <div class="team-part">トイレ詳細ページ<br>ナビゲーション<br>レビュータブ実装</div>
@@ -1057,7 +1063,9 @@
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.16s">
-        <div class="team-avatar">👩‍💻</div>
+        <div class="team-avatar">
+          <img src="https://github.com/yeeun-021120.png" alt="キム・イェウン" onerror="this.style.display='none';this.parentNode.textContent='👩‍💻'" />
+        </div>
         <div class="team-name">キム・イェウン</div>
         <div class="team-role">バックエンド</div>
         <div class="team-part">管理者ダッシュボード<br>報告管理・修正提案承認<br>Spring Security設計</div>
@@ -1065,7 +1073,9 @@
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.08s">
-        <div class="team-avatar">👩‍💻</div>
+        <div class="team-avatar">
+          <img src="https://github.com/minone64.png" alt="キム・ジュハ" onerror="this.style.display='none';this.parentNode.textContent='👩‍💻'" />
+        </div>
         <div class="team-name">キム・ジュハ</div>
         <div class="team-role">フロントエンド / UI</div>
         <div class="team-part">UI/UX設計<br>スプラッシュ・会員登録<br>ログインモーダル</div>
@@ -1073,7 +1083,9 @@
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.16s">
-        <div class="team-avatar">👩‍💻</div>
+        <div class="team-avatar">
+          <img src="https://github.com/JiyoonOfficial.png" alt="パク・ジユン" onerror="this.style.display='none';this.parentNode.textContent='👩‍💻'" />
+        </div>
         <div class="team-name">パク・ジユン</div>
         <div class="team-role">バックエンド</div>
         <div class="team-part">マイページ全般<br>最近見たトイレ<br>URL共有機能</div>
@@ -1081,8 +1093,10 @@
       </div>
 
       <div class="team-card fade-up" style="transition-delay:.24s">
-        <div class="team-avatar">👩‍💻</div>
-        <div class="team-name">チャン・ヒエ</div>
+        <div class="team-avatar">
+          <img src="https://github.com/anghi-kor.png" alt="チャン・ヒエ" onerror="this.style.display='none';this.parentNode.textContent='👩‍💻'" />
+        </div>
+        <div class="team-name">ジャン・ヒエ</div>
         <div class="team-role">バックエンド</div>
         <div class="team-part">トイレCRUD<br>管理者機能サポート<br>DB設計・データ管理</div>
         <a href="https://github.com/anghi-kor" target="_blank" class="team-gh">🐙 anghi-kor</a>
@@ -1185,7 +1199,7 @@
     </div>
     <div class="footer-copy">
       © 2026 デマスチーム &nbsp;|&nbsp;
-      パク・ミンソン / ハン・スンヨン / キム・イェウン / キム・ジュハ / パク・ジユン / チャン・ヒエ
+      パク・ミンソン / ハン・スンヨン / キム・イェウン / キム・ジュハ / パク・ジユン / ジャン・ヒエ
     </div>
   </div>
 </footer>
