@@ -98,8 +98,13 @@
     .b-idea    { background:#FF42001a; color:#cc3300; }
 
     /* ERD & DESIGN */
-    .design-tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--border); margin-top: 48px; }
-    .dtab { padding: 12px 28px; font-size: 14px; font-weight: 600; color: var(--gray); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; }
+    .design-tabs { display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--border); margin-top: 48px; overflow-x: auto; white-space: nowrap; }
+    .design-tabs::-webkit-scrollbar { height: 0; }
+    .dtab { padding: 12px 28px; font-size: 14px; font-weight: 600; color: var(--gray); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; flex-shrink: 0; }
+    #db .design-tabs { margin-top: 48px; overflow-x: visible; }
+    #db .dtab { flex: 1; text-align: center; padding: 10px 4px; font-size: 12px; font-family: monospace; }
+    #urls .design-tabs { margin-top: 48px; overflow-x: visible; }
+    #urls .dtab { flex: 1; text-align: center; padding: 10px 6px; font-size: 13px; }
     .dtab.active { color: var(--green); border-bottom-color: var(--green); }
     .dtab-content { display: none; padding: 40px 0 0; }
     .dtab-content.active { display: block; }
@@ -413,21 +418,23 @@
           <span class="badge b-mybatis">🗂 MyBatis</span>
           <span class="badge b-spring">🔐 Spring Security</span>
           <span class="badge b-oauth">🔑 Google OAuth2</span>
+          <span class="badge b-java">🌶️ Lombok</span>
+          <span class="badge b-naver">🗺 Naver Maps API</span>
+          <span class="badge b-git">🐘 Gradle</span>
         </div>
       </div>
       <div class="stack-card fade-up" style="transition-delay:.08s">
         <div class="stack-cat">🎨 Frontend</div>
         <div class="badges">
           <span class="badge b-thyml">🍃 Thymeleaf</span>
-          <span class="badge b-boot">💠 Bootstrap 4.6</span>
+          <span class="badge b-js">🌐 HTML5 / CSS3</span>
           <span class="badge b-js">✨ JavaScript</span>
-          <span class="badge b-naver">🗺 Naver Maps API</span>
         </div>
       </div>
       <div class="stack-card fade-up" style="transition-delay:.16s">
         <div class="stack-cat">🗄️ Database</div>
         <div class="badges">
-          <span class="badge b-mysql">🐬 MySQL 8</span>
+          <span class="badge b-mysql">🐬 MySQL</span>
         </div>
       </div>
       <div class="stack-card fade-up" style="transition-delay:.24s">
@@ -436,6 +443,8 @@
           <span class="badge b-git">🐙 Git / GitHub</span>
           <span class="badge b-notion">📝 Notion</span>
           <span class="badge b-idea">🔥 IntelliJ IDEA</span>
+          <span class="badge" style="background:#A259FF1a;color:#7c3dcc;">🎨 Figma</span>
+          <span class="badge" style="background:#FF6C371a;color:#d4450f;">📮 Postman</span>
         </div>
       </div>
     </div>
@@ -519,30 +528,15 @@
 
     <!-- ARCHITECTURE -->
     <div class="dtab-content" id="dtab-arch">
-      <div class="arch-box">
-<pre>
-  ┌────────────────────────────────────────────────────────────────┐
-  │  <span class="w">ブラウザ  (Client)</span>                                              │
-  │  Thymeleaf + Bootstrap 4.6 + JavaScript                        │
-  │  <span class="g">Naver Maps API</span>  ／  Geolocation API                           │
-  └──────────────────────────┬─────────────────────────────────────┘
-                              │  HTTP Request
-  ┌──────────────────────────▼─────────────────────────────────────┐
-  │  <span class="w">Spring Boot 4.0.3  (MVC)</span>                                       │
-  │                                                                  │
-  │  Controller  ──▶  Service  ──▶  Mapper (MyBatis XML)           │
-  │                                                                  │
-  │  <span class="g">Spring Security</span> ／ CustomUserDetails ／ Google OAuth2          │
-  │  AuthenticationFailureHandler (停止 / 退会 エラー分岐)           │
-  └──────────────────────────────────┬─────────────────────────────┘
-                                     │  SQL
-  ┌──────────────────────────────────▼─────────────────────────────┐
-  │  <span class="w">MySQL 8</span>                                                         │
-  │  users ／ toilets ／ reviews ／ review_images                    │
-  │  reports ／ inquiries ／ toilet_edit_requests                    │
-  │  toilet_tags ／ recent_views                                     │
-  └────────────────────────────────────────────────────────────────┘
-</pre>
+      <div style="display:flex; gap:24px; flex-wrap:wrap; justify-content:center; padding-top:8px;">
+        <div style="flex:1; min-width:280px; background:#f8fafc; border-radius:var(--radius); padding:24px; border:1px solid var(--border); text-align:center;">
+          <p style="font-size:12px; color:var(--gray); margin-bottom:12px; font-weight:600;">Page 1 / 2 — Layered MVC Architecture</p>
+          <img src="./screenshots/arch-layered.png" alt="Layered MVC Architecture" style="max-width:100%; border-radius:8px; box-shadow:0 8px 32px rgba(0,0,0,0.12);" />
+        </div>
+        <div style="flex:1; min-width:280px; background:#f8fafc; border-radius:var(--radius); padding:24px; border:1px solid var(--border); text-align:center;">
+          <p style="font-size:12px; color:var(--gray); margin-bottom:12px; font-weight:600;">Page 2 / 2 — System Overview Diagram</p>
+          <img src="./screenshots/arch-system.png" alt="System Overview Diagram" style="max-width:100%; border-radius:8px; box-shadow:0 8px 32px rgba(0,0,0,0.12);" />
+        </div>
       </div>
     </div>
 
@@ -730,44 +724,85 @@
     <p class="section-label fade-up">DATABASE</p>
     <h2 class="section-title fade-up">DBテーブル設計</h2>
     <p class="section-desc fade-up">MySQL 8 を使用。9テーブルで構成されています。</p>
-    <div class="db-grid">
+    <!-- DB テーブルタブ -->
+    <div class="design-tabs fade-up" style="margin-top:48px;">
+      <div class="dtab active"   onclick="switchDbtab('users')">users</div>
+      <div class="dtab"          onclick="switchDbtab('toilets')">toilets</div>
+      <div class="dtab"          onclick="switchDbtab('reviews')">reviews</div>
+      <div class="dtab"          onclick="switchDbtab('review_images')">review_images</div>
+      <div class="dtab"          onclick="switchDbtab('toilet_tags')">toilet_tags</div>
+      <div class="dtab"          onclick="switchDbtab('reports')">reports</div>
+      <div class="dtab"          onclick="switchDbtab('inquiries')">inquiries</div>
+      <div class="dtab"          onclick="switchDbtab('toilet_edit_requests')">toilet_edit_requests</div>
+      <div class="dtab"          onclick="switchDbtab('recent_views')">recent_views</div>
+    </div>
 
-      <div class="db-card fade-up">
+    <div class="dtab-content active" id="dbtab-users">
+      <div class="db-card">
         <div class="db-name">users</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
           <tbody>
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>ユーザーID</td></tr>
-            <tr><td>email</td><td class="type">VARCHAR UNIQUE</td><td>メールアドレス</td></tr>
-            <tr><td>password</td><td class="type">VARCHAR</td><td>BCryptハッシュ</td></tr>
-            <tr><td>nickname</td><td class="type">VARCHAR</td><td>ニックネーム</td></tr>
-            <tr><td>profile_image</td><td class="type">VARCHAR</td><td>プロフィール画像パス</td></tr>
-            <tr><td>role</td><td class="type">ENUM</td><td>ROLE_USER / ROLE_ADMIN</td></tr>
-            <tr><td>status</td><td class="type">ENUM</td><td>ACTIVE / SUSPENDED / DELETED</td></tr>
-            <tr><td>social_type</td><td class="type">VARCHAR</td><td>GOOGLE / null</td></tr>
+            <tr><td>username</td><td class="type">VARCHAR(50)</td><td>ユーザー名</td></tr>
+            <tr><td>email</td><td class="type">VARCHAR(100)</td><td>メールアドレス</td></tr>
+            <tr><td>password</td><td class="type">VARCHAR(255)</td><td>BCryptハッシュ</td></tr>
+            <tr><td>nickname</td><td class="type">VARCHAR(50)</td><td>ニックネーム</td></tr>
+            <tr><td>phone</td><td class="type">VARCHAR(20)</td><td>電話番号</td></tr>
+            <tr><td>gender</td><td class="type">VARCHAR(10)</td><td>性別</td></tr>
+            <tr><td>birthdate</td><td class="type">DATE</td><td>生年月日</td></tr>
+            <tr><td>icon_url</td><td class="type">TEXT</td><td>プロフィール画像URL</td></tr>
+            <tr><td>role</td><td class="type">VARCHAR(20)</td><td>ROLE_USER / ROLE_ADMIN</td></tr>
+            <tr><td>social_type</td><td class="type">VARCHAR(20)</td><td>GOOGLE / null</td></tr>
+            <tr><td>social_id</td><td class="type">VARCHAR(100)</td><td>OAuthプロバイダID</td></tr>
+            <tr><td>line_agreed</td><td class="type">TINYINT(1)</td><td>利用規約同意</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>ACTIVE / SUSPENDED / DELETED</td></tr>
+            <tr><td>suspend_until</td><td class="type">DATETIME</td><td>停止解除日時</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>登録日時</td></tr>
+            <tr><td>updated_at</td><td class="type">DATETIME</td><td>更新日時</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up" style="transition-delay:.08s">
+    <div class="dtab-content" id="dbtab-toilets">
+      <div class="db-card">
         <div class="db-name">toilets</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
           <tbody>
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>トイレID</td></tr>
-            <tr><td>name</td><td class="type">VARCHAR</td><td>トイレ名</td></tr>
-            <tr><td>address</td><td class="type">VARCHAR</td><td>住所</td></tr>
-            <tr><td>lat / lng</td><td class="type">DOUBLE</td><td>緯度・経度</td></tr>
-            <tr><td>source</td><td class="type">ENUM</td><td>PUBLIC_API / USER</td></tr>
-            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / APPROVED / REJECTED</td></tr>
-            <tr><td>description</td><td class="type">TEXT</td><td>説明</td></tr>
+            <tr><td>name</td><td class="type">VARCHAR(100)</td><td>トイレ名</td></tr>
+            <tr><td>address</td><td class="type">VARCHAR(255)</td><td>住所</td></tr>
+            <tr><td>latitude</td><td class="type">DECIMAL(10,7)</td><td>緯度</td></tr>
+            <tr><td>longitude</td><td class="type">DECIMAL(10,7)</td><td>経度</td></tr>
+            <tr><td>open_hours</td><td class="type">VARCHAR(100)</td><td>営業時間</td></tr>
+            <tr><td>is_24hours</td><td class="type">TINYINT(1)</td><td>24時間営業フラグ</td></tr>
+            <tr><td>is_wheelchair</td><td class="type">TINYINT(1)</td><td>車椅子対応</td></tr>
+            <tr><td>has_paper</td><td class="type">TINYINT(1)</td><td>トイレットペーパーあり</td></tr>
+            <tr><td>has_soap</td><td class="type">TINYINT(1)</td><td>石鹸あり</td></tr>
+            <tr><td>has_sanitary</td><td class="type">TINYINT(1)</td><td>サニタリーボックスあり</td></tr>
+            <tr><td>has_diaper</td><td class="type">TINYINT(1)</td><td>おむつ交換台あり</td></tr>
+            <tr><td>toilet_type</td><td class="type">VARCHAR(20)</td><td>トイレ種別</td></tr>
+            <tr><td>has_emergency</td><td class="type">TINYINT(1)</td><td>緊急ボタンあり</td></tr>
+            <tr><td>phone</td><td class="type">VARCHAR(50)</td><td>電話番号</td></tr>
+            <tr><td>has_cctv</td><td class="type">TINYINT(1)</td><td>CCTV設置</td></tr>
+            <tr><td>male_toilet_count</td><td class="type">INT</td><td>男性用個室数</td></tr>
+            <tr><td>male_urinal_count</td><td class="type">INT</td><td>男性用小便器数</td></tr>
+            <tr><td>female_toilet_count</td><td class="type">INT</td><td>女性用個室数</td></tr>
+            <tr><td>source</td><td class="type">VARCHAR(20)</td><td>PUBLIC_API / USER</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>WAITING / APPROVED / REJECTED</td></tr>
+            <tr><td class="fk">by_user_id</td><td class="type">BIGINT FK</td><td>登録ユーザー(users.id)</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>登録日時</td></tr>
+            <tr><td>updated_at</td><td class="type">DATETIME</td><td>更新日時</td></tr>
+            <tr><td>deleted_at</td><td class="type">DATETIME</td><td>削除日時</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up" style="transition-delay:.16s">
+    <div class="dtab-content" id="dbtab-reviews">
+      <div class="db-card">
         <div class="db-name">reviews</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
@@ -775,69 +810,90 @@
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>レビューID</td></tr>
             <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
             <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
+            <tr><td>clean_score</td><td class="type">DECIMAL(10)</td><td>清潔度スコア</td></tr>
+            <tr><td>tags</td><td class="type">VARCHAR(255)</td><td>タグ情報</td></tr>
             <tr><td>content</td><td class="type">TEXT</td><td>レビュー本文</td></tr>
-            <tr><td>rating</td><td class="type">INT</td><td>評価（1〜5）</td></tr>
-            <tr><td>is_hidden</td><td class="type">BOOLEAN</td><td>非表示フラグ</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>ACTIVE / HIDDEN / DELETED</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>投稿日時</td></tr>
+            <tr><td>updated_at</td><td class="type">DATETIME</td><td>更新日時</td></tr>
+            <tr><td>deleted_at</td><td class="type">DATETIME</td><td>削除日時</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up" style="transition-delay:.24s">
+    <div class="dtab-content" id="dbtab-review_images">
+      <div class="db-card">
         <div class="db-name">review_images</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
           <tbody>
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>画像ID</td></tr>
             <tr><td class="fk">review_id</td><td class="type">BIGINT FK</td><td>reviews.id</td></tr>
-            <tr><td>image_url</td><td class="type">VARCHAR</td><td>画像保存パス</td></tr>
+            <tr><td>image_url</td><td class="type">VARCHAR(255)</td><td>画像保存パス</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>登録日時</td></tr>
           </tbody>
         </table>
-        <br>
+      </div>
+    </div>
+
+    <div class="dtab-content" id="dbtab-toilet_tags">
+      <div class="db-card">
         <div class="db-name">toilet_tags</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
           <tbody>
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>タグID</td></tr>
             <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
-            <tr><td>tag_name</td><td class="type">VARCHAR</td><td>タグ名（wheelchair等）</td></tr>
+            <tr><td>tag_name</td><td class="type">VARCHAR(50)</td><td>タグ名（wheelchair 等）</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up">
+    <div class="dtab-content" id="dbtab-reports">
+      <div class="db-card">
         <div class="db-name">reports</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
           <tbody>
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>報告ID</td></tr>
-            <tr><td class="fk">review_id</td><td class="type">BIGINT FK</td><td>reviews.id</td></tr>
-            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
-            <tr><td>reason</td><td class="type">TEXT</td><td>報告理由</td></tr>
-            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / ACCEPTED / REJECTED</td></tr>
+            <tr><td class="fk">reporter_id</td><td class="type">BIGINT FK</td><td>users.id（報告者）</td></tr>
+            <tr><td>target_type</td><td class="type">VARCHAR(20)</td><td>報告対象種別</td></tr>
+            <tr><td>target_id</td><td class="type">BIGINT</td><td>報告対象ID</td></tr>
+            <tr><td>reason</td><td class="type">VARCHAR(255)</td><td>報告理由</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>WAITING / ACCEPTED / REJECTED</td></tr>
+            <tr><td>admin_note</td><td class="type">VARCHAR(255)</td><td>管理者メモ</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>報告日時</td></tr>
+            <tr><td>processed_at</td><td class="type">DATETIME</td><td>処理日時</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up" style="transition-delay:.08s">
+    <div class="dtab-content" id="dbtab-inquiries">
+      <div class="db-card">
         <div class="db-name">inquiries</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
           <tbody>
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>問い合わせID</td></tr>
-            <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
-            <tr><td>title</td><td class="type">VARCHAR</td><td>タイトル</td></tr>
+            <tr><td class="fk">writer_id</td><td class="type">BIGINT FK</td><td>users.id（投稿者）</td></tr>
+            <tr><td class="fk">admin_id</td><td class="type">BIGINT FK</td><td>users.id（管理者）</td></tr>
+            <tr><td>title</td><td class="type">VARCHAR(200)</td><td>タイトル</td></tr>
             <tr><td>content</td><td class="type">TEXT</td><td>本文</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>WAITING / ANSWERED</td></tr>
             <tr><td>answer</td><td class="type">TEXT</td><td>管理者回答</td></tr>
-            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / ANSWERED</td></tr>
-            <tr><td>created_at</td><td class="type">DATETIME</td><td>送信日時</td></tr>
             <tr><td>answered_at</td><td class="type">DATETIME</td><td>回答日時</td></tr>
+            <tr><td>created_at</td><td class="type">DATETIME</td><td>送信日時</td></tr>
+            <tr><td>deleted_at</td><td class="type">DATETIME</td><td>削除日時</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up" style="transition-delay:.16s">
+    <div class="dtab-content" id="dbtab-toilet_edit_requests">
+      <div class="db-card">
         <div class="db-name">toilet_edit_requests</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
@@ -845,16 +901,17 @@
             <tr><td class="pk">id</td><td class="type">BIGINT PK</td><td>修正提案ID</td></tr>
             <tr><td class="fk">toilet_id</td><td class="type">BIGINT FK</td><td>toilets.id</td></tr>
             <tr><td class="fk">user_id</td><td class="type">BIGINT FK</td><td>users.id</td></tr>
-            <tr><td>new_name</td><td class="type">VARCHAR</td><td>提案名称</td></tr>
-            <tr><td>new_address</td><td class="type">VARCHAR</td><td>提案住所</td></tr>
-            <tr><td>new_description</td><td class="type">TEXT</td><td>提案説明</td></tr>
-            <tr><td>status</td><td class="type">ENUM</td><td>WAITING / APPROVED / REJECTED</td></tr>
+            <tr><td>content</td><td class="type">TEXT</td><td>修正提案内容</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>WAITING / APPROVED / REJECTED</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>提案日時</td></tr>
+            <tr><td>deleted_at</td><td class="type">DATETIME</td><td>削除日時</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="db-card fade-up" style="transition-delay:.24s">
+    <div class="dtab-content" id="dbtab-recent_views">
+      <div class="db-card">
         <div class="db-name">recent_views</div>
         <table class="db-table">
           <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
@@ -866,7 +923,6 @@
           </tbody>
         </table>
       </div>
-
     </div>
   </div>
 </section>
@@ -877,49 +933,105 @@
     <p class="section-label fade-up">URL DESIGN</p>
     <h2 class="section-title fade-up">URL設計</h2>
     <p class="section-desc fade-up">RESTful規則に基づくエンドポイント一覧です。</p>
-    <table class="url-table fade-up" style="margin-top:40px;">
-      <thead>
-        <tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/</td><td>地図メインページ</td><td class="url-auth">全員</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/login</td><td>ログインページ</td><td class="url-auth">未認証</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/login</td><td>ログイン処理</td><td class="url-auth">未認証</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/logout</td><td>ログアウト処理</td><td class="url-auth">認証済</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/register</td><td>会員登録ページ</td><td class="url-auth">未認証</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/register</td><td>会員登録処理</td><td class="url-auth">未認証</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/password-reset</td><td>パスワードリセット（Step1〜3）</td><td class="url-auth">全員</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/password-reset/verify</td><td>メール認証確認</td><td class="url-auth">全員</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/{id}</td><td>トイレ詳細ページ</td><td class="url-auth">全員</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/search</td><td>トイレ検索ページ</td><td class="url-auth">全員</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/new</td><td>新規トイレ提案ページ</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/toilets</td><td>新規トイレ提案送信</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/{id}/edit-request</td><td>修正提案フォームページ</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/toilets/{id}/edit-request</td><td>修正提案送信</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/reviews</td><td>レビュー投稿</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/reviews/{id}</td><td>レビュー削除</td><td class="url-auth">本人</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/reports</td><td>レビュー報告送信</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/inquiries</td><td>お問い合わせ一覧</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/inquiries</td><td>お問い合わせ送信</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/inquiries/{id}</td><td>お問い合わせ詳細</td><td class="url-auth">本人</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/my</td><td>マイページトップ</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/my/profile</td><td>プロフィール更新</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/my/password</td><td>パスワード変更</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/my</td><td>会員退会</td><td class="url-auth">ROLE_USER</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin</td><td>管理者ダッシュボード</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/members</td><td>会員管理タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/members/{id}/status</td><td>会員ステータス変更</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/admin/members/{id}</td><td>会員削除</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/reports</td><td>報告管理タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/reports/{id}/status</td><td>報告承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/toilets</td><td>トイレ承認タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/toilets/{id}/status</td><td>トイレ承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/inquiries</td><td>問い合わせタブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-post">POST</span></td><td class="url-path">/admin/inquiries/{id}/answer</td><td>問い合わせ回答</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/edit-requests</td><td>修正提案タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
-        <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/edit-requests/{id}/status</td><td>修正提案承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
-      </tbody>
-    </table>
+    <!-- URL タブ -->
+    <div class="design-tabs fade-up">
+      <div class="dtab active" onclick="switchUrltab('url-auth-tab')">認証</div>
+      <div class="dtab" onclick="switchUrltab('url-toilet-tab')">トイレ</div>
+      <div class="dtab" onclick="switchUrltab('url-review-tab')">レビュー・報告</div>
+      <div class="dtab" onclick="switchUrltab('url-inquiry-tab')">お問い合わせ</div>
+      <div class="dtab" onclick="switchUrltab('url-my-tab')">マイページ</div>
+      <div class="dtab" onclick="switchUrltab('url-admin-tab')">管理者</div>
+    </div>
+
+    <!-- 認証 -->
+    <div class="dtab-content active" id="url-auth-tab">
+      <table class="url-table">
+        <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
+        <tbody>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/</td><td>地図メインページ</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/login</td><td>ログインページ</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/login</td><td>ログイン処理</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/logout</td><td>ログアウト処理</td><td class="url-auth">認証済</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/register</td><td>会員登録ページ</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/register</td><td>会員登録処理</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/password-reset</td><td>パスワードリセット（Step1〜3）</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/password-reset/verify</td><td>メール認証確認</td><td class="url-auth">全員</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- トイレ -->
+    <div class="dtab-content" id="url-toilet-tab">
+      <table class="url-table">
+        <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
+        <tbody>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/{id}</td><td>トイレ詳細ページ</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/search</td><td>トイレ検索ページ</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/new</td><td>新規トイレ提案ページ</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/toilets</td><td>新規トイレ提案送信</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilets/{id}/edit-request</td><td>修正提案フォームページ</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/toilets/{id}/edit-request</td><td>修正提案送信</td><td class="url-auth">ROLE_USER</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- レビュー・報告 -->
+    <div class="dtab-content" id="url-review-tab">
+      <table class="url-table">
+        <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
+        <tbody>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/reviews</td><td>レビュー投稿</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/reviews/{id}</td><td>レビュー削除</td><td class="url-auth">本人</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/reports</td><td>レビュー報告送信</td><td class="url-auth">ROLE_USER</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- お問い合わせ -->
+    <div class="dtab-content" id="url-inquiry-tab">
+      <table class="url-table">
+        <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
+        <tbody>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/inquiries</td><td>お問い合わせ一覧</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/inquiries</td><td>お問い合わせ送信</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/inquiries/{id}</td><td>お問い合わせ詳細</td><td class="url-auth">本人</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- マイページ -->
+    <div class="dtab-content" id="url-my-tab">
+      <table class="url-table">
+        <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
+        <tbody>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/my</td><td>マイページトップ</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/my/profile</td><td>プロフィール更新</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/my/password</td><td>パスワード変更</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/my</td><td>会員退会</td><td class="url-auth">ROLE_USER</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 管理者 -->
+    <div class="dtab-content" id="url-admin-tab">
+      <table class="url-table">
+        <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
+        <tbody>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin</td><td>管理者ダッシュボード</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/members</td><td>会員管理タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/members/{id}/status</td><td>会員ステータス変更</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/admin/members/{id}</td><td>会員削除</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/reports</td><td>報告管理タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/reports/{id}/status</td><td>報告承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/toilets</td><td>トイレ承認タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/toilets/{id}/status</td><td>トイレ承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/inquiries</td><td>問い合わせタブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-post">POST</span></td><td class="url-path">/admin/inquiries/{id}/answer</td><td>問い合わせ回答</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/edit-requests</td><td>修正提案タブ（API）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/admin/edit-requests/{id}/status</td><td>修正提案承認・却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -1219,10 +1331,29 @@
 
   // Design tabs (ERD / usecase / arch)
   function switchDtab(id) {
-    document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.dtab-content').forEach(c => c.classList.remove('active'));
+    const section = document.getElementById('design');
+    section.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+    section.querySelectorAll('.dtab-content').forEach(c => c.classList.remove('active'));
     event.currentTarget.classList.add('active');
     document.getElementById('dtab-' + id).classList.add('active');
+  }
+
+  // DB table tabs
+  function switchDbtab(id) {
+    const section = document.getElementById('db');
+    section.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+    section.querySelectorAll('.dtab-content').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById('dbtab-' + id).classList.add('active');
+  }
+
+  // URL tabs
+  function switchUrltab(id) {
+    const section = document.getElementById('urls');
+    section.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+    section.querySelectorAll('.dtab-content').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById(id).classList.add('active');
   }
 
   // Requirements tabs
