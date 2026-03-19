@@ -7,7 +7,7 @@
     <title>デマス ~なんか出る気がする~</title>
     <link rel="stylesheet" href="/css/header.css?v=2">
     <link rel="stylesheet" href="/css/footer.css">
-    <link rel="stylesheet" href="/css/index.css?v=6">
+    <link rel="stylesheet" href="/css/index.css?v=11">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@linefukuoka/line-seed-jp@1.0.0/fonts/css/line-seed-jp.css">
     <style>
@@ -308,28 +308,33 @@
         <!-- Search Box in Sidebar -->
         <div class="sidebar-search">
             <div class="sidebar-search-box">
-                <select id="regionSelect" class="region-select">
-                    <option value="">📍 全地域</option>
-                    <option value="서울">ソウル</option>
-                    <option value="부산">釜山</option>
-                    <option value="대구">大邱</option>
-                    <option value="인천">仁川</option>
-                    <option value="광주">光州</option>
-                    <option value="대전">大田</option>
-                    <option value="울산">蔚山</option>
-                    <option value="세종">世宗</option>
-                    <option value="경기">京畿</option>
-                    <option value="강원">江原</option>
-                    <option value="충북">忠北</option>
-                    <option value="충남">忠南</option>
-                    <option value="전북">全北</option>
-                    <option value="전남">全南</option>
-                    <option value="경북">慶北</option>
-                    <option value="경남">慶南</option>
-                    <option value="제주">済州</option>
-                </select>
-                <input type="text" id="searchInput" placeholder="建物名やキーワードで検索">
-                <i class="fas fa-search"></i>
+                <div class="region-dropdown" id="regionDropdown">
+                    <button class="region-dropdown-btn" id="regionBtn" onclick="toggleRegionDropdown()">
+                        <span class="region-dropdown-label" id="regionLabel">📍 全地域</span>
+                        <i class="fas fa-chevron-down region-dropdown-arrow"></i>
+                    </button>
+                    <div class="region-dropdown-menu" id="regionMenu">
+                        <div class="region-dropdown-item active" data-value="" onclick="selectRegion(this)">📍 全地域</div>
+                        <div class="region-dropdown-item" data-value="서울" onclick="selectRegion(this)">ソウル</div>
+                        <div class="region-dropdown-item" data-value="부산" onclick="selectRegion(this)">釜山</div>
+                        <div class="region-dropdown-item" data-value="대구" onclick="selectRegion(this)">大邱</div>
+                        <div class="region-dropdown-item" data-value="인천" onclick="selectRegion(this)">仁川</div>
+                        <div class="region-dropdown-item" data-value="광주" onclick="selectRegion(this)">光州</div>
+                        <div class="region-dropdown-item" data-value="대전" onclick="selectRegion(this)">大田</div>
+                        <div class="region-dropdown-item" data-value="울산" onclick="selectRegion(this)">蔚山</div>
+                        <div class="region-dropdown-item" data-value="세종" onclick="selectRegion(this)">世宗</div>
+                        <div class="region-dropdown-item" data-value="경기" onclick="selectRegion(this)">京畿</div>
+                        <div class="region-dropdown-item" data-value="강원" onclick="selectRegion(this)">江原</div>
+                        <div class="region-dropdown-item" data-value="충북" onclick="selectRegion(this)">忠北</div>
+                        <div class="region-dropdown-item" data-value="충남" onclick="selectRegion(this)">忠南</div>
+                        <div class="region-dropdown-item" data-value="전북" onclick="selectRegion(this)">全北</div>
+                        <div class="region-dropdown-item" data-value="전남" onclick="selectRegion(this)">全南</div>
+                        <div class="region-dropdown-item" data-value="경북" onclick="selectRegion(this)">慶北</div>
+                        <div class="region-dropdown-item" data-value="경남" onclick="selectRegion(this)">慶南</div>
+                        <div class="region-dropdown-item" data-value="제주" onclick="selectRegion(this)">済州</div>
+                    </div>
+                </div>
+                <input type="text" id="searchInput" placeholder="建物名やキーワードで検索" autocomplete="off">
             </div>
             <div class="sidebar-filters">
                 <button class="filter-tag active" data-filter="all">すべて</button>
@@ -572,7 +577,7 @@
     });
 </script>
 <!-- App JS -->
-<script th:src="@{/js/app.js(v=18)}"></script>
+<script th:src="@{/js/app.js(v=19)}"></script>
 <!-- 共通ヘッダーJS -->
 <script th:src="@{/js/header.js(v=1)}"></script>
 <script>

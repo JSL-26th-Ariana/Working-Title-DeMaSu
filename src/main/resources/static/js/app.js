@@ -1109,13 +1109,38 @@ document.querySelectorAll('.filter-tag').forEach(function(tag) {
 
 // ========== 검색 ==========
 var searchInput = document.getElementById('searchInput');
-var regionSelect = document.getElementById('regionSelect');
+var selectedRegionValue = '';
+
+function toggleRegionDropdown() {
+    var dropdown = document.getElementById('regionDropdown');
+    dropdown.classList.toggle('open');
+}
+
+function selectRegion(el) {
+    selectedRegionValue = el.getAttribute('data-value');
+    document.getElementById('regionLabel').textContent = el.textContent;
+    var items = document.querySelectorAll('.region-dropdown-item');
+    for (var i = 0; i < items.length; i++) {
+        items[i].classList.remove('active');
+    }
+    el.classList.add('active');
+    document.getElementById('regionDropdown').classList.remove('open');
+    triggerSearch();
+}
+
+// 드롭다운 외부 클릭 시 닫기
+document.addEventListener('click', function(e) {
+    var dropdown = document.getElementById('regionDropdown');
+    if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+    }
+});
 
 function triggerSearch() {
     if (isDetailView) {
         backToList();
     }
-    var region = regionSelect ? regionSelect.value : '';
+    var region = selectedRegionValue;
     var keyword = searchInput ? searchInput.value.trim() : '';
     var combined = (region + ' ' + keyword).trim();
 
@@ -1133,12 +1158,6 @@ if (searchInput) {
         searchTimeout = setTimeout(function() {
             triggerSearch();
         }, 500);
-    });
-}
-
-if (regionSelect) {
-    regionSelect.addEventListener('change', function() {
-        triggerSearch();
     });
 }
 

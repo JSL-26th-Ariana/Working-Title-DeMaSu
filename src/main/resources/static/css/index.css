@@ -325,6 +325,12 @@ body {
     background-position: right 0 center;
     padding-right: 22px;
     padding-left: 2px;
+    transition: background 0.15s;
+}
+
+.region-dropdown-item:hover {
+    background: #F0FAF6;
+    color: #00C896;
 }
 
 .region-select:focus {
