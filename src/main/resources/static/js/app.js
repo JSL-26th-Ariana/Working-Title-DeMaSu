@@ -1178,11 +1178,17 @@ function findNearest() {
                 findNearestInRadius(lat, lng, 100);
             },
             function(error) {
-                showToast('位置情報の取得に失敗しました。位置情報の利用を許可してください。');
+                // 위치 거부 시 서울시청 기준으로 탐색
+                isDetailView = false;
+                findNearestInRadius(37.5665, 126.9780, 100);
+                showToast('位置情報が許可されていないため、ソウル市庁基準で検索します。');
             }
         );
     } else {
-        showToast('このブラウザでは位置情報がサポートされていません。');
+        // geolocation 미지원 시 서울시청 기준
+        isDetailView = false;
+        findNearestInRadius(37.5665, 126.9780, 100);
+        showToast('位置情報が許可されていないため、ソウル市庁基準で検索します。');
     }
 }
 
