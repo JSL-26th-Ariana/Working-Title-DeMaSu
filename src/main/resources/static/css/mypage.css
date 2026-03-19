@@ -645,7 +645,7 @@ body.mypage {
 }
 
 .mp-breadcrumb a { color: #888; text-decoration: none; }
-.mp-breadcrumb a:hover { color: #333; }
+.mp-breadcrumb a:hover { color: #00C896; }
 .mp-breadcrumb span:not([class]) { color: #ccc; font-size: 14px; }
 
 /* ---- 페이지 타이틀 ---- */
