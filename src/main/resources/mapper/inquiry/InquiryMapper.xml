@@ -40,16 +40,6 @@
         WHERE i.id = #{id}
     </select>
 
-    <!-- 답변 등록 (관리자) -->
-    <update id="updateAnswer">
-        UPDATE inquiries
-        SET admin_id    = #{adminId},
-            answer      = #{answer},
-            status      = 'ANSWERED',
-            answered_at = NOW()
-        WHERE id = #{id}
-    </update>
-
     <!-- 문의 삭제 (소프트 삭제) -->
     <update id="deleteInquiry">
         UPDATE inquiries SET deleted_at = NOW() WHERE id = #{id}

@@ -20,11 +20,6 @@ public interface InquiryMapper {
     // 문의 상세 조회
     Inquiry findById(@Param("id") Long id);
 
-    // 답변 등록 (관리자)
-    void updateAnswer(@Param("id") Long id,
-                      @Param("adminId") Long adminId,
-                      @Param("answer") String answer);
-
     // 문의 삭제 (소프트 삭제)
     void deleteInquiry(@Param("id") Long id);
 }

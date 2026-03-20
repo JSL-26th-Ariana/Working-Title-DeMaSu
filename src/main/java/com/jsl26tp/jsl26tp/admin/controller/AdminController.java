@@ -40,11 +40,6 @@ public class AdminController {
     // templates/admin/ 하위에 HTML 파일 필요
     // =====================================================================
 
-    /** 관리자 로그인 페이지 → templates/admin/login.html */
-    @GetMapping("/admin/login")
-    public String loginPage() {
-        return "admin/login";
-    }
 
     /** 대시보드 메인 → templates/admin/dashboard.html */
     @GetMapping("/admin/dashboard")

@@ -68,16 +68,4 @@ public class ReportService {
         return reportMapper.findByReporterId(reporterId);
     }
 
-    /**
-     * 신고 상세 조회
-     *
-     * @throws BusinessException REPORT_NOT_FOUND — 신고가 존재하지 않을 때
-     */
-    public Report getReportDetail(Long id) {
-        Report report = reportMapper.findById(id);
-        if (report == null) {
-            throw new BusinessException(ErrorCode.REPORT_NOT_FOUND);
-        }
-        return report;
-    }
 }
