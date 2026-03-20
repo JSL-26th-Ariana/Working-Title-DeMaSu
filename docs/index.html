@@ -1662,6 +1662,80 @@
     document.getElementById(id).classList.add('active');
   }
 
+  // ─── 도망가는 Top 버튼 ───
+  (function() {
+    const btn = document.createElement('div');
+    btn.innerHTML = '↑ TOP';
+    btn.style.cssText = `
+      position: fixed; z-index: 9999;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(45,184,124,0.4);
+      transition: left 0.35s ease, top 0.35s ease, opacity 0.3s ease;
+      opacity: 0; pointer-events: none;
+      user-select: none;
+    `;
+    document.body.appendChild(btn);
+
+    let btnX = window.innerWidth - 86;
+    let btnY = window.innerHeight - 86;
+    btn.style.left = btnX + 'px';
+    btn.style.top = btnY + 'px';
+
+    window.addEventListener('resize', () => {
+      btnX = Math.min(btnX, window.innerWidth - 66);
+      btnY = Math.min(btnY, window.innerHeight - 66);
+      btn.style.left = btnX + 'px';
+      btn.style.top = btnY + 'px';
+    });
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+      } else {
+        btn.style.opacity = '0';
+        btn.style.pointerEvents = 'none';
+      }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (btn.style.opacity === '0') return;
+      const cx = btnX + 28;
+      const cy = btnY + 28;
+      const dx = cx - e.clientX;
+      const dy = cy - e.clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const threshold = 130;
+      if (dist < threshold) {
+        const force = (threshold - dist) / threshold;
+        const angle = Math.atan2(dy, dx);
+        const push = force * 180;
+        let nx = btnX + Math.cos(angle) * push;
+        let ny = btnY + Math.sin(angle) * push;
+        nx = Math.max(10, Math.min(window.innerWidth - 66, nx));
+        ny = Math.max(10, Math.min(window.innerHeight - 66, ny));
+        btnX = nx;
+        btnY = ny;
+        btn.style.left = btnX + 'px';
+        btn.style.top = btnY + 'px';
+      }
+    });
+
+    btn.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      btnX = Math.random() * (vw - 80) + 10;
+      btnY = Math.random() * (vh - 80) + 10;
+      btn.style.transition = 'none';
+      btn.style.left = btnX + 'px';
+      btn.style.top = btnY + 'px';
+      setTimeout(() => { btn.style.transition = 'left 0.35s ease, top 0.35s ease, opacity 0.3s ease'; }, 50);
+    });
+  })();
 </script>
 </body>
 </html>
