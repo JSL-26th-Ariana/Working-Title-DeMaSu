@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>デマス — チームポートフォリオ</title>
+  <title>デマス — ポートフォリオ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Murecho:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
@@ -55,11 +55,26 @@
     .nav-gh:hover { background: var(--green); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(45,184,124,0.3); }
 
     /* HERO */
+    @keyframes blusher {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.15; }
+      50%       { transform: translate(-50%, -50%) scale(1.15); opacity: 0.55; }
+    }
+    .hero-ripple-wrap {
+      position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0; z-index: 0; pointer-events: none;
+    }
+    .hero-ripple {
+      position: absolute;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,184,124,0.6) 0%, rgba(45,184,124,0.25) 40%, transparent 70%);
+      filter: blur(60px);
+      animation: blusher 6s ease-in-out infinite;
+    }
     #hero {
       min-height: 100vh; display: flex; align-items: center; padding-top: 64px;
       position: relative; overflow: hidden;
-      background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,200,120,0.07) 0%, transparent 70%),
-                  radial-gradient(ellipse 50% 40% at 10% 80%, rgba(0,200,120,0.05) 0%, transparent 60%);
+      background: linear-gradient(160deg, #f8fffe 0%, #f0fdf8 50%, #ffffff 100%);
     }
     #hero::before {
       content: '';
@@ -249,6 +264,23 @@
     .ss-caption-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
     .ss-caption-desc  { font-size: 12px; color: var(--gray); line-height: 1.6; }
 
+    /* SCREEN TABS */
+    .sstab-content { display: none; padding-top: 32px; }
+    .sstab-content.active { display: block; }
+    .ss-detail-card { background: white; border-radius: var(--radius); padding: 36px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .ss-detail-img { width: 100%; border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); display: block; margin-bottom: 28px; }
+    .ss-placeholder.tall { aspect-ratio: 16/9; border-radius: 10px; background: linear-gradient(135deg, var(--light) 0%, var(--border) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--gray); margin-bottom: 28px; }
+    .ss-placeholder.tall .icon { font-size: 40px; opacity: .4; }
+    .ss-placeholder.tall .label { font-size: 12px; font-weight: 600; opacity: .6; }
+    .ss-detail-bottom { display: grid; grid-template-columns: 1fr 1.6fr; gap: 32px; align-items: start; }
+    .ss-detail-id { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--green); margin-bottom: 8px; }
+    .ss-detail-title { font-size: 22px; font-weight: 700; margin-bottom: 14px; }
+    .ss-detail-desc { font-size: 14px; color: var(--gray); line-height: 1.75; }
+    .ss-detail-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .ss-detail-features li { font-size: 13px; color: var(--dark); display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--light); border-radius: 8px; }
+    .ss-detail-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    @media (max-width: 700px) { .ss-detail-bottom { grid-template-columns: 1fr; } }
+
     /* VIDEO */
     .video-container { margin-top: 48px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--dark); }
     .video-placeholder { height: 480px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: #c9d1d9; }
@@ -360,6 +392,9 @@
 
 <!-- HERO -->
 <section id="hero">
+  <div class="hero-ripple-wrap">
+    <div class="hero-ripple"></div>
+  </div>
   <div class="container">
     <div class="hero-left fade-up">
       <div class="hero-badge">日本語対応 韓国トイレマップサービス</div>
@@ -1142,80 +1177,233 @@
       各画面の概要です。スクリーンショットは <code>docs/screenshots/</code> フォルダに画像を追加してください。
     </p>
 
-    <div class="ss-grid">
+    <!-- Screen tabs -->
+    <div class="req-tabs fade-up" id="ss-tabs" style="margin-top:48px;">
+      <div class="rtab active" onclick="switchSstab('ss001')">🗺 地図</div>
+      <div class="rtab" onclick="switchSstab('ss002')">🔐 認証</div>
+      <div class="rtab" onclick="switchSstab('ss003')">🚽 詳細</div>
+      <div class="rtab" onclick="switchSstab('ss004')">🛡 管理者</div>
+      <div class="rtab" onclick="switchSstab('ss005')">✏️ 修正提案</div>
+      <div class="rtab" onclick="switchSstab('ss006')">⭐ レビュー</div>
+      <div class="rtab" onclick="switchSstab('ss007')">💬 問い合わせ</div>
+      <div class="rtab" onclick="switchSstab('ss008')">📋 マイページ</div>
+      <div class="rtab" onclick="switchSstab('ss009')">🔍 検索</div>
+      <div class="rtab" onclick="switchSstab('ss010')">➕ トイレ提案</div>
+    </div>
 
-      <div class="ss-card fade-up">
-        <!-- <img class="ss-img" src="./screenshots/map.png" alt="地図メイン"> -->
-        <div class="ss-placeholder">
-          <div class="icon">🗺️</div>
-          <div class="label">map.png</div>
+    <!-- SCR-001 -->
+    <div class="sstab-content active" id="ss001">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">🗺️</div><div class="label">map.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/map.png" alt="地図メイン"> -->
         </div>
-        <div class="ss-caption">
-          <div class="ss-caption-title">地図メイン（SCR-001）</div>
-          <div class="ss-caption-desc">現在地中心にトイレマーカーをリアルタイム表示。距離順リストをスクロール閲覧できる。</div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-001</div>
+          <h3 class="ss-detail-title">地図メイン</h3>
+          <p class="ss-detail-desc">現在地を中心にNaver Maps上へトイレマーカーをリアルタイム表示。Haversine公式で距離計算し、最寄り順リストをスクロール閲覧できる。</p>
+          <ul class="ss-detail-features">
+            <li>現在地取得（Geolocation API）</li>
+            <li>半径2km以内マーカー一括表示</li>
+            <li>マーカークリックで吹き出し（名前・距離・評価）</li>
+            <li>距離順リストスクロール</li>
+            <li>「ここへ行く」Naverナビ連携</li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="ss-card fade-up" style="transition-delay:.07s">
-        <!-- <img class="ss-img" src="./screenshots/login.png" alt="ログイン"> -->
-        <div class="ss-placeholder">
-          <div class="icon">🔐</div>
-          <div class="label">login.png</div>
+    <!-- SCR-002 -->
+    <div class="sstab-content" id="ss002">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">🔐</div><div class="label">login.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/login.png" alt="認証"> -->
         </div>
-        <div class="ss-caption">
-          <div class="ss-caption-title">ログイン / 会員登録（SCR-002）</div>
-          <div class="ss-caption-desc">一般ログイン・Googleソーシャルログイン対応。状態別エラートースト表示。</div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-002</div>
+          <h3 class="ss-detail-title">ログイン / 会員登録</h3>
+          <p class="ss-detail-desc">一般メール認証とGoogle OAuth2ソーシャルログインに対応。アカウント状態ごとにエラーメッセージを個別表示。</p>
+          <ul class="ss-detail-features">
+            <li>一般ログイン（BCryptパスワード照合）</li>
+            <li>Google OAuth2ソーシャルログイン</li>
+            <li>新規会員登録フロー</li>
+            <li>3ステップパスワードリセット</li>
+            <li>停止・退会アカウント別エラー分岐</li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="ss-card fade-up" style="transition-delay:.14s">
-        <!-- <img class="ss-img" src="./screenshots/detail.png" alt="トイレ詳細"> -->
-        <div class="ss-placeholder">
-          <div class="icon">🚽</div>
-          <div class="label">detail.png</div>
+    <!-- SCR-003 -->
+    <div class="sstab-content" id="ss003">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">🚽</div><div class="label">detail.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/detail.png" alt="トイレ詳細"> -->
         </div>
-        <div class="ss-caption">
-          <div class="ss-caption-title">トイレ詳細（SCR-003）</div>
-          <div class="ss-caption-desc">設備タグ・小地図・レビュータブを統合表示。修正提案ボタン付き。</div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-003</div>
+          <h3 class="ss-detail-title">トイレ詳細</h3>
+          <p class="ss-detail-desc">設備タグ・小地図・レビュータブを1画面に統合。修正提案ボタンからSCR-005へ遷移し、閲覧時に自動で履歴を記録。</p>
+          <ul class="ss-detail-features">
+            <li>設備タグアイコン表示（車椅子・24時間等）</li>
+            <li>Naver Maps小地図埋め込み</li>
+            <li>レビュータブ（最新順 / 高評価順）</li>
+            <li>修正提案ボタン</li>
+            <li>recent_views 自動記録</li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="ss-card fade-up">
-        <!-- <img class="ss-img" src="./screenshots/admin.png" alt="管理者"> -->
-        <div class="ss-placeholder">
-          <div class="icon">🛡️</div>
-          <div class="label">admin.png</div>
+    <!-- SCR-004 -->
+    <div class="sstab-content" id="ss004">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">🛡️</div><div class="label">admin.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/admin.png" alt="管理者ダッシュボード"> -->
         </div>
-        <div class="ss-caption">
-          <div class="ss-caption-title">管理者ダッシュボード（SCR-004）</div>
-          <div class="ss-caption-desc">5タブ統合管理。会員・報告・トイレ承認・問い合わせ・修正提案をSPA風に切り替え。</div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-004</div>
+          <h3 class="ss-detail-title">管理者ダッシュボード</h3>
+          <p class="ss-detail-desc">5タブ統合管理画面。会員・報告・トイレ承認・お問い合わせ・修正提案をSPA風に切り替え。ステータスフィルタ・ページネーション対応。</p>
+          <ul class="ss-detail-features">
+            <li>会員一覧・ステータス変更・削除</li>
+            <li>不正レビュー報告承認・却下</li>
+            <li>ユーザー提案トイレ承認・却下</li>
+            <li>お問い合わせ回答</li>
+            <li>修正提案承認（toilets即時更新）</li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="ss-card fade-up" style="transition-delay:.07s">
-        <!-- <img class="ss-img" src="./screenshots/mypage.png" alt="マイページ"> -->
-        <div class="ss-placeholder">
-          <div class="icon">📋</div>
-          <div class="label">mypage.png</div>
+    <!-- SCR-005 -->
+    <div class="sstab-content" id="ss005">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">✏️</div><div class="label">editreq.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/editreq.png" alt="修正提案"> -->
         </div>
-        <div class="ss-caption">
-          <div class="ss-caption-title">マイページ（SCR-008）</div>
-          <div class="ss-caption-desc">プロフィール編集・最近見たトイレ・マイレビュー・マイ問い合わせを一元管理。</div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-005</div>
+          <h3 class="ss-detail-title">修正提案</h3>
+          <p class="ss-detail-desc">対象トイレの現在情報を初期値に、修正内容を入力して提案を送信。地図クリックで座標を自動入力できる。</p>
+          <ul class="ss-detail-features">
+            <li>既存データ初期値表示フォーム</li>
+            <li>地図クリック座標自動入力</li>
+            <li>toilet_edit_requests へINSERT（WAITING）</li>
+            <li>マイページから提案状況を確認</li>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <div class="ss-card fade-up" style="transition-delay:.14s">
-        <!-- <img class="ss-img" src="./screenshots/search.png" alt="検索"> -->
-        <div class="ss-placeholder">
-          <div class="icon">🔍</div>
-          <div class="label">search.png</div>
+    <!-- SCR-006 -->
+    <div class="sstab-content" id="ss006">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">⭐</div><div class="label">review.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/review.png" alt="レビュー"> -->
         </div>
-        <div class="ss-caption">
-          <div class="ss-caption-title">検索・フィルタ（SCR-009）</div>
-          <div class="ss-caption-desc">キーワード・タグ複数選択・距離フィルタを組み合わせた高度な検索機能。</div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-006</div>
+          <h3 class="ss-detail-title">レビュー</h3>
+          <p class="ss-detail-desc">清潔度評価・テキスト・複数画像のレビュー投稿。最新順・高評価順・低評価順の並び替えと不正レビュー報告機能を搭載。</p>
+          <ul class="ss-detail-features">
+            <li>評価（1〜5）+ テキスト + 画像複数添付</li>
+            <li>自分のレビュー削除（画像も同時削除）</li>
+            <li>理由付き報告機能（二重報告防止）</li>
+            <li>並び替え：最新 / 高評価 / 低評価</li>
+          </ul>
         </div>
       </div>
+    </div>
 
+    <!-- SCR-007 -->
+    <div class="sstab-content" id="ss007">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">💬</div><div class="label">inquiry.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/inquiry.png" alt="お問い合わせ"> -->
+        </div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-007</div>
+          <h3 class="ss-detail-title">お問い合わせ</h3>
+          <p class="ss-detail-desc">ユーザーがタイトル・内容を入力して送信。管理者が回答後にステータスがANSWEREDへ更新、色分けバッジで一覧表示。</p>
+          <ul class="ss-detail-features">
+            <li>お問い合わせ送信（WAITING）</li>
+            <li>マイページから自分の一覧を確認</li>
+            <li>詳細と管理者回答の表示</li>
+            <li>WAITING / ANSWERED バッジ色分け</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCR-008 -->
+    <div class="sstab-content" id="ss008">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">📋</div><div class="label">mypage.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/mypage.png" alt="マイページ"> -->
+        </div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-008</div>
+          <h3 class="ss-detail-title">マイページ</h3>
+          <p class="ss-detail-desc">プロフィール編集から閲覧履歴・マイレビュー・お問い合わせまでを一元管理。アイコン選択・退会機能も完備。</p>
+          <ul class="ss-detail-features">
+            <li>ニックネーム・プロフィール画像変更</li>
+            <li>パスワード変更 / プリセットアイコン選択</li>
+            <li>最近見たトイレ（recent_views）</li>
+            <li>マイレビュー・マイ問い合わせ一覧</li>
+            <li>会員退会（DELETED・セッション無効化）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCR-009 -->
+    <div class="sstab-content" id="ss009">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">🔍</div><div class="label">search.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/search.png" alt="検索"> -->
+        </div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-009</div>
+          <h3 class="ss-detail-title">検索・フィルタ</h3>
+          <p class="ss-detail-desc">キーワード・タグ複数同時選択・距離フィルタを組み合わせた高度な検索。結果は距離順で一覧表示。</p>
+          <ul class="ss-detail-features">
+            <li>トイレ名・住所・建物名キーワード検索</li>
+            <li>複数タグ AND フィルタ</li>
+            <li>距離フィルタ（500m / 1km / 2km）</li>
+            <li>検索結果：距離順一覧</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCR-010 -->
+    <div class="sstab-content" id="ss010">
+      <div class="ss-detail-card">
+        <div class="ss-detail-left">
+          <div class="ss-placeholder tall"><div class="icon">➕</div><div class="label">new-toilet.png</div></div>
+          <!-- <img class="ss-detail-img" src="./screenshots/new-toilet.png" alt="トイレ提案"> -->
+        </div>
+        <div class="ss-detail-right">
+          <div class="ss-detail-id">SCR-010</div>
+          <h3 class="ss-detail-title">トイレ新規提案</h3>
+          <p class="ss-detail-desc">ユーザーが未登録トイレを提案。Naver地図クリックで座標を自動入力し、管理者承認後に地図へ反映される。</p>
+          <ul class="ss-detail-features">
+            <li>名前・住所・設備タグ・説明入力</li>
+            <li>地図クリック lat / lng 自動入力</li>
+            <li>source='USER', status='WAITING' でINSERT</li>
+            <li>マイページから提案ステータス確認</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- VIDEO -->
@@ -1267,7 +1455,7 @@
           <img src="https://github.com/aaaea1.png" alt="ハン・スンヨン" onerror="this.style.display='none';this.parentNode.textContent='👨‍💻'" />
         </div>
         <div class="team-name">ハン・スンヨン</div>
-        <div class="team-role">フロントエンド</div>
+        <div class="team-role">バックエンド</div>
         <div class="team-part">トイレ詳細ページ<br>ナビゲーション<br>レビュータブ実装</div>
         <a href="https://github.com/aaaea1" target="_blank" class="team-gh"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 98 96" style="display:block;flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="currentColor"/></svg>aaaea1</a>
       </div>
@@ -1458,11 +1646,22 @@
 
   // Requirements tabs
   function switchRtab(id) {
-    document.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.rtab-content').forEach(c => c.classList.remove('active'));
+    const section = document.getElementById('requirements');
+    section.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+    section.querySelectorAll('.rtab-content').forEach(c => c.classList.remove('active'));
     event.currentTarget.classList.add('active');
     document.getElementById('rtab-' + id).classList.add('active');
   }
+
+  // Screen / Screenshot tabs
+  function switchSstab(id) {
+    const section = document.getElementById('screens');
+    section.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+    section.querySelectorAll('.sstab-content').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
 </script>
 </body>
 </html>
