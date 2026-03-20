@@ -83,7 +83,8 @@ public class SecurityConfig {
                     "/css/**",
                     "/js/**",
                     "/images/**",
-                    "/img/**"
+                    "/img/**",
+                    "/favicon.svg"
                 ).permitAll()
 
                 // 관리자 전용 페이지
