@@ -725,7 +725,7 @@
           <tr><td class="req-id">FR-SCR004-8</td><td>トイレ承認・却下</td><td>ユーザー提案トイレをAPPROVED/REJECTEDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR004-9</td><td>問い合わせ回答</td><td>管理者が問い合わせに回答テキストを入力し、ステータスをANSWEREDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR004-10</td><td>修正提案一覧</td><td>修正提案をPENDING/APPROVED/REJECTEDでフィルタして一覧表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
-          <tr><td class="req-id">FR-SCR004-11</td><td>修正提案承認</td><td>修正提案を承認すると対象toiletsのデータを更新し、ステータスをAPPROVEDに変更する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR004-11</td><td>修正提案承認</td><td>修正提案のステータスをAPPROVEDに変更する。化粧室データへの自動反映はなく、管理者がPUT /api/admin/toilets/{id}を別途呼び出して反映する</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR004-12</td><td>ページネーション</td><td>全タブで10件ずつページネーションを実装。AdminPageResponse&lt;T&gt;で統一する</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR004-13</td><td>管理者アカウント保護</td><td>管理者自身のアカウントに停止・削除操作を行えないよう制御する</td><td><span class="st-done">✅ 完了</span></td></tr>
         </tbody>
@@ -892,7 +892,7 @@
             <tr><td>male_urinal_count</td><td class="type">INT</td><td>男性用小便器数</td></tr>
             <tr><td>female_toilet_count</td><td class="type">INT</td><td>女性用個室数</td></tr>
             <tr><td>source</td><td class="type">VARCHAR(20)</td><td>PUBLIC_API / USER</td></tr>
-            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>WAITING / APPROVED / REJECTED</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>PENDING / APPROVED / REJECTED</td></tr>
             <tr><td class="fk">by_user_id</td><td class="type">BIGINT FK</td><td>登録ユーザー(users.id)</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>登録日時</td></tr>
             <tr><td>updated_at</td><td class="type">DATETIME</td><td>更新日時</td></tr>
@@ -963,7 +963,7 @@
             <tr><td>target_type</td><td class="type">VARCHAR(20)</td><td>報告対象種別</td></tr>
             <tr><td>target_id</td><td class="type">BIGINT</td><td>報告対象ID</td></tr>
             <tr><td>reason</td><td class="type">VARCHAR(255)</td><td>報告理由</td></tr>
-            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>PENDING / RESOLVED / DISMISSED</td></tr>
+            <tr><td>status</td><td class="type">VARCHAR(20)</td><td>PENDING / PROCESSED / DISMISSED</td></tr>
             <tr><td>admin_note</td><td class="type">VARCHAR(255)</td><td>管理者メモ</td></tr>
             <tr><td>created_at</td><td class="type">DATETIME</td><td>報告日時</td></tr>
             <tr><td>processed_at</td><td class="type">DATETIME</td><td>処理日時</td></tr>
@@ -1132,6 +1132,7 @@
         <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
         <tbody>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/dashboard</td><td>管理者ダッシュボード（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/users</td><td>会員管理ページ（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/reports</td><td>報告詳細ページ（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/reports/{id}</td><td>報告詳細（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/toilets</td><td>トイレ詳細（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
