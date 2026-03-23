@@ -1236,15 +1236,19 @@
 
     <!-- SCR-003 -->
     <div class="sstab-content" id="ss003">
-      <div class="ss-detail-card">
-        <img class="ss-detail-img" src="./screenshots/detail.png" alt="トイレ詳細" style="width:360px;max-width:100%;margin-left:auto;margin-right:auto;">
-        <div class="ss-detail-bottom">
-          <div class="ss-detail-left">
+      <div class="ss-detail-card" style="flex-direction:column; gap:24px; ">
+        <div style="display:flex; gap:16px; justify-content:center; margin-bottom:28px;">
+          <img src="./screenshots/detail.png" alt="トイレ詳細 概要" style="width:31%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="./screenshots/detail2.png" alt="トイレ詳細 情報" style="width:31%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="./screenshots/detail3.png" alt="トイレ詳細 レビュー" style="width:31%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+        </div>
+        <div style="display:flex; gap:32px; align-items:flex-start; padding-bottom:8px;">
+          <div style="min-width:0; flex:1;">
             <div class="ss-detail-id">SCR-003</div>
             <h3 class="ss-detail-title">トイレ詳細</h3>
             <p class="ss-detail-desc">設備タグ・小地図・レビュータブを1画面に統合。修正提案ボタンからSCR-005へ遷移し、閲覧時に自動で履歴を記録。</p>
           </div>
-          <ul class="ss-detail-features">
+          <ul class="ss-detail-features" style="flex:1; margin-bottom:0;">
             <li>設備タグアイコン表示（車椅子・24時間等）</li>
             <li>Naver Maps小地図埋め込み</li>
             <li>レビュータブ（最新順 / 高評価順）</li>
@@ -1339,7 +1343,9 @@
     <!-- SCR-008 -->
     <div class="sstab-content" id="ss008">
       <div class="ss-detail-card">
-        <img class="ss-detail-img" src="./screenshots/mypage.png" alt="マイページ">
+        <div style="overflow:hidden; border-radius:10px; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:28px;">
+          <img src="./screenshots/mypage.png" alt="マイページ" style="display:block; width:calc(100% + 4px); margin-left:-4px;">
+        </div>
         <div class="ss-detail-bottom">
           <div class="ss-detail-left">
             <div class="ss-detail-id">SCR-008</div>
@@ -1382,16 +1388,18 @@
 
     <!-- SCR-010 -->
     <div class="sstab-content" id="ss010">
-      <div class="ss-detail-card">
-        <div class="ss-detail-left">
-          <div class="ss-placeholder tall"><div class="icon">➕</div><div class="label">new-toilet.png</div></div>
-          <!-- <img class="ss-detail-img" src="./screenshots/new-toilet.png" alt="トイレ提案"> -->
+      <div class="ss-detail-card" style="flex-direction:column; gap:24px;">
+        <div style="display:flex; gap:16px; justify-content:center; margin-bottom:28px;">
+          <img src="./screenshots/newToilet1.png" alt="トイレ提案 上部" style="width:48%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="./screenshots/newToilet2.png" alt="トイレ提案 下部" style="width:48%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
         </div>
-        <div class="ss-detail-right">
-          <div class="ss-detail-id">SCR-010</div>
-          <h3 class="ss-detail-title">トイレ新規提案</h3>
-          <p class="ss-detail-desc">ユーザーが未登録トイレを提案。Naver地図クリックで座標を自動入力し、管理者承認後に地図へ反映される。</p>
-          <ul class="ss-detail-features">
+        <div style="display:flex; gap:32px; align-items:flex-start; padding-bottom:8px;">
+          <div style="min-width:0; flex:1;">
+            <div class="ss-detail-id">SCR-010</div>
+            <h3 class="ss-detail-title">トイレ新規提案</h3>
+            <p class="ss-detail-desc">ユーザーが未登録トイレを提案。Naver地図クリックで座標を自動入力し、管理者承認後に地図へ反映される。</p>
+          </div>
+          <ul class="ss-detail-features" style="flex:1; margin-bottom:0;">
             <li>名前・住所・設備タグ・説明入力</li>
             <li>地図クリック lat / lng 自動入力</li>
             <li>source='USER', status='WAITING' でINSERT</li>
