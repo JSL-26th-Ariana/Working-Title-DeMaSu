@@ -34,14 +34,6 @@
                 <div class="toilet-addr" th:text="${toilet.address}">住所</div>
             </div>
         </div>
-        <div class="toilet-info-card" th:unless="${toilet}">
-            <span class="toilet-info-icon">🚻</span>
-            <div class="toilet-info-text">
-                <div class="label">レビュー対象</div>
-                <div class="toilet-name">スターバックス 江南駅店</div>
-                <div class="toilet-addr">ソウル特別市 江南区 江南大路 390</div>
-            </div>
-        </div>
 
         <!-- 에러 메시지 -->
         <div class="error-message" th:if="${error}" style="display:flex;">

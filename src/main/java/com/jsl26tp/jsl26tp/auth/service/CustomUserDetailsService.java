@@ -29,8 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("ユーザーが見つかりません: " + username);
         }
 
-        System.out.println("LOGIN USER: " + user.getUsername() + " / ROLE: " + user.getRole());
-
         // 3. CustomUserDetails 반환
         return new CustomUserDetails(user);
     }

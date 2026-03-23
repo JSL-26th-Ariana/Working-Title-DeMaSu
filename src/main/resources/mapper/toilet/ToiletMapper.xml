@@ -132,21 +132,5 @@
         UPDATE toilets SET deleted_at = NOW() WHERE id = #{id}
     </update>
 
-    <!-- 승인 대기 화장실 목록 (관리자용) -->
-    <select id="findPendingToilets" resultType="Toilet">
-        SELECT * FROM toilets
-        WHERE status = 'PENDING' AND deleted_at IS NULL
-        ORDER BY created_at DESC
-    </select>
-
-    <!-- 화장실 상태 변경 (승인/거절) -->
-    <update id="updateStatus">
-        UPDATE toilets SET status = #{status} WHERE id = #{id}
-    </update>
-
-    <!-- 전체 화장실 목록 (관리자용) -->
-    <select id="findAllToilets" resultType="Toilet">
-        SELECT * FROM toilets WHERE deleted_at IS NULL ORDER BY created_at DESC
-    </select>
 
 </mapper>
