@@ -1056,6 +1056,9 @@
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/logout</td><td>ログアウト処理</td><td class="url-auth">認証済</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/register</td><td>会員登録ページ</td><td class="url-auth">未認証</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/register</td><td>会員登録処理</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/check-username</td><td>ユーザーID 重複確認</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/check-nickname</td><td>ニックネーム 重複確認</td><td class="url-auth">未認証</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/check-email</td><td>メール 重複確認</td><td class="url-auth">未認証</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/users/verify-identity</td><td>パスワードリセット（本人確認）</td><td class="url-auth">全員</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/users/reset-password</td><td>パスワードリセット（新しいパスワード設定）</td><td class="url-auth">全員</td></tr>
         </tbody>
@@ -1068,9 +1071,11 @@
         <thead><tr><th style="width:80px">メソッド</th><th>URL</th><th>説明</th><th>権限</th></tr></thead>
         <tbody>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilet/{id}</td><td>トイレ詳細ページ（未ログインはブラー）</td><td class="url-auth">全員</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/search</td><td>トイレキーワード検索（API）</td><td class="url-auth">全員</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/filter</td><td>タグフィルタ検索（API）</td><td class="url-auth">全員</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets</td><td>주변 トイレ一覧取得（API）</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets</td><td>周辺トイレ一覧取得</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/{id}</td><td>トイレ詳細取得</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/{id}/tag</td><td>トイレタグ取得</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/search</td><td>トイレキーワード検索</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/filter</td><td>タグフィルタ検索</td><td class="url-auth">全員</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilet/add</td><td>新規トイレ提案ページ</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/toilets</td><td>新規トイレ提案送信</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/toilets/{id}/edit-request</td><td>修正提案送信</td><td class="url-auth">ROLE_USER</td></tr>
@@ -1085,10 +1090,16 @@
         <tbody>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/write</td><td>レビュー作成ページ</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/review/api/write</td><td>レビュー投稿</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/api/{id}</td><td>レビュー詳細取得</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/api/toilet/{toiletId}</td><td>トイレのレビュー一覧取得</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/api/toilet/{toiletId}/avg</td><td>レビュー平均スコア取得</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/api/toilet/{toiletId}/cnt</td><td>レビュー件数取得</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/api/mypage/{userId}</td><td>マイレビュー一覧取得</td><td class="url-auth">本人</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/review/api/{id}/delete</td><td>レビュー削除</td><td class="url-auth">本人</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/review/edit/{id}</td><td>レビュー編集ページ</td><td class="url-auth">本人</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/review/api/update</td><td>レビュー更新</td><td class="url-auth">本人</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/reports</td><td>レビュー通報送信</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/reports/my</td><td>自分の通報一覧取得</td><td class="url-auth">ROLE_USER</td></tr>
         </tbody>
       </table>
     </div>
@@ -1122,7 +1133,8 @@
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/mypage/reviews</td><td>マイレビュー一覧</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/mypage/inquiries</td><td>マイ問い合わせ一覧</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/mypage/api/icon</td><td>プロフィールアイコン変更</td><td class="url-auth">ROLE_USER</td></tr>
-          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/mypage/recent/{toiletId}</td><td>최근 본 화장실 개별 삭제</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/mypage/recent/{toiletId}</td><td>最近見たトイレ個別削除</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/mypage/recent</td><td>最近見たトイレ全件削除</td><td class="url-auth">ROLE_USER</td></tr>
         </tbody>
       </table>
     </div>
@@ -1142,7 +1154,8 @@
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/inquiries/{id}</td><td>問い合わせ詳細（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/edit-requests/{id}</td><td>修正提案詳細（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td colspan="4" style="padding:6px 12px;font-size:11px;color:var(--gray);background:var(--light);">── API エンドポイント ──</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users</td><td>会員一覧 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/me</td><td>現在の管理者情報取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users</td><td>会員一覧取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users/{id}</td><td>会員詳細 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/users/{id}/suspend</td><td>会員停止</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/users/{id}/unsuspend</td><td>会員停止解除</td><td class="url-auth">ROLE_ADMIN</td></tr>
