@@ -1650,6 +1650,13 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+  // 로드 시 이미 뷰포트 안에 있는 요소 즉시 표시 (file:// 대응)
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.fade-up').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('visible');
+    });
+  });
 
   // Nav scroll effect
   window.addEventListener('scroll', () => {
