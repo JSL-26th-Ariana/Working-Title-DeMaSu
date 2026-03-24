@@ -1236,15 +1236,19 @@
 
     <!-- SCR-003 -->
     <div class="sstab-content" id="ss003">
-      <div class="ss-detail-card">
-        <img class="ss-detail-img" src="./screenshots/detail.png" alt="トイレ詳細" style="width:360px;max-width:100%;margin-left:auto;margin-right:auto;">
-        <div class="ss-detail-bottom">
-          <div class="ss-detail-left">
+      <div class="ss-detail-card" style="flex-direction:column; gap:24px; ">
+        <div style="display:flex; gap:16px; justify-content:center; margin-bottom:28px;">
+          <img src="./screenshots/detail.png" alt="トイレ詳細 概要" style="width:31%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="./screenshots/detail2.png" alt="トイレ詳細 情報" style="width:31%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="./screenshots/detail3.png" alt="トイレ詳細 レビュー" style="width:31%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+        </div>
+        <div style="display:flex; gap:32px; align-items:flex-start; padding-bottom:8px;">
+          <div style="min-width:0; flex:1;">
             <div class="ss-detail-id">SCR-003</div>
             <h3 class="ss-detail-title">トイレ詳細</h3>
             <p class="ss-detail-desc">設備タグ・小地図・レビュータブを1画面に統合。修正提案ボタンからSCR-005へ遷移し、閲覧時に自動で履歴を記録。</p>
           </div>
-          <ul class="ss-detail-features">
+          <ul class="ss-detail-features" style="flex:1; margin-bottom:0;">
             <li>設備タグアイコン表示（車椅子・24時間等）</li>
             <li>Naver Maps小地図埋め込み</li>
             <li>レビュータブ（最新順 / 高評価順）</li>
@@ -1339,7 +1343,9 @@
     <!-- SCR-008 -->
     <div class="sstab-content" id="ss008">
       <div class="ss-detail-card">
-        <img class="ss-detail-img" src="./screenshots/mypage.png" alt="マイページ">
+        <div style="overflow:hidden; border-radius:10px; box-shadow:0 8px 32px rgba(0,0,0,0.12); margin-bottom:28px;">
+          <img src="./screenshots/mypage.png" alt="マイページ" style="display:block; width:calc(100% + 4px); margin-left:-4px;">
+        </div>
         <div class="ss-detail-bottom">
           <div class="ss-detail-left">
             <div class="ss-detail-id">SCR-008</div>
@@ -1382,16 +1388,18 @@
 
     <!-- SCR-010 -->
     <div class="sstab-content" id="ss010">
-      <div class="ss-detail-card">
-        <div class="ss-detail-left">
-          <div class="ss-placeholder tall"><div class="icon">➕</div><div class="label">new-toilet.png</div></div>
-          <!-- <img class="ss-detail-img" src="./screenshots/new-toilet.png" alt="トイレ提案"> -->
+      <div class="ss-detail-card" style="flex-direction:column; gap:24px;">
+        <div style="display:flex; gap:16px; justify-content:center; margin-bottom:28px;">
+          <img src="./screenshots/newToilet1.png" alt="トイレ提案 上部" style="width:48%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="./screenshots/newToilet2.png" alt="トイレ提案 下部" style="width:48%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow);">
         </div>
-        <div class="ss-detail-right">
-          <div class="ss-detail-id">SCR-010</div>
-          <h3 class="ss-detail-title">トイレ新規提案</h3>
-          <p class="ss-detail-desc">ユーザーが未登録トイレを提案。Naver地図クリックで座標を自動入力し、管理者承認後に地図へ反映される。</p>
-          <ul class="ss-detail-features">
+        <div style="display:flex; gap:32px; align-items:flex-start; padding-bottom:8px;">
+          <div style="min-width:0; flex:1;">
+            <div class="ss-detail-id">SCR-010</div>
+            <h3 class="ss-detail-title">トイレ新規提案</h3>
+            <p class="ss-detail-desc">ユーザーが未登録トイレを提案。Naver地図クリックで座標を自動入力し、管理者承認後に地図へ反映される。</p>
+          </div>
+          <ul class="ss-detail-features" style="flex:1; margin-bottom:0;">
             <li>名前・住所・設備タグ・説明入力</li>
             <li>地図クリック lat / lng 自動入力</li>
             <li>source='USER', status='WAITING' でINSERT</li>
@@ -1696,21 +1704,6 @@
     document.getElementById(id).classList.add('active');
   }
 
-<<<<<<< HEAD
-  // ─── 도망가는 Top 버튼 ───
-  (function() {
-    const btn = document.createElement('div');
-    btn.innerHTML = '↑ TOP';
-    btn.style.cssText = `
-      position: fixed; z-index: 9999;
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--green); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(45,184,124,0.4);
-      transition: left 0.35s ease, top 0.35s ease, opacity 0.3s ease;
-      opacity: 0; pointer-events: none;
-=======
   function switchVtab(id) {
     document.querySelectorAll('#video-tabs .vtab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.vtab-content').forEach(c => c.classList.remove('active'));
@@ -1732,26 +1725,10 @@
       box-shadow: 0 4px 16px rgba(45,184,124,0.4);
       opacity: 0; pointer-events: none;
       transition: opacity 0.3s ease, transform 0.2s ease;
->>>>>>> 7091402e98308e82638e07daa501aa68c019d5ca
       user-select: none;
     `;
     document.body.appendChild(btn);
 
-<<<<<<< HEAD
-    let btnX = window.innerWidth - 86;
-    let btnY = window.innerHeight - 86;
-    btn.style.left = btnX + 'px';
-    btn.style.top = btnY + 'px';
-
-    window.addEventListener('resize', () => {
-      btnX = Math.min(btnX, window.innerWidth - 66);
-      btnY = Math.min(btnY, window.innerHeight - 66);
-      btn.style.left = btnX + 'px';
-      btn.style.top = btnY + 'px';
-    });
-
-=======
->>>>>>> 7091402e98308e82638e07daa501aa68c019d5ca
     window.addEventListener('scroll', () => {
       if (window.scrollY > 400) {
         btn.style.opacity = '1';
@@ -1762,44 +1739,6 @@
       }
     });
 
-<<<<<<< HEAD
-    document.addEventListener('mousemove', (e) => {
-      if (btn.style.opacity === '0') return;
-      const cx = btnX + 28;
-      const cy = btnY + 28;
-      const dx = cx - e.clientX;
-      const dy = cy - e.clientY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const threshold = 130;
-      if (dist < threshold) {
-        const force = (threshold - dist) / threshold;
-        const angle = Math.atan2(dy, dx);
-        const push = force * 180;
-        let nx = btnX + Math.cos(angle) * push;
-        let ny = btnY + Math.sin(angle) * push;
-        nx = Math.max(10, Math.min(window.innerWidth - 66, nx));
-        ny = Math.max(10, Math.min(window.innerHeight - 66, ny));
-        btnX = nx;
-        btnY = ny;
-        btn.style.left = btnX + 'px';
-        btn.style.top = btnY + 'px';
-      }
-    });
-
-    btn.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      btnX = Math.random() * (vw - 80) + 10;
-      btnY = Math.random() * (vh - 80) + 10;
-      btn.style.transition = 'none';
-      btn.style.left = btnX + 'px';
-      btn.style.top = btnY + 'px';
-      setTimeout(() => { btn.style.transition = 'left 0.35s ease, top 0.35s ease, opacity 0.3s ease'; }, 50);
-    });
-  })();
-
-=======
     btn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -1807,7 +1746,6 @@
     btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.1)'; });
     btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
   })();
->>>>>>> 7091402e98308e82638e07daa501aa68c019d5ca
 </script>
 </body>
 </html>
