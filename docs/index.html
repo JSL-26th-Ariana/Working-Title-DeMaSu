@@ -701,7 +701,7 @@
       <table class="req-table">
         <thead><tr><th>ID</th><th>機能要求</th><th>詳細</th><th>状態</th></tr></thead>
         <tbody>
-          <tr><td class="req-id">FR-SCR003-1</td><td>トイレ詳細表示</td><td>トイレ名・住所・設備タグ・평균評価・レビュー件数を表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
+          <tr><td class="req-id">FR-SCR003-1</td><td>トイレ詳細表示</td><td>トイレ名・住所・設備タグ・平均評価・レビュー件数を表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR003-2</td><td>設備タグ表示</td><td>車椅子・おむつ交換・24時間・多目的・清潔などのタグをアイコン付きで表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR003-3</td><td>レビュータブ</td><td>詳細ページ内のタブでレビュー一覧を表示。最新順・高評価順の切り替えが可能</td><td><span class="st-done">✅ 完了</span></td></tr>
           <tr><td class="req-id">FR-SCR003-4</td><td>地図表示</td><td>トイレの位置をNaver Maps小地図で表示する</td><td><span class="st-done">✅ 完了</span></td></tr>
@@ -1070,7 +1070,7 @@
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilet/{id}</td><td>トイレ詳細ページ（未ログインはブラー）</td><td class="url-auth">全員</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/search</td><td>トイレキーワード検索（API）</td><td class="url-auth">全員</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets/filter</td><td>タグフィルタ検索（API）</td><td class="url-auth">全員</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets</td><td>주변 トイレ一覧取得（API）</td><td class="url-auth">全員</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/toilets</td><td>周辺トイレ一覧取得（API）</td><td class="url-auth">全員</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/toilet/add</td><td>新規トイレ提案ページ</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/toilets</td><td>新規トイレ提案送信</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/toilets/{id}/edit-request</td><td>修正提案送信</td><td class="url-auth">ROLE_USER</td></tr>
@@ -1122,7 +1122,7 @@
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/mypage/reviews</td><td>マイレビュー一覧</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/mypage/inquiries</td><td>マイ問い合わせ一覧</td><td class="url-auth">ROLE_USER</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/mypage/api/icon</td><td>プロフィールアイコン変更</td><td class="url-auth">ROLE_USER</td></tr>
-          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/mypage/recent/{toiletId}</td><td>최근 본 화장실 개별 삭제</td><td class="url-auth">ROLE_USER</td></tr>
+          <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/mypage/recent/{toiletId}</td><td>最近見たトイレ個別削除</td><td class="url-auth">ROLE_USER</td></tr>
         </tbody>
       </table>
     </div>
@@ -1142,22 +1142,22 @@
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/inquiries/{id}</td><td>問い合わせ詳細（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-get">GET</span></td><td class="url-path">/admin/edit-requests/{id}</td><td>修正提案詳細（画面）</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td colspan="4" style="padding:6px 12px;font-size:11px;color:var(--gray);background:var(--light);">── API エンドポイント ──</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users</td><td>会員一覧 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users/{id}</td><td>会員詳細 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users</td><td>会員一覧 取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/users/{id}</td><td>会員詳細 取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/users/{id}/suspend</td><td>会員停止</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/users/{id}/unsuspend</td><td>会員停止解除</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/users/{id}/delete</td><td>会員削除</td><td class="url-auth">ROLE_ADMIN</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/reports</td><td>報告一覧 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/reports</td><td>報告一覧 取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/reports/{id}/resolve</td><td>報告承認</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/reports/{id}/dismiss</td><td>報告却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/toilets</td><td>トイレ承認一覧 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/toilets</td><td>トイレ承認一覧 取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/toilets/{id}/approve</td><td>トイレ承認</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/toilets/{id}/reject</td><td>トイレ却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-put">PUT</span></td><td class="url-path">/api/admin/toilets/{id}</td><td>トイレ情報修正</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-delete">DELETE</span></td><td class="url-path">/api/admin/toilets/{id}</td><td>トイレ削除</td><td class="url-auth">ROLE_ADMIN</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/inquiries</td><td>問い合わせ一覧 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/inquiries</td><td>問い合わせ一覧 取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/inquiries/{id}/answer</td><td>問い合わせ回答</td><td class="url-auth">ROLE_ADMIN</td></tr>
-          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/edit-requests</td><td>修正提案一覧 취득</td><td class="url-auth">ROLE_ADMIN</td></tr>
+          <tr><td><span class="method m-get">GET</span></td><td class="url-path">/api/admin/edit-requests</td><td>修正提案一覧 取得</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/edit-requests/{id}/approve</td><td>修正提案承認</td><td class="url-auth">ROLE_ADMIN</td></tr>
           <tr><td><span class="method m-post">POST</span></td><td class="url-path">/api/admin/edit-requests/{id}/reject</td><td>修正提案却下</td><td class="url-auth">ROLE_ADMIN</td></tr>
         </tbody>
@@ -1407,7 +1407,7 @@
       <h3 class="section-title fade-up" style="font-size:26px">実装デモ動画</h3>
 
       <div class="video-wrap fade-up" style="margin-top:32px;">
-        <!-- 탭 -->
+        <!-- タブ -->
         <div class="video-tabs" id="video-tabs">
           <div class="vtab active" onclick="switchVtab('v1')">① メイン・会員・ログイン</div>
           <div class="vtab" onclick="switchVtab('v2')">② 近くのトイレ・検索</div>
@@ -1696,8 +1696,14 @@
     document.getElementById(id).classList.add('active');
   }
 
-<<<<<<< HEAD
-  // ─── 도망가는 Top 버튼 ───
+  function switchVtab(id) {
+    document.querySelectorAll('#video-tabs .vtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.vtab-content').forEach(c => c.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ─── Runaway Top Button ───
   (function() {
     const btn = document.createElement('div');
     btn.innerHTML = '↑ TOP';
@@ -1710,34 +1716,10 @@
       box-shadow: 0 4px 16px rgba(45,184,124,0.4);
       transition: left 0.35s ease, top 0.35s ease, opacity 0.3s ease;
       opacity: 0; pointer-events: none;
-=======
-  function switchVtab(id) {
-    document.querySelectorAll('#video-tabs .vtab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.vtab-content').forEach(c => c.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    document.getElementById(id).classList.add('active');
-  }
-
-  // ─── TOP 버튼 ───
-  (function() {
-    const btn = document.createElement('div');
-    btn.innerHTML = '↑';
-    btn.style.cssText = `
-      position: fixed; z-index: 9999;
-      right: 32px; bottom: 32px;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: var(--green); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; font-weight: 700; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(45,184,124,0.4);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.2s ease;
->>>>>>> 7091402e98308e82638e07daa501aa68c019d5ca
       user-select: none;
     `;
     document.body.appendChild(btn);
 
-<<<<<<< HEAD
     let btnX = window.innerWidth - 86;
     let btnY = window.innerHeight - 86;
     btn.style.left = btnX + 'px';
@@ -1750,8 +1732,6 @@
       btn.style.top = btnY + 'px';
     });
 
-=======
->>>>>>> 7091402e98308e82638e07daa501aa68c019d5ca
     window.addEventListener('scroll', () => {
       if (window.scrollY > 400) {
         btn.style.opacity = '1';
@@ -1762,7 +1742,6 @@
       }
     });
 
-<<<<<<< HEAD
     document.addEventListener('mousemove', (e) => {
       if (btn.style.opacity === '0') return;
       const cx = btnX + 28;
@@ -1798,16 +1777,6 @@
       setTimeout(() => { btn.style.transition = 'left 0.35s ease, top 0.35s ease, opacity 0.3s ease'; }, 50);
     });
   })();
-
-=======
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    btn.addEventListener('mouseenter', () => { btn.style.transform = 'scale(1.1)'; });
-    btn.addEventListener('mouseleave', () => { btn.style.transform = 'scale(1)'; });
-  })();
->>>>>>> 7091402e98308e82638e07daa501aa68c019d5ca
 </script>
 </body>
 </html>
